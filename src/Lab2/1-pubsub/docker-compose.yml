@@ -1,0 +1,78 @@
+version: '3'
+services:
+  ############################
+  # Frontend
+  ############################
+  command-frontend:
+    build: ./command-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - redis
+      - mongo
+    networks:
+      - hello-dapr
+
+  ############################
+  # Command API
+  ############################
+  command-api:
+    build: ./command-api
+    ports:
+      - "8080:80"
+    networks:
+      - hello-dapr
+  command-api-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+     "-app-id", "command-api",
+     "-app-port", "80",
+     "-dapr-grpc-port", "50002",
+     "-components-path", "/components"]
+    volumes:
+        - "./components/:/components"
+    depends_on:
+      - command-api
+    network_mode: "service:command-api"
+
+
+  ############################
+  # Command API
+  ############################
+  order-processing:
+    build: ./order-processing
+    depends_on:
+      - redis
+    networks:
+      - hello-dapr
+  order-processing-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+     "-app-id", "order-processing",
+     "-app-port", "80",
+     "-dapr-grpc-port", "50002",
+     "-components-path", "/components"]
+    volumes:
+        - "./components/:/components"
+    depends_on:
+      - order-processing
+    network_mode: "service:order-processing"
+
+  ############################
+  # Redis state stores
+  ############################
+  redis:
+    image: "redis:alpine"
+    networks:
+      - hello-dapr
+
+  mongo:
+    image: mongo
+    networks:
+      - hello-dapr
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+networks:
+    hello-dapr:

@@ -1,0 +1,7 @@
+*.exe
+cat-generator*
+Dockerfile
+.git
+.vscode
+build
+.env
