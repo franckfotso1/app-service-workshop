@@ -3,16 +3,13 @@ name:  Build workshop guide static site and upload it on a blob
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./instructions
     steps:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
@@ -24,9 +21,10 @@ jobs:
     - run: gem install jekyll 
 
     - run: jekyll build
+      working-directory: ./instructions
  
     - uses: tibor19/static-website-deploy@v1
       with:
         enabled-static-website: 'true'
-        folder: '_site'
+        folder: 'instructions/_site'
         connection-string: ${{ secrets.STATIC_WEBSITE_CONNECTION_STRING }}
