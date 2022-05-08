@@ -5,13 +5,13 @@ import { env } from "process";
 /****
  * PUB/SUB
  **/
-const daprPort = env.DAPR_HTTP_PORT || 3500;
-const topic = `orders`;
-const pubSubName = `order-pub-sub`;
-const stateUrl = `http://localhost:${daprPort}/v1.0/publish/${pubSubName}/${topic}`;
 
 async function sendNewOrder(type: string): Promise<void> {
-  const response = await fetch(stateUrl, {
+  const psUrl = env.PUB_URL;
+  if (psUrl === undefined || psUrl.length === 0) {
+    throw new Error(`Couldn't send order to processing : PUB_URL invalid. Got "${env.PUB_URL}"`);
+  }
+  const response = await fetch(env.PUB_URL, {
     method: "POST",
     body: JSON.stringify({ type: type, qty: 1 }),
     headers: {
@@ -31,9 +31,8 @@ app.use(express.json());
 
 // Post a new order
 app.post("/neworder", async (req, res) => {
-  const type = req.body.type;
   console.log("A new pair of charentaises has been ordered !");
-  await sendNewOrder(type);
+  await sendNewOrder("charentaises");
   res.status(200).send();
 });
 
