@@ -5,7 +5,7 @@ title: Pub Sub
 parent-id: lab-2
 ---
 
-### Generalités
+### Généralités
 
 > **Question généraliste** : Qu'est-ce que le pattern _Publish Subscribe (PUB/SUB)_ ? A quel besoin repond t-il ?
 
