@@ -2,7 +2,6 @@ import express from "express";
 import { env } from "process";
 import fetch from "isomorphic-fetch";
 
-
 /**
  * WEB SERVER
  */
@@ -17,7 +16,12 @@ app.get("/", function (req, res) {
 
 // Bounce it
 app.post("/neworder", async (req, res) => {
-  await fetch(`http://${env.COMMAND_API_HOST}/neworder`);
+  await fetch(`http://${env.COMMAND_API_HOST}/neworder`, {
+    method: "POST",
+    body: {
+      type: "charentaises",
+    },
+  });
 });
 
 app.listen(PORT, () => console.log(`Node App listening on port ${PORT}!`));
