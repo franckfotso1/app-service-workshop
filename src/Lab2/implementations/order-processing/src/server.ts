@@ -8,19 +8,28 @@ import { createApp } from "https://deno.land/x/servest@v1.3.4/mod.ts";
 const PORT = Number(Deno.env.get("PORT") ?? 8080);
 const app = createApp();
 
-// TODO: Fill in which service to call 
+// TODO: Fill in which service to call
 const daprPort = Deno.env.get("DAPR_HTTP_PORT") || 3500;
 const service = ``;
 const method = ``;
 const stockUrl = `http://localhost:${daprPort}/v1.0/invoke/${service}/method/${method}`;
 
 async function processOrder(type: string, quantity: number): Promise<void> {
-
   // Doing some check to ensure order is valid...
   // ...
   // Done
 
-  
+  log.info("Order processed ! Pub Sub has succeeded");
+  const stockManagerUrl = Deno.env.get("STOCK_MANAGER_INVOKE_URL");
+
+  // Probably not yet in the service invocation step on the workshop
+  if (stockManagerUrl === undefined || stockManagerUrl === "") {
+    log.info(
+      "No stock manager to call. Wait for the Service Invocation step in the workshop"
+    );
+    return;
+  }
+
   const res = await fetch(stockUrl, {
     method: "POST",
     body: JSON.stringify({
@@ -34,14 +43,14 @@ async function processOrder(type: string, quantity: number): Promise<void> {
 
   if (!res.ok) {
     log.error(
-      `Couldn't call service ${service} : ${res.status} - ${res.text()}`
+      `Couldn't call service ${service} : ${res.status} - ${await res.text()}`
     );
     throw new Error("Something went wrong");
   }
 }
 
 app.post("/process-order", async (req) => {
-  const bodyJson = (await req.json()) as { type: string; qty: string };
+  const bodyJson = (await req.json()).data as { type: string; qty: string };
   // qty is a positive integer
   const isQtyValid =
     bodyJson?.qty !== undefined &&
@@ -50,13 +59,16 @@ app.post("/process-order", async (req) => {
 
   // type is a plain string
   const isTypeValid =
-    bodyJson?.type !== undefined && bodyJson?.type.length == 0;
+    bodyJson?.type !== undefined && bodyJson?.type.length !== 0;
 
-  if (!isTypeValid || isQtyValid) {
+  if (!isTypeValid || !isQtyValid) {
+    log.error("Invalid payload :")
+    log.error(JSON.stringify(bodyJson));
     req.respond({
       status: 400,
       body: "Invalid arguments provided. Both qty and type must be provided, qty must be a positive integer",
     });
+    return;
   }
   try {
     await processOrder(bodyJson.type, Number(bodyJson.qty));
