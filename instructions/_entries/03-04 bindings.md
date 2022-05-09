@@ -1,5 +1,5 @@
 ---
-sectionid: lab2-monitoring
+sectionid: lab2-bindings
 sectionclass: h2
 title: Bindings
 parent-id: lab-2
