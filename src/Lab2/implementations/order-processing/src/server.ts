@@ -21,7 +21,7 @@ async function processOrder(type: string, quantity: number): Promise<void> {
 
   log.info("Order processed ! Pub Sub has succeeded");
   const stockManagerUrl = Deno.env.get("STOCK_MANAGER_INVOKE_URL");
-  const receiptGeneratorUrl = Deno.env.get("RECEIPT_GENERATOR_INVOKE_URL");
+  const receiptGeneratorUrl = Deno.env.get("RECEIPT_GEN_INVOKE_URL");
 
   const body = {
     type: type,
