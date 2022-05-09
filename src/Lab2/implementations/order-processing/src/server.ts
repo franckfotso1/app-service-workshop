@@ -21,31 +21,75 @@ async function processOrder(type: string, quantity: number): Promise<void> {
 
   log.info("Order processed ! Pub Sub has succeeded");
   const stockManagerUrl = Deno.env.get("STOCK_MANAGER_INVOKE_URL");
+  const receiptGeneratorUrl = Deno.env.get("RECEIPT_GENERATOR_INVOKE_URL");
 
-  // Probably not yet in the service invocation step on the workshop
-  if (stockManagerUrl === undefined || stockManagerUrl === "") {
+  const body = {
+    type: type,
+    qty: quantity,
+  };
+  const stockSuccess = await callIfUrlDefined(
+    stockManagerUrl,
+    "stock-manager",
+    body
+  );
+  const receiptSuccess = await callIfUrlDefined(
+    receiptGeneratorUrl,
+    "receipt-generator",
+    body
+  );
+  if (!stockSuccess || !receiptSuccess) {
     log.info(
-      "No stock manager to call. Wait for the Service Invocation step in the workshop"
+      "Some services couldn't be called ! Service invocation have failed ! "
     );
-    return;
+  } else {
+    log.info(
+      "All services have been invoked ! Service invocation has succeeded ! "
+    );
+  }
+}
+
+async function callIfUrlDefined(
+  url: string | undefined,
+  service: string,
+  requestBody: Record<string, any>
+): Promise<boolean> {
+  const isEmpty = (e: string | undefined) => e === undefined || e === "";
+
+  if (isEmpty(url)) {
+    log.info(
+      `No ${service} service url to call. Wait for the Service Invocation step in the workshop`
+    );
+    return false;
   }
 
-  const res = await fetch(stockUrl, {
+  log.info(`Calling ${service}...`);
+  try {
+    await callService(service, url as string, requestBody);
+    log.info(`Called ${service} successfully !`);
+    return true;
+  } catch (e) {
+    log.error(e.message);
+    return false;
+  }
+}
+
+async function callService(
+  service: string,
+  url: string,
+  body: Record<string, any>
+): Promise<void> {
+  const res = await fetch(url, {
     method: "POST",
-    body: JSON.stringify({
-      type: type,
-      qty: quantity,
-    }),
+    body: JSON.stringify(body),
     headers: {
       "Content-type": "application/json",
     },
   });
 
   if (!res.ok) {
-    log.error(
+    throw new Error(
       `Couldn't call service ${service} : ${res.status} - ${await res.text()}`
     );
-    throw new Error("Something went wrong");
   }
 }
 
@@ -62,7 +106,7 @@ app.post("/process-order", async (req) => {
     bodyJson?.type !== undefined && bodyJson?.type.length !== 0;
 
   if (!isTypeValid || !isQtyValid) {
-    log.error("Invalid payload :")
+    log.error("Invalid payload :");
     log.error(JSON.stringify(bodyJson));
     req.respond({
       status: 400,
