@@ -35,7 +35,7 @@ func main() {
 		defer r.Body.Close()
 		switch r.Method {
 		case "POST":
-		case "PATCH":
+			log.Println("Stock Manager woken up")
 			b, err := io.ReadAll(r.Body)
 			if err != nil {
 				log.Println(err)
@@ -49,7 +49,8 @@ func main() {
 				rw.WriteHeader(http.StatusBadRequest)
 				rw.Write([]byte("Wrong body provided"))
 			}
-			err = updateStock(&order)
+			_ = updateStock(&order)
+			log.Println("Stock Manager succeeded")
 			rw.WriteHeader(http.StatusOK)
 			rw.Write([]byte(http.StatusText(http.StatusOK)))
 		default:
@@ -61,8 +62,8 @@ func main() {
 }
 
 type Order struct {
-	Qty  int
-	Type string
+	Qty  int    `json: qty`
+	Type string `json: type`
 }
 
 // Internal function used to handle 500 Errors
