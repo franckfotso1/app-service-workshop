@@ -42,7 +42,11 @@ async fn mail_receipt() -> types::Result<bool> {
             "subject": "Validated Command"
         }
     });
-    let res = client.post(mail_service_url).body(payload.to_string()).send().await?;
+    let res = client
+        .post(mail_service_url)
+        .body(payload.to_string())
+        .send()
+        .await?;
     if res.status().is_success() {
         info!("Successfully sent mail")
     } else {
@@ -51,8 +55,10 @@ async fn mail_receipt() -> types::Result<bool> {
     Ok(true)
 }
 
-/// Search and return a random cat image
 async fn generate_receipt(_req: Request<Body>) -> types::Result<Response<Body>> {
+    if String::from(_req.uri().path()).contains("newproduct") {
+        return Ok(Response::new("Ok".into()))
+    }
     info!("Receipt generator woken up");
     mail_receipt().await?;
     info!("Receipt generator succeded");
