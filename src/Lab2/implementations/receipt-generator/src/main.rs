@@ -1,6 +1,7 @@
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Request, Response, Server};
-use std::{collections::HashMap, convert::Infallible, env, net::SocketAddr};
+use serde_json::json;
+use std::{convert::Infallible, env, net::SocketAddr};
 mod types;
 extern crate dotenv;
 use dotenv::dotenv;
@@ -17,7 +18,7 @@ async fn mail_receipt() -> types::Result<bool> {
     }
     if mail_service_url == "none" {
         info!("No mail binding defined, wait for the binding part on the workshop");
-        return Ok(false)
+        return Ok(false);
     }
     let mail_to;
     match env::var("MAIL_TO") {
@@ -26,17 +27,22 @@ async fn mail_receipt() -> types::Result<bool> {
     }
     if mail_to == "none" {
         info!("Mail binding defined, but MAIL_TO env isn't defined. No one to send a mail to");
-        return Ok(false)
+        return Ok(false);
     }
     //"http://localhost:3500/v1.0/bindings/mailing"
     let client = reqwest::Client::new();
-
-    // Prepare mail body, using a map as a json substitute
-    let mut json = HashMap::new();
-    json.insert("subject", "rust");
-    json.insert("email", "json");
-
-    let res = client.post(mail_service_url).json(&json).send().await?;
+    info!("Sending mail ! ");
+    //curl -X POST http://localhost:3500/v1.0/bindings/mail -H "Con
+    //tent-Type: application/json" -d '{"operation": "post","data": {"email": "
+    //", "subject" : "blah"} }'
+    let payload = json!({
+        "operation": "post",
+        "data": {
+            "email": mail_to,
+            "subject": "Validated Command"
+        }
+    });
+    let res = client.post(mail_service_url).body(payload.to_string()).send().await?;
     if res.status().is_success() {
         info!("Successfully sent mail")
     } else {
