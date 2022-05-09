@@ -60,6 +60,8 @@ func main() {
 	})
 	http.HandleFunc("/newproduct", func(rw http.ResponseWriter, r *http.Request) {
 		log.Println("A new product has been received from the external provider")
+		rw.WriteHeader(http.StatusOK)
+		rw.Write([]byte(http.StatusText(http.StatusOK)))
 	})
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", SERVER_HOST, SERVER_PORT), nil))
 }
