@@ -113,7 +113,7 @@ services:
       - hello-dapr
     environment:
       - RUST_LOG=debug
-      - MAIL_TO=lupeiron@microsoft.com
+      - MAIL_TO=
       - MAILING_BINDING_URL=http://localhost:3500/v1.0/bindings/mail
   receipt-generator-dapr:
     image: "daprio/daprd:edge"
