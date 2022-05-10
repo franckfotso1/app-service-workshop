@@ -119,14 +119,7 @@ Accédez au FQDN de l'application de démo. Vous devriez voir ce message.
 ![Running app](/media/lab3/running-app.png)
 
 
-Dernière étape, dans le [portail Azure](https://portal.azure.com), naviguez jusqu'à l'application déployée. Pour cela:
-
-- Allez jusqu'à l'instance de Containers Apps crée
-- Dans la cartouche du haut, cliquez sur le nom de l'environnement
-![Hello world ACA infos](/media/lab3/hello-world-aca-info.png)
-- Ensuite, dans l'environnement, cliquer sur "**Apps**"
-![Hello world env infos](/media/lab3/hello-world-env-infos.png)
-- Cliquez sur l'application hello world
+Dernière étape, dans le [portail Azure](https://portal.azure.com), naviguez jusqu'à l'application déployée. Pour cela naviguez jusqu'à l'intérieur de votre resource group et cliquez sur la container app *hello-world* crée
 
 
 > **En pratique**: Explorez ce que propose le portail Azure pour l'application *hello-world*. Comment trouver les métriques ? Les logs ? 
