@@ -13,6 +13,12 @@ Il existe cependant un certain nombres de SDKs officiels qui permettent de profi
 
 Le liste des sdk est disponible [ici](https://docs.dapr.io/developing-applications/sdks/)
 
+### Gestion des secrets
+
+Durant tout ce _Lab_, nous avons renseigné les paramères des composants Dapr en clair. Il est cependant possible de récupérer ces paramètres dynamiquement.
+
+Plus d'informations [ici](https://docs.dapr.io/operations/components/component-secrets/)
+
 ### Métriques
 
 Les métriques (CPU, RAM, uptime...) sont collectées et peuvent être traitées en utilisant un service managé (Azure Monitor, New Relic) ou hébergé localement Prometheus/Grafana.
@@ -22,8 +28,7 @@ Plus d'informations [ici](https://docs.dapr.io/operations/monitoring/metrics/pro
 ### Logs
 
 Les logs des sidecars sont collectables en utilisant une solution comme FluentD, pour ensuite être envoté dans une solution d'analyse de logs comme log analytics ou une pile logicielle ELK (Elastisearch- Logstash - Kibana)
- Plus d'informations [ici](https://docs.dapr.io/operations/monitoring/logging/fluentd/)
-
+Plus d'informations [ici](https://docs.dapr.io/operations/monitoring/logging/fluentd/)
 
 ### Tester avec Dapr
 
@@ -41,7 +46,7 @@ Considérant un service **ExternalStore** dont le seul but est de stocker l'éta
 // ext-store.ts
 @injectable()
 export class ExtStore<T extends IStoreProxy> implements IRecordingStore {
-  // 
+  //
   public static readonly STATE_KEY = "KEY";
 
   constructor(
@@ -84,10 +89,9 @@ container
       process.env.STORE_NAME
     )
   );
-
 ```
 
-Dans les test unitaires, nous pouvons au contraire fixer la valeur du proxy à un valeur fixée. Dapr ne sera plus utilisé, ce qui enlève le besoin de le démarrer en plus de l'applications pour les tests, ce qui est de toute manière préférable pour ne pas "tester" le code de Dapr mais plutôt sa propre implémentation. 
+Dans les test unitaires, nous pouvons au contraire fixer la valeur du proxy à un valeur fixée. Dapr ne sera plus utilisé, ce qui enlève le besoin de le démarrer en plus de l'applications pour les tests, ce qui est de toute manière préférable pour ne pas "tester" le code de Dapr mais plutôt sa propre implémentation.
 
 ```ts
 describe("State store", () => {
