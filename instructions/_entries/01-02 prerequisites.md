@@ -27,16 +27,19 @@ az login
 
 ### Installer Azure CLI & l'extension pour Azure Container Apps
 
-Suivez le lien pour installer [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). Nous aurons besin d'une version >= 2.30
+Suivez le lien pour installer [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). Nous aurons besoin d'une version >= 2.36
 
 **Note**: Vous pouvez connaître la version installée en exécutant la commande :
 ```csharp
 az version
 ```
+**Note**: Si az cli est déjà installé mais que vous n'avez pas la dernière version vous pouvez exécuter cette commande
+```csharp
+az upgrade
+```
 
 Une fois la CLI installé, installez l'extension de la CLI pour Azure Container Apps
 
 ``` csharp
-az extension add  --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl 
-az provider register --namespace Microsoft.Web
+az extension add -n containerapp
 ```
