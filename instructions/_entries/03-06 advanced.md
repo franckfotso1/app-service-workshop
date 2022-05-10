@@ -13,6 +13,18 @@ Il existe cependant un certain nombres de SDKs officiels qui permettent de profi
 
 Le liste des sdk est disponible [ici](https://docs.dapr.io/developing-applications/sdks/)
 
+### Métriques
+
+Les métriques (CPU, RAM, uptime...) sont collectées et peuvent être traitées en utilisant un service managé (Azure Monitor, New Relic) ou hébergé localement Prometheus/Grafana.
+
+Plus d'informations [ici](https://docs.dapr.io/operations/monitoring/metrics/prometheus/)
+
+### Logs
+
+Les logs des sidecars sont collectables en utilisant une solution comme FluentD, pour ensuite être envoté dans une solution d'analyse de logs comme log analytics ou une pile logicielle ELK (Elastisearch- Logstash - Kibana)
+ Plus d'informations [ici](https://docs.dapr.io/operations/monitoring/logging/fluentd/)
+
+
 ### Tester avec Dapr
 
 En utilisant Dapr vient rapidement une question : Comment tester un service utilisant Dapr ? Faut-il démarer le sidecar à chaque test unitaire ? Faut-il _mock-er_ les appels HTTP vers localhost:3500 ?
