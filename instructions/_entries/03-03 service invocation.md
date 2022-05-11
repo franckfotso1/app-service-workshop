@@ -1,5 +1,5 @@
 ---
-sectionid: lab2-monitoring
+sectionid: lab2-service-invocation
 sectionclass: h2
 title: Invocation de Service
 parent-id: lab-2
