@@ -4,16 +4,17 @@ sectionclass: h2
 title: Une première application
 parent-id: lab-1
 ---
+> **Note** : Les fichiers utilisés dans ce Lab se trouvent dans `src/Lab1/1-decoupling-direct`  
 
 ### Une première application
-Le support de cette première activité sera l'application représentée ci-dessous. Le code de l'application peut-être trouvé dans le dossier `src/Lab1/1-decoupling-direct`  
+Le support de cette première activité sera l'application représentée ci-dessous
 
 ![Première app](/media/lab1/first-app-vanilla.png)
 
 Cette application est constituée de trois parties:
 - Une instance de Redis pour permettre un stockage d'état.
-- Une application stockant un état dans Redis
-- Un service Python génère un état et l'envoie au service node
+- Un service Node qui stocke un état dans Redis
+- Un service Python qui génère et envoie un état au service Node toutes les secondes
 
 
 ### Démarrer l'application en local
@@ -26,6 +27,8 @@ L'application peut être executée en local à l'aide de docker-compose.
     # Sinon
     docker-compose up 
 ```
-Une trace de ce type devrait être obtenue.
-![Résultats](/media/lab1/first-app-vanilla-results.png)
+
+> **En pratique** : Démarrez l'application. Vérifiez que vous obtenez une trace de cette forme:
+
+![Résultats](/media/lab1/first-app-vanilla-result.png)
 

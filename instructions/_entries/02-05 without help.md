@@ -5,28 +5,29 @@ title: Sans les roulettes
 parent-id: lab-1
 ---
 
-Dans les exercices précédents, était déjà déployé à l'aide d'un fichier `docker-compose.yml`. Cependant, dans un déploiement réel, il faudra commencer de zéro !
+Dans les exercices précédents, nous avons surtout travaillé avec des conteneurs, un fichier `docker-compose.yml` étant même fourni.
+
+Il est cependant possible d'utiliser Dapr en mode processus, ce qui permet un processus de développement plus simple
 
 > **En pratique** : Installez Dapr localement sur votre PC et initialisez votre environnement local.
 
-**Indication** : [Documentation](https://docs.dapr.io/getting-started/). Ne pas intialiser Dapr pour un environnement Kubernetes !
+**Indication** : [Documentation](https://docs.dapr.io/getting-started/). <u>Ne pas intialiser Dapr pour un environnement Kubernetes !</u>
 
 > **Question** : Quels sont les conteneurs déployés par l'initilisation de Dapr ? Quel est le rôle de chacun ?
 
 Solution:
 {% collapsible %}
-TODO
-Running a Redis container instance to be used as a local state store and message broker.
-Running a Zipkin container instance for observability.
-Creating a default components folder with component definitions for the above. DEFAULT PATH
-Running a Dapr placement service container instance for local actor support. EXPLIQUER ACTERURS
+Les conteneurs déployés sont :
+- Redis : En initialisant Dapr, une instance de Redis ainsi que le composant associé sont crées (dans le répertoire `~/.dapr/components`). Redis pouvant à la fois assurer les fonctionnalités de persistence d'état et de distribution de message, il est souvent choisi comme composant par défaut **dans les environnements de développement**  
+- Zipkin : [Logiciel Open-Source](https://github.com/openzipkin/zipkin) permettant de tracer les appels entre les services (Nous y reviendrons dans le *Lab2*)
+- Placement : Un service de Dapr permettant d'utiliser le [modèle de programmation distribuée "Acteurs"](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/). Vous pourrez retrouver une explictaion détaillé du principe de ce modèle [ici](https://github.com/dotnet/orleans) 
 {% endcollapsible %}
 
-> **En pratique**: Déployez l'application dans `src/Lab2/1-without-help` en utilisant la CLI de Dapr.
+### Déployer une application en mode processus
 
-**Indication** : Vous pouvez vous inspirer de cette [documentation de démarrage rapide](https://docs.dapr.io/getting-started/quickstarts/pubsub-quickstart/). 
+Nous allons maintenant déployer l'application se trouvant dans le dossier `src/Lab2/1-without-help` en mode processus.
 
-**Indication 2** : Le type de déploiement que nous visons cette fois-ci est en mode processus. Pour pouvoir lancer les processus des deux applications il vous faudra : 
+Puisque le type de déploiement que nous visons n'est pas conteneurisé, il va tout d'abord falloir installer les piles logicielles (*stacks*) de chaque service:
 - Application Nodejs:
     - installer `nodejs` (>= 8.0)
     - installer les dépendances de l'application avec `npm install` (dans le dossier `src/Lab2/1-without-help/node`)
@@ -37,7 +38,12 @@ Running a Dapr placement service container instance for local actor support. EXP
     - (l'application n'a pas de dépendances)
     - La commande pour lancer l'application est `python3 app.py`
 
-**N'oubliez pas que le but est de démarrer les deux services à l'aide de la CLI de Dapr** 
+> **Question** :
+
+> **En pratique**:  en mode processus en utilisant la commande `dapr run` de Dapr.
+
+**Indication** : Vous pouvez vous inspirer de cette [documentation de démarrage rapide](https://docs.dapr.io/getting-started/quickstarts/pubsub-quickstart/). 
+
 
 Solution:
 {% collapsible %}

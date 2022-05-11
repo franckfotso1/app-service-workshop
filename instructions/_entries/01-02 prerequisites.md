@@ -10,36 +10,34 @@ parent-id: intro
 
 Ce workshop va demander les éléments suivants: 
 
-- une subscription Azure (fournie dans le cadre de ce workshop)
-- Azure CLI
+- une souscription Azure
+- Azure CLI (**>= 2.30**) **et son extension** pour Containers Apps 
 - [Docker](https://www.docker.com/) et [docker-compose](https://docs.docker.com/compose/install/)
-- un IDE
 
-### Se connecter à sa souscription Azure 
+### Installer Azure CLI et l'extension pour Azure Container Apps
 
-En utilisant les identifiants qui vous ont été fournis, connectez vous à l'adresse <https://portal.azure.com>.
+#### Si CLI non installée : Installer le CLI 
 
-Pour le Lab 3, nous aurons également besoin de 
+Suivez [ce lien](https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli) et suivez l'onglet correspondant à votre système d'exploitation.
 
-``` bash
-az login
-```
 
-### Installer Azure CLI & l'extension pour Azure Container Apps
+#### Si CLI installée : Upgrade sa version du CLI
 
-Suivez le lien pour installer [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). Nous aurons besoin d'une version >= 2.36
-
-**Note**: Vous pouvez connaître la version installée en exécutant la commande :
-```csharp
+```bash
 az version
-```
-**Note**: Si az cli est déjà installé mais que vous n'avez pas la dernière version vous pouvez exécuter cette commande
-```csharp
+# Si version az-core <= 2.30
 az upgrade
 ```
 
+#### Installer l'extension Azure Container Apps
 Une fois la CLI installé, installez l'extension de la CLI pour Azure Container Apps
 
-``` csharp
+``` bash
 az extension add -n containerapp
+```
+
+#### Se connecter à sa souscription
+Puis enfin connectez vous à votre souscription à l'aide de la commande suivante
+``` bash
+az login
 ```
