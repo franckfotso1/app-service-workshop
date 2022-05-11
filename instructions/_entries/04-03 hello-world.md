@@ -5,8 +5,7 @@ title: Une première application sur ACA
 parent-id: lab-3
 ---
 
-Pour créer votre prmière application Container Apps nous allons utiliser la CLI, plus particulièrement une des commandes de l'extension qui a été installée en pré-requis `az containerapp create`.
-
+### Hello world 
 Cette première application sera juste une application hello-world, le conteneur `mcr.microsoft.com/azuredocs/containerapps-helloworld:latest`. Cette application exposer **une petite interface web sur son port 80**.
 
 > **En pratique**: En vous servant de la [documentation](https://docs.microsoft.com/fr-fr/cli/azure/containerapp?view=azure-cli-latest#az-containerapp-create), déployez le conteneur hello-world sur Azure Container Apps.
