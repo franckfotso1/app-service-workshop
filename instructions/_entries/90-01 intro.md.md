@@ -1,10 +1,10 @@
 ---
 sectionid: cleaning-resources
 sectionclass: h2
-title: Delete resources
+title: Supprimer les ressources
 parent-id: cleaning
 ---
+### Supprimer les ressources
 
-### Delete resources
+Si ce workshop a été effectué sur votre souscription, n'oubliez pas d'effacer les ressources pour éviter des coûts inutiles 
 
-Now that the workshop is finished, it is important to delete unused resources to stop the billing. Open the [Azure portal](https://portal.azure.com) and delete the resource groups. All contained resources will be removed.
