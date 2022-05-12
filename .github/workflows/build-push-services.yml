@@ -1,5 +1,5 @@
 on: [ push ]
-name: Build and Push all services images to ACR and DockerHub
+name: Build and Push all services images to ACR and DockerHub && update staging guide
 
 jobs:
   services-builder:
@@ -36,3 +36,23 @@ jobs:
           tags: |
             ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ matrix.service }}:latest
             dockerutils/${{ matrix.service }}:latest
+  update-staging-guide:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.6'
+
+    - run: gem update --system
+
+    - run: gem install jekyll 
+
+    - run: jekyll build
+      working-directory: ./instructions
+ 
+    - uses: tibor19/static-website-deploy@v1
+      with:
+        enabled-static-website: 'true'
+        folder: 'instructions/_site'
+        connection-string: ${{ secrets.STATIC_WEBSITE_STAGING_CONNECTION_STRING }}

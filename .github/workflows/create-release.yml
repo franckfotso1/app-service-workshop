@@ -1,10 +1,11 @@
+name: "Release new workshop version"
 on:
   push:
     tags:
       - '*'
 
 jobs:
-  release:
+  create-gh-release:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -18,9 +19,29 @@ jobs:
         release_name: ${{ github.ref }}
         draft: true
         prerelease: false
-        
+
     - uses: eregon/publish-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         release_id: ${{ steps.create_release.outputs.id }}
+  update-production-guide:  
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.6'
+
+    - run: gem update --system
+
+    - run: gem install jekyll 
+
+    - run: jekyll build
+      working-directory: ./instructions
+ 
+    - uses: tibor19/static-website-deploy@v1
+      with:
+        enabled-static-website: 'true'
+        folder: 'instructions/_site'
+        connection-string: ${{ secrets.STATIC_WEBSITE_CONNECTION_STRING }}
