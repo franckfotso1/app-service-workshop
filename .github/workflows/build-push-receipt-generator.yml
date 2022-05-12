@@ -19,13 +19,6 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: "Build and push"
-        uses: docker/build-push-action@v3
-        with:
-          context: ./src/Lab2/implementations/receipt-generator
-          push: true
-          tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/receipt-generator:latest
-
       - name: 'Login to Dockerhub'
         uses: docker/login-action@v1
         with:
@@ -37,4 +30,6 @@ jobs:
         with:
           context: ./src/Lab2/implementations/receipt-generator
           push: true
-          tags: dockerutils/receipt-generator:latest
+          tags: |
+            ${{ secrets.REGISTRY_LOGIN_SERVER }}/receipt-generator:latest
+            dockerutils/receipt-generator:latest

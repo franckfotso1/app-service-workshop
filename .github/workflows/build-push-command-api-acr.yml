@@ -37,4 +37,6 @@ jobs:
         with:
           context: ./src/Lab2/implementations/command-api
           push: true
-          tags: dockerutils/command-api:latest
+          tags: |
+            ${{ secrets.REGISTRY_LOGIN_SERVER }}/command-api:latest
+            dockerutils/command-api:latest
