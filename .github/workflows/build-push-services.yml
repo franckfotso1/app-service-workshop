@@ -1,8 +1,11 @@
 on: [ push ]
-name: Build and Push Order Processing service to ACR
+name: Build and Push all services images to ACR and DockerHub
 
 jobs:
-  build-and-deploy:
+  services-builder:
+    strategy:
+      matrix:
+        services: ["stock-manager", "receipt-generator", "command-frontend", "command-api", "order-processing"]
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
@@ -18,7 +21,7 @@ jobs:
           registry: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-          
+
       - name: 'Login to Dockerhub'
         uses: docker/login-action@v1
         with:
@@ -28,8 +31,8 @@ jobs:
       - name: "Build and push"
         uses: docker/build-push-action@v3
         with:
-          context: ./src/Lab2/implementations/order-processing
+          context: ./src/Lab2/implementations/${{ matrix.service }}
           push: true
           tags: |
-            ${{ secrets.REGISTRY_LOGIN_SERVER }}/order-processing:latest
-            dockerutils/order-processing:latest
+            ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ matrix.service }}:latest
+            dockerutils/${{ matrix.service }}:latest
