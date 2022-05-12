@@ -5,7 +5,7 @@ jobs:
   services-builder:
     strategy:
       matrix:
-        services: ["stock-manager", "receipt-generator", "command-frontend", "command-api", "order-processing"]
+        service: ["stock-manager", "receipt-generator", "command-frontend", "command-api", "order-processing"]
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
