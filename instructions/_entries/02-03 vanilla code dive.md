@@ -26,7 +26,7 @@ L'appel du service Python vers le service Node ne serait pas impacté.
 
 
 Le code de l'application Nodejs cependant devrait forcément être réécrit. 
-En effet, pour communiquer avec Redis, le service utilise la bibliothèque **[ioredis](https://www.npmjs.com/package/ioredis**. 
+En effet, pour communiquer avec Redis, le service utilise la bibliothèque **[ioredis](https://www.npmjs.com/package/ioredis)**. 
 Cette bibliothèque n'a plus sa place dans le code si l'implémentation change de Redis à MongoDb.
 
 C'est une des conséquence d'un **couplage applicatif fort**

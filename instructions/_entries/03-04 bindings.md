@@ -7,7 +7,7 @@ parent-id: lab-2
 
 ### Généralités
 
-**Question généraliste** : Qu'est-ce qu'une _architecture orientée services_ ? Qu'est-ce qu'une architecture orientée événements\* ? Quelle est la différence entre les deux ?
+> **Question généraliste** : Qu'est-ce qu'une _architecture orientée services_ ? Qu'est-ce qu'une architecture orientée événements\* ? Quelle est la différence entre les deux ?
 
 Solution:
 {%collapsible %}

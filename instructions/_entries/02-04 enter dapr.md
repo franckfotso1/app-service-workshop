@@ -141,7 +141,7 @@ http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 POST /state/{{storename}}
 ```
 
-- Dapr regarde alors ses composants et récupère le composant de gestion d'état de nom {{storename}}. Ce composant specifie l'hôte et les paramètres de connexions de l'implémentation du composant, ici Redis. L'appel est ensuite transfére vers Redis.
+- Dapr regarde alors ses composants et récupère le composant de gestion d'état de nom {{storename}}. Ce composant specifie l'hôte et les paramètres de connexion de l'implémentation du composant, ici Redis. L'appel est ensuite transféré vers Redis.
 
 > **En Pratique** : En vous servant [de la documentation dediée](https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-mongodb/), migrez le gestionnaire de message de Redis à MongoDB
 

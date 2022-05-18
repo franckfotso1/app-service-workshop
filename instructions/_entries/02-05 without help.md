@@ -37,9 +37,7 @@ Puisque le type de déploiement que nous visons n'est pas conteneurisé, il va t
     - installer `python` (>= 3.0) 
     - (l'application n'a pas de dépendances)
     - La commande pour lancer l'application est `python3 app.py`
-
-> **Question** :
-
+    
 > **En pratique**:  en mode processus en utilisant la commande `dapr run` de Dapr.
 
 **Indication** : Vous pouvez vous inspirer de cette [documentation de démarrage rapide](https://docs.dapr.io/getting-started/quickstarts/pubsub-quickstart/). 
