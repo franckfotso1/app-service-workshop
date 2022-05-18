@@ -342,3 +342,6 @@ samples
 **/build
 **/target
 .vscode
+*.pptx
+meh.txt 
+script.txt
