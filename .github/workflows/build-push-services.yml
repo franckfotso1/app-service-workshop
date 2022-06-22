@@ -1,28 +1,38 @@
-on: [ push ]
+on:
+  push:
+    branches:
+      - master
 name: Build and Push all services images to ACR and DockerHub && update staging guide
 
 jobs:
   services-builder:
     strategy:
       matrix:
-        service: ["stock-manager", "receipt-generator", "command-frontend", "command-api", "order-processing"]
+        service:
+          [
+            "stock-manager",
+            "receipt-generator",
+            "command-frontend",
+            "command-api",
+            "order-processing",
+          ]
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
-      - name: 'Checkout GitHub Action'
+      - name: "Checkout GitHub Action"
         uses: actions/checkout@main
 
       - name: "Set up Docker Buildx"
         uses: docker/setup-buildx-action@v1
 
-      - name: 'Login to ACR'
+      - name: "Login to ACR"
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: 'Login to Dockerhub'
+      - name: "Login to Dockerhub"
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -39,20 +49,20 @@ jobs:
   update-staging-guide:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '2.6'
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.6"
 
-    - run: gem update --system
+      - run: gem update --system
 
-    - run: gem install jekyll 
+      - run: gem install jekyll
 
-    - run: jekyll build
-      working-directory: ./instructions
- 
-    - uses: tibor19/static-website-deploy@v1
-      with:
-        enabled-static-website: 'true'
-        folder: 'instructions/_site'
-        connection-string: ${{ secrets.STATIC_WEBSITE_STAGING_CONNECTION_STRING }}
+      - run: jekyll build
+        working-directory: ./instructions
+
+      - uses: tibor19/static-website-deploy@v1
+        with:
+          enabled-static-website: "true"
+          folder: "instructions/_site"
+          connection-string: ${{ secrets.STATIC_WEBSITE_STAGING_CONNECTION_STRING }}
