@@ -75,6 +75,9 @@ Un output binding est une invocation **sychrone ou asynchrone** d'un service **e
 
 ### En application
 
+> Note : La nouvelle version de l'application se trouve désormais dans `src/Lab2/3-bindings`
+
+
 Revenons une fois encore à notre fil rouge. Cette fois-ci, deux nouvelles demandes:
 
 - Il faut maintenant pouvoir s'interfacer avec le système d'informations du fournisseur qui réapprovisionne notre stock. Le service **stock-manager** a un endpoint HTTP POST specifique _/newproduct_

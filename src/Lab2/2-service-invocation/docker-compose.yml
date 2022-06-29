@@ -50,8 +50,8 @@ services:
     depends_on:
       - redis
     environment:
-      - STOCK_MANAGER_INVOKE_URL=http://localhost:3500/v1.0/invoke/stock-manager/method/stock
-      - RECEIPT_GEN_INVOKE_URL=http://localhost:3500/v1.0/invoke/receipt-generator/method/
+      - STOCK_MANAGER_INVOKE_URL=
+      - RECEIPT_GEN_INVOKE_URL=
     networks:
       - hello-dapr
   order-processing-dapr:

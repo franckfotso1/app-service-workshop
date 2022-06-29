@@ -138,7 +138,9 @@ Dapr possède donc une architecture modulaire, et il existe d'autres services op
 
 ### En application
 
-Il est l'heure de reprendre le fil rouge. Cherchant toujours rendre notre application de pré-commande complète, deux nouveaux services sont ajoutés, toujours dans des langages différents:
+> Note : La nouvelle version de l'application se trouve désormais dans `src/Lab2/2-service-invocation`
+
+Il est l'heure de reprendre le fil rouge. Cherchant toujours à rendre notre application de pré-commande complète, deux nouveaux services sont ajoutés, toujours dans des langages différents:
 
 - **stock-manager** (en Go): Une fois une commande validée par **order-processing**, celui-ci appelle la méthode _/stock_ de **stock-manager** pour qu'il rajoute la commande aux stocks requis.
 - **receipt-generator** (en Rust): Une fois une commande validée par **order-processing**, celui-ci appelle la méthode _/_ de **receipt-generator** afin qu'il génère une confirmation

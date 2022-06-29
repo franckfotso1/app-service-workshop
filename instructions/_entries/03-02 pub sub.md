@@ -213,7 +213,7 @@ Attention à ne pas confondre ce nom avec le nom du fichier qui lui est simpleme
 
 **Indice** : L'URL qui permet à **command-api** de publier un message est un appel vers son sidecar. L'API pub/sub de Dapr est détaillée [ici](https://docs.dapr.io/reference/api/pubsub_api/).
 
-**Indice 2** : Il n'est **pas demandé** de faire des modifications dans le code des services !
+**Indice 2** : Il n'est **pas demandé** de faire des modifications dans le code des services ! Souvenez-vous qu'il existe plusieurs manière de souscrire à un *topic*
 
 Solution :
 

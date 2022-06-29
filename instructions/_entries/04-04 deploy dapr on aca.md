@@ -43,6 +43,7 @@ az containerapp create \
   --image dockerutils/pythonapp \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
+  --min-replicas 1 \
   --enable-dapr \
   --dapr-app-id 'pythonapp'
 ```
