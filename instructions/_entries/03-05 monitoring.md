@@ -5,7 +5,7 @@ title: Observabilité
 parent-id: lab-2
 ---
 
-Il est possible d'utiliser la solution Open-source Zipkin pour tracer les appels entre les services. Il suffit opour ça de configurer Dapr de la manière suivante 
+Il est possible d'utiliser la solution Open-source Zipkin pour tracer les appels entre les services. Il suffit opour ça de configurer Dapr de la manière suivante
 
 ```yml
 # Fichier : src/Lab2/4-observability/config/config-tracing.yml
@@ -21,25 +21,25 @@ spec:
       # zipkin:9411 est accessible grâce à docker-compose. Il faudrait un service dedié
       # dans un environnement Kubernetes
       endpointAddress: "http://zipkin:9411/api/v2/spans"
-
 ```
 
 > **Question**: Comparez le déploiement de l'exercice précédent (`src/Lab2/3-bindings/docker-compose.yml`) et de l'exercice en cours (`src/Lab2/4-observability/docker-compose.yml`). Comment configurer Dapr pour prendre en compte Zipkin ?
 
-Solution: 
+Solution:
 {% collapsible %}
 
 En prenant comme exemple le déploiement du service **command-api**.
+
 ```diff
   ############################
   # Command API
   ############################
   command-api:
-    image: daprbuildworkshopacr.azurecr.io/command-api
+    image: dockerutils/command-api
     #build: ../implementations/command-api
     networks:
       - hello-dapr
-    environment: 
+    environment:
      - PUB_URL=http://localhost:3500/v1.0/publish/order-pub-sub/orders
     depends_on:
       - redis
@@ -65,24 +65,24 @@ En plus du déploiement de Zipkin en lui-même, la configuration de Dapr est app
 Dans un contexte Kubernetes, la configuration serait appliquée à l'aide d'un `kubectl apply -f config-tracing.yml`
 {% endcollapsible %}
 
+Déployez `src/Lab2/4-observability/docker-compose.yml` et passez quelques commandes via l'interface. Naviguez à l'adresse `localhost:9415` pour vous rendre sur l'interface de Zipkin. Dans l'onglet "dépendances", prenez une plage large (ex: [j-1, j+1]) et observez le diagramme.
 
-Déployez `src/Lab2/4-observability/docker-compose.yml` et passez quelques commandes via l'interface. Naviguez à l'adresse `localhost:9415` pour vous rendre sur l'interface de Zipkin. Dans l'onglet "dépendances", prenez une plage large (ex:  [j-1, j+1]) et observez le diagramme.
+> **Question** : Quels sont les services affichés ? Comment ces services communiquent-ils ?
 
-> **Question** : Quels sont les services affichés ? Comment ces services communiquent-ils ? 
-
-Solution: 
+Solution:
 {% collapsible %}
 Les services affichés sont :
-+ **command-api**
-+ **order-processing**
-+ **receipt-generator**
-+ **stock-manager**
+
+- **command-api**
+- **order-processing**
+- **receipt-generator**
+- **stock-manager**
 
 Communications :
-+ **command-api**      --> **order-processing**  : pub/sub
-+ **order-processing** --> **receipt-generator** : invocation de service
-+ **order-processing** --> **stock-manager**     : invocation de service
 
+- **command-api** --> **order-processing** : pub/sub
+- **order-processing** --> **receipt-generator** : invocation de service
+- **order-processing** --> **stock-manager** : invocation de service
 
 {% endcollapsible %}
 
@@ -94,8 +94,7 @@ Communications :
 ![zipkin deps](/media/lab2/observability/zipkin-deps.png)
 {% endcollapsible %}
 
-
-Solution: 
+Solution:
 {% collapsible %}
 Le service manquant est **command-frontend**. C'est en effet le seul service qui ne possède pas de sidecar, étant donné qu'il se trouve côté client.
 

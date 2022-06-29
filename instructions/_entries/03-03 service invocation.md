@@ -218,7 +218,7 @@ Solution:
   # Order Processing
   ############################
   order-processing:
-    image: daprbuildworkshopacr.azurecr.io/order-processing
+    image: dockerutils/order-processing
     #build: ../implementations/order-processing
     depends_on:
       - redis
@@ -258,7 +258,7 @@ Pour appliquer cette configuration à **receipt-generator** par exemple il faudr
   # Receipt Generator
   ############################
   receipt-generator:
-    #image: daprbuildworkshopacr.azurecr.io/receipt-generator
+    #image: dockerutils/receipt-generator
     build: ../implementations/receipt-generator
     depends_on:
       - redis

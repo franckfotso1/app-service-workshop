@@ -13,8 +13,8 @@ Nous allons donc reprendre l'application du Lab1 et la déployer sur ACA.
 
 Hormis le statestore, cette application a besoin de deux services:
 
-- L'application Node (disponible en tant qu'image à `daprbuildworkshopacr.azurecr.io/nodeapp`)
-- L'application Python (disponible en tant qu'image à `daprbuildworkshopacr.azurecr.io/pythonapp`)
+- L'application Node (disponible en tant qu'image à `dockerutils/nodeapp`)
+- L'application Python (disponible en tant qu'image à `dockerutils/pythonapp`)
 
 > **En pratique** : En utilisant la commande `az containerapp create`, créez 2 container app dans le même environnement pour les 2 services ci-dessus
 
@@ -28,7 +28,7 @@ Solution:
 # Nodeapp
 az containerapp create \
   --name nodeapp \
-  --image daprbuildworkshopacr.azurecr.io/nodeapp \
+  --image dockerutils/nodeapp \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
   --ingress 'internal' \
@@ -40,7 +40,7 @@ az containerapp create \
 # Pythonapp
 az containerapp create \
   --name pythonapp \
-  --image daprbuildworkshopacr.azurecr.io/pythonapp \
+  --image dockerutils/pythonapp \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
   --enable-dapr \
@@ -137,7 +137,7 @@ Pour forcer la prise en compte du composant, on redéploie **nodeapp**
 ```bash
 az containerapp create \
   --name nodeapp \
-  --image daprbuildworkshopacr.azurecr.io/nodeapp \
+  --image dockerutils/nodeapp \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
   --ingress 'internal' \

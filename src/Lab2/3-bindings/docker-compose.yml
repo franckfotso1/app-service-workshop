@@ -4,7 +4,7 @@ services:
   # Frontend
   ############################
   command-frontend:
-    image: daprbuildworkshopacr.azurecr.io/command-frontend
+    image: dockerutils/command-frontend
     #build: ../implementations/command-frontend
     ports:
       - "8089:80"
@@ -19,7 +19,7 @@ services:
   # Command API
   ############################
   command-api:
-    image: daprbuildworkshopacr.azurecr.io/command-api
+    image: dockerutils/command-api
     #build: ../implementations/command-api
     networks:
       - hello-dapr
@@ -45,7 +45,7 @@ services:
   # Order Processing
   ############################
   order-processing:
-    image: daprbuildworkshopacr.azurecr.io/order-processing
+    image: dockerutils/order-processing
     #build: ../implementations/order-processing
     depends_on:
       - redis
@@ -72,7 +72,7 @@ services:
   # Stock Manager
   ############################
   stock-manager:
-    image: daprbuildworkshopacr.azurecr.io/stock-manager
+    image: dockerutils/stock-manager
     #build: ../implementations/stock-manager
     depends_on:
       - redis
@@ -96,7 +96,7 @@ services:
   # Receipt Generator
   ############################
   receipt-generator:
-    image: daprbuildworkshopacr.azurecr.io/receipt-generator
+    image: dockerutils/receipt-generator
     #build: ../implementations/receipt-generator
     depends_on:
       - redis

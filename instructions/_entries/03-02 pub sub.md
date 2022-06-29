@@ -252,7 +252,7 @@ Il ne reste plus qu'à renseigner cette url dans les variables d'environnements 
   # Command API
   ############################
   command-api:
-    image: daprbuildworkshopacr.azurecr.io/command-api
+    image: dockerutils/command-api
     networks:
       - hello-dapr
     environment:
