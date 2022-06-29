@@ -29,18 +29,19 @@ A l'aide de la [documentation](https://docs.dapr.io/developing-applications/buil
 
 > **Question** : Comment fonctionne la fonctionnalité PUB/SUB de Dapr ? Quel est le chemin d'un message depuis son envoi d'un service A vers un service B ?
 
-Solution : 
+Solution :
 {% collapsible %}
 ![Pub/Sub overview](/media/lab2/pubsub/pubsub-overview.png)
 En reprenant l'image de la documentation, on peut voir que:
+
 - le message passe du service à son sidecar
 - le sidecar résoud le composant, et redirige le message vers l'implémentation
 - l'implémentation notifie tous les sidecars avec le contenu du message
-- les sidecars redirigent le contenu du message vers une route HTTP de leurs services respectifs 
-{% endcollapsible %}
+- les sidecars redirigent le contenu du message vers une route HTTP de leurs services respectifs
+  {% endcollapsible %}
 
 > **Question** : Quelle est la garantie de livraison associée à la fonctionnalité de PUB/SUB ? Quels sont les avantages et les incovénients ?
-Solution : 
+> Solution :
 
 {% collapsible %}
 La garantie est **at least once**. ([Lien dans la documentation](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/#at-least-once-guarantee)).
@@ -60,7 +61,7 @@ La garantie idéale, **exactly once** n'est pas proposée dans le cas général.
 
 > **Question** : Il existe deux méthodes pour souscrire à un _topic_ dans Dapr, quelles sont-elles ? Dans quels cas utiliser les deux ?
 
-Solution : 
+Solution :
 
 {% collapsible %}
 
@@ -139,9 +140,9 @@ scopes:
 ```
 
 Cette fonctionnalité est pensée dans les cas où l'appplication reçoit un grand nombre d'événements différents. Elle permet :
-- d'empêcher de créer un grand nombre de topics, un pour chaque cas limite de l'application. Sur le Cloud public, cela résoud notamment une problématique de coût. 
-- d'éviter à l'application elle-même de faire le routage, ce qui entraîne une complexité inutile.
 
+- d'empêcher de créer un grand nombre de topics, un pour chaque cas limite de l'application. Sur le Cloud public, cela résoud notamment une problématique de coût.
+- d'éviter à l'application elle-même de faire le routage, ce qui entraîne une complexité inutile.
 
 Il faut cependant noter que l'abus de cette fonctionnalité pourrait entraîner une difficulté de compréhension des flux de l'application. La meilleure manière d'éviter une telle situation est de prévoir son utilisation dès l'étape de conception.
 {% endcollapsible %}
@@ -175,12 +176,12 @@ Voici donc la cible:
 A noter:
 
 - Chaque texte en violet est une variable d'environnement à remplir dans `src/Lab2/1-pub-sub/docker-compose.yml`
-  - **PUB_URL** : URL appelée par le service **command-api** pour publier un message. Il s'agit d'un appel vers son sidecar, il sera donc préfixé par *http://localhost:3500*.  
+  - **PUB_URL** : URL appelée par le service **command-api** pour publier un message. Il s'agit d'un appel vers son sidecar, il sera donc préfixé par _http://localhost:3500_.
   - **/process-order** : Endpoint HTTP POST de traitement de message. Les nouveaux messages doivent être redirigés vers cette URL.
 
-> **Question**: Dans le dossier  `src/Lab2/1-pub-sub/components`, il y a maintenant un nouveau fichier `pubsub.yaml`. Quelle est son utilité ? Quel est le nom du **composant dapr** associé ?
+> **Question**: Dans le dossier `src/Lab2/1-pub-sub/components`, il y a maintenant un nouveau fichier `pubsub.yaml`. Quelle est son utilité ? Quel est le nom du **composant dapr** associé ?
 
-Solution : 
+Solution :
 
 {% collapsible %}
 
@@ -195,10 +196,10 @@ spec:
   type: pubsub.redis
   version: v1
   metadata:
-  - name: redisHost
-    value: redis:6379
-  - name: redisPassword
-    value: ""
+    - name: redisHost
+      value: redis:6379
+    - name: redisPassword
+      value: ""
 ```
 
 Il s'agit du composant dapr faisant le lien avec l'implémentation du pubsub, ici redis.
@@ -208,13 +209,13 @@ Attention à ne pas confondre ce nom avec le nom du fichier qui lui est simpleme
 
 {% endcollapsible %}
 
-> **Question**: A l'aide du schéma ci dessus, identifier comment implémenter le PUB/SUB pour `command-api` et `order-processing` 
+> **Question**: A l'aide du schéma ci dessus, identifier comment implémenter le PUB/SUB pour `command-api` et `order-processing`
 
-**Indice** : L'URL qui permet à **command-api** de publier un message est un appel vers son sidecar. L'API pub/sub de Dapr est détaillée [ici](https://docs.dapr.io/reference/api/pubsub_api/).   
+**Indice** : L'URL qui permet à **command-api** de publier un message est un appel vers son sidecar. L'API pub/sub de Dapr est détaillée [ici](https://docs.dapr.io/reference/api/pubsub_api/).
 
-**Indice 2** : Il n'est **pas demandé** de faire des modifications dans le code des services ! 
+**Indice 2** : Il n'est **pas demandé** de faire des modifications dans le code des services !
 
-Solution : 
+Solution :
 
 {% collapsible %}
 
@@ -222,23 +223,24 @@ Parmi ces deux services, **command-api** est le producteur. Comme les SDKs ne so
 
 ##### Command API
 
-Le service **command-api** est le producteur. Pour pouvoir publier un événement, il a besoin de l'URL vers laquelle publier. 
+Le service **command-api** est le producteur. Pour pouvoir publier un événement, il a besoin de l'URL vers laquelle publier.
 
 Cette URL peut se trouver dans la [documentation](https://docs.dapr.io/reference/api/pubsub_api/), et est de la forme :
 
-```sh 
+```sh
 POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
 ```
 
-où : 
- + localhost:3500 est l'adresse du sidecar
- + publish est le préfixe de l'API pub/sub
- + <pubsubname> est le nom du composant de pubsub à utiliser, ici **order-pub-sub**
- + <topic> est le topic dans lequel publier le message. Cela peut être n'importe quelle valeur. Ici nous allons utiliser **orders**
+où :
+
+- localhost:3500 est l'adresse du sidecar
+- publish est le préfixe de l'API pub/sub
+- <pubsubname> est le nom du composant de pubsub à utiliser, ici **order-pub-sub**
+- <topic> est le topic dans lequel publier le message. Cela peut être n'importe quelle valeur. Ici nous allons utiliser **orders**
 
 Une fois les variables remplies, l'URL d'invocation est donc
 
-```sh 
+```sh
 http://localhost:3500/v1.0/publish/order-pub-sub/orders
 ```
 
@@ -253,7 +255,7 @@ Il ne reste plus qu'à renseigner cette url dans les variables d'environnements 
     image: daprbuildworkshopacr.azurecr.io/command-api
     networks:
       - hello-dapr
-    environment: 
+    environment:
 -     - PUB_URL=
 +     - PUB_URL=http://localhost:3500/v1.0/publish/order-pub-sub/orders
     depends_on:
@@ -261,14 +263,14 @@ Il ne reste plus qu'à renseigner cette url dans les variables d'environnements 
 ...
 ```
 
-
 ##### Order processing
 
 **Order-processing** est le consommateur. Il faut donc qu'il souscrive au topic **orders**, celui que **command-api** utilise pour cet exemple.
 
 A l'aide des questions précédentes, nous savons qu'il existe deux méthodes pour souscrire à un topic :
-+ par le code
-+ déclarativement
+
+- par le code
+- déclarativement
 
 Le choix ici est rapide : puisqu'il n'est aps demandé de faire des modifications dans le code des services, nous allons utiliser la méthode **déclarative**.
 
@@ -281,9 +283,9 @@ apiVersion: dapr.io/v1alpha1
 # Le composant crée est une souscription...
 kind: Subscription
 metadata:
-  # de nom sub-order. 
+  # de nom sub-order.
   name: sub-order
-# Cette souscription : 
+# Cette souscription :
 spec:
   # - utilise le composant dapr de nom "order-pub-sub"
   pubsubname: order-pub-sub
@@ -294,13 +296,12 @@ spec:
   route: /process-order
 # Cette souscription ne s'applique que pour le service "order-processing"
 scopes:
-- order-processing
+  - order-processing
 ```
 
 {% endcollapsible %}
 
 > **En pratique**: Implémenter le PUB/SUB entre `command-api` et `order-processing`
-
 
 Une trace indiquant le success devrait avoir cette forme après avoir lancé une commande
 

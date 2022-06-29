@@ -4,6 +4,7 @@ sectionclass: h2
 title: Créer un nouvel environnement ACA
 parent-id: lab-3
 ---
+
 Pour créer votre prmière application Container Apps nous allons utiliser la CLI, plus particulièrement une des commandes de l'extension qui a été installée en pré-requis `az containerapp create`.
 
 Mais avant de créer une application, il faut tout d'abord créer un nouvel environnement Container Apps.

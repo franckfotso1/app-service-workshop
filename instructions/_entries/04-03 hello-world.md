@@ -5,7 +5,8 @@ title: Une première application sur ACA
 parent-id: lab-3
 ---
 
-### Hello world 
+### Hello world
+
 Cette première application sera juste une application hello-world, le conteneur `mcr.microsoft.com/azuredocs/containerapps-helloworld:latest`. Cette application exposer **une petite interface web sur son port 80**.
 
 > **En pratique**: En vous servant de la [documentation](https://docs.microsoft.com/fr-fr/cli/azure/containerapp?view=azure-cli-latest#az-containerapp-create), déployez le conteneur hello-world sur Azure Container Apps.
@@ -36,13 +37,14 @@ az containerapp create \
   # Une valeur 'internal' aurait signifié que le conteneur doit uniquement être exposé aux autres
   # conteneurs de son environnement.
   --ingress 'external' \
-  # Port du conteneur à exposer 
+  # Port du conteneur à exposer
   --target-port 80 \
-  # Optionel, retourne uniquement le FQDN du conteneur une fois crée 
+  # Optionel, retourne uniquement le FQDN du conteneur une fois crée
   --query configuration.ingress.fqdn
 ```
 
 Si vous n'avez pas spécifié de --query, le retour ressemblera à ça :
+
 ```jsonc
 {
   // GUID du conteneur sur Azure
@@ -60,7 +62,7 @@ Si vous n'avez pas spécifié de --query, le retour ressemblera à ça :
       // Une seule version (revision) de l'application est active à la fois
       // Dans le cas contraire "Multiple", il serait possible d'avoir à la fois la version
       // v1 et v2 de l'application active en même temps, avec 80% du traffic sur la v1 et 20% sur la v2
-      // Cette fonctionnalité permet un meilleur chemin de mise à jour 
+      // Cette fonctionnalité permet un meilleur chemin de mise à jour
       "activeRevisionsMode": "Single",
       // Ingress gateway
       "ingress": {
@@ -111,16 +113,15 @@ Si vous n'avez pas spécifié de --query, le retour ressemblera à ça :
   "type": "Microsoft.App/containerApps"
 }
 ```
+
 {% endcollapsible %}
 
 Accédez au FQDN de l'application de démo. Vous devriez voir ce message.
 
 ![Running app](/media/lab3/running-app.png)
 
+Dernière étape, dans le [portail Azure](https://portal.azure.com), naviguez jusqu'à l'application déployée. Pour cela naviguez jusqu'à l'intérieur de votre resource group et cliquez sur la container app _hello-world_ crée
 
-Dernière étape, dans le [portail Azure](https://portal.azure.com), naviguez jusqu'à l'application déployée. Pour cela naviguez jusqu'à l'intérieur de votre resource group et cliquez sur la container app *hello-world* crée
-
-
-> **En pratique**: Explorez ce que propose le portail Azure pour l'application *hello-world*. Comment trouver les métriques ? Les logs ? 
+> **En pratique**: Explorez ce que propose le portail Azure pour l'application _hello-world_. Comment trouver les métriques ? Les logs ?
 
 Et avec cela, nous avons déployé notre première application dans Containers Apps.

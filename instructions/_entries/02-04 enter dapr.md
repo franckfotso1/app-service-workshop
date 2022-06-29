@@ -85,12 +85,13 @@ Le conteneur Redis n'a pas de sidecar, puisque ce n'est pas un service mais seul
 
 {% endcollapsible %}
 
-> **Question**: Toujours dans le `docker-compose.yml`, on peut remarquer qu'un volume nommé **components** est monté sur chacun des sidecars, que contient le dossier ? Quelle peut être l'utilisé du contenu ? 
+> **Question**: Toujours dans le `docker-compose.yml`, on peut remarquer qu'un volume nommé **components** est monté sur chacun des sidecars, que contient le dossier ? Quelle peut être l'utilisé du contenu ?
 
 Solution:
 {% collapsible %}
 
 Ce dossier contient un fichier .yml ressemblant à ceci.
+
 ```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -102,23 +103,21 @@ spec:
   version: v1
   # On renseigne l'adresse et les identifiants de connexion à Redis
   metadata:
-  - name: redisHost
-    # On peut résoudre l'ip de Redis par son nom
-    # grâce au réseau hello-dapr de Docker-compose
-    value: redis:6379
-  - name: redisPassword
-    value: ""
-
+    - name: redisHost
+      # On peut résoudre l'ip de Redis par son nom
+      # grâce au réseau hello-dapr de Docker-compose
+      value: redis:6379
+    - name: redisPassword
+      value: ""
 ```
 
-Il s'agit d'une définition d'un **[composant](https://docs.dapr.io/concepts/components-concept/** Dapr.  Ces composants sont une idée centrale de Dapr et ce sont eux qui permettent cette notion de découplage. 
+Il s'agit d'une définition d'un **[composant](https://docs.dapr.io/concepts/components-concept/** Dapr. Ces composants sont une idée centrale de Dapr et ce sont eux qui permettent cette notion de découplage.
 Ici, on annonce déclarativement que l'on veut utiliser Redis en tant que composant de stockage d'état.
-Grâce à cette déclaration, tous les appels que les applications feront pour récupérer ou stocker un état seront 
+Grâce à cette déclaration, tous les appels que les applications feront pour récupérer ou stocker un état seront
 redirigé vers Redis.
 Il suffirait de changer ce composant pour changer la déclaration.
 
 {% endcollapsible %}
-
 
 Avec toutes ces informations en tête, nous allons pouvoir faire un récapitulatif.
 
@@ -127,12 +126,14 @@ Avec toutes ces informations en tête, nous allons pouvoir faire un récapitulat
 Le chemin parcouru par notre état est le suivant :
 
 - Le service Python communique l'état à son sidecar avec une URL de la forme :
+
 ```bash
 # On retrouve dans l'URL l'id spécifié dans le sidecar du service Node.
 # Cette url a pour but d'invoquer la méthode "neworder" sur le service "nodeapp"
 # Nous verrons cela en détails dans le second lab
 http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
+
 - Le sidecar du service python communique l'état au sidecar du service donc `-l'app-id` est celui spécifié dans l'URL, ici **nodeapp**
 - Le sidecar du service Node transmet l'état au service Node
 - le service node indique à son sidecar qu'il veut stocker un état dans le composant de stockage nommé {{storename}} avec un appel de la forme
