@@ -70,10 +70,34 @@ Déployez `src/Lab2/4-observability/docker-compose.yml` et passez quelques comma
 
 > **Question** : Quels sont les services affichés ? Comment ces services communiquent-ils ? 
 
-> **Question** : Quels sont les services manquants ? Pourquoi ?
+Solution: 
+{% collapsible %}
+Les services affichés sont :
++ **command-api**
++ **order-processing**
++ **receipt-generator**
++ **stock-manager**
+
+Communications :
++ **command-api**      --> **order-processing**  : pub/sub
++ **order-processing** --> **receipt-generator** : invocation de service
++ **order-processing** --> **stock-manager**     : invocation de service
+
+
+{% endcollapsible %}
+
+> **Question** : Quels sont le(s) service(s) manquant(s) ? Pourquoi ?
 
 **Indication** : Il peut y avoir un certain temps d'attente avant que le diagramme s'affiche. Vous pouvez utiliser l'image ci-dessous si le temps manque.
 
 {% collapsible %}
 ![zipkin deps](/media/lab2/observability/zipkin-deps.png)
+{% endcollapsible %}
+
+
+Solution: 
+{% collapsible %}
+Le service manquant est **command-frontend**. C'est en effet le seul service qui ne possède pas de sidecar, étant donné qu'il se trouve côté client.
+
+On remarquera aussi que les bindings ne sont pas représentés. En effet ceux-ci font le lien entre notre application et des systèmes externes, qui ne sont donc pas retracés dans un compte rendu sur les chaînes d'appels internes.
 {% endcollapsible %}
