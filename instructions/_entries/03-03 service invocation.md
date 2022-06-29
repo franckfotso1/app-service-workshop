@@ -9,15 +9,80 @@ parent-id: lab-2
 
 > **Question généraliste**: Qu'est-ce que le *Service Meshing* ? Quels sont les exemples de logiciels proposant cette fonctionnalité ? 
 
+Solution : 
+{% collapsible %}
+La meilleure manière de définir le *Service Meshing* est de présenter le problème qu'il adresse.
+
+Prenons l'exemple de deux services, A et B. A veut appeler B via HTTP. 
+
+Pour pouvoir contacter B, A va avoir besoin d'une information sur sa localisation. Cette information peut prendre la forme d'une URL, d'une adresse ip, ou même d'un couple (nom, namespace) pour Kubernetes par exemple.
+
+Dans tous les cas, en fournissant cette information à A, nous couplons A et B. En effet, si B change de localisation, A devra aussi être mis à jour pour être fonctionnel.
+
+C'est un problème important dans le monde des systèmes distribués, les services pouvant changer de localisation assez souvent que ce soit en terme de *noeud*, *namespace*, *url*...
+
+Pour adresser ce problème, des services comme [*Istio*](https://istio.io/) ou [*Open Service Mesh*](https://openservicemesh.io/) sont apparus. Le principe de ces deux logiciels est de garder un catalogue de service associant le nom à une localisation, ajoutant donc une couche d'abstraction supplémentaire. Dans cette configuration, il est possible d'appeler les services par leur nom sans révéler leur localisation, *Istio* ou *Open Service Mesh* étant les seuls à la connaître et s'occupant de router l'appel.
+
+Appliqué à notre exemple, un scénario **grandement simplifié** pourrait être le suivant : 
+
+L'instance d'*Istio* pourrait contenir:
+
+| Nom | Localisation            |
+|-----|-------------------------|
+| A   | http://A.localapi.net   |
+| B   | https://B.vendorapi.net |
+
+A pourrait alors appeler B en utilisant uniquement son nom, avec une adresse de la forme `http://B.local`.
+*Istio* s'occuperait alors de router cet appel vers la véritable adresse de B, `https://B.vendorapi.net`.
+
+Cette addresse `http://B.local` restera valide même si l'adresse réelle de B change, et seulement l'instance *Istio* devra être mise à jour.
+{% endcollapsible %}
+
 > **Question généraliste**: Qu'est-ce que le *gRPC* ? Quels sont ses avantages et inconvénients ?   
+
+Solution : 
+{% collapsible %}
+Le *gRPC* (Goog) est un framework crée par Google encapsulant des appels de procédures distantes - *Remote Procedure Calls* (RPC).
+
+Au contraire d'une API REST, qui se focalise sur la récupération de resources à l'aide d'une syntaxe unifiée, le *RPC* est orienté vers des **actions**.
+La manière la plus simple de s'imaginer le *RPC* est d'imaginer appeler des function sur un ordinateur distant.
+
+Une particularité du *gRPC* par rapport aux autres framework de *RPC* est qu'il utilise HTTP/2 et le langage de description [*Protobuf*](https://fr.wikipedia.org/wiki/Protocol_Buffers) pour décrire le contenu des messages.
+
+C'est de cette particuliarité que proviennent les avantages du *gRPC*, la vitesse accrue et la taille diminuée des contenus envoyés.
+
+Les inconvénients principaux sont :
+- le *gRPC* est bien plus difficile à interpréter pour un humain que le REST, en faisant une solution plutôt préférée pour la communication service backend à service backend
+- le temps de développement *gRPC* est accru 
+{% endcollapsible %}
 
 ### Dapr 
 
 A l'aide de la [documentation](https://docs.dapr.io/developing-applications/building-blocks/service-invocation/service-invocation-overview/), nous allons nous intéresser à ces questions
 
-> **Question** : Quel est le principe de l'invocation de service ? Quel est le trajet d'un paquet envoyé par le service A invoquant le service B ?
+> **Question** : Quel est le principe de l'invocation de service ? Quel est le trajet d'un paquet envoyé par le service A invoquant le service B ?  Quel sont les protocoles utilisés lors des différentes étapes d'un trajet de paquet d'un service A a un service B ? 
 
-> **Question** : Quel sont les protocoles utilisés lors des différentes étapes d'un trajet de paquet d'un service A a un service B ? 
+Solution : 
+{% collapsible %}
+Le principe de l'invocation de service est de pouvoir invoquer une méthode d'un service distant de manière sécurisé et résiliente. Invoquer un service permet également à Dapr de générer automatiquement logs et traces.
+
+Un paquet allant du service A au service B aurait donc le trajet: 
+
+```sh
+A ---HTTP/gRPC---> sidecar de A 
+#  URL localhost:3500/invoke/B/method/order
+
+sidecar de A ---HTTP/gRPC---> DNS server
+#  B A ? (demande l'adresse ipv4 de B)
+
+DNS server ---HTTP/gRPC---> sidecar de A
+#  B A XXX.XXX.XX.XX 
+
+sidecar de A ---gRPC---> sidecar de B ---HTTP/gRPC---> B
+#  Transmission de l'appel vers la méthode '/order' de B
+      
+```
+{% endcollapsible %}
 
 > **Question** : Dans [l'exemple de la page de la documentation](https://docs.dapr.io/developing-applications/building-blocks/service-invocation/service-invocation-overview#example), l'URL permettant à **pythonapp** d'appeler **nodeapp** est  *http://localhost:3500/v1.0/invoke/nodeapp/method/neworder*. Décomposez cette URL et expliquez ses composantes.
 
@@ -71,10 +136,10 @@ Dapr possède donc une architecture modulaire, et il existe d'autres services op
 ### En application
 
 Il est l'heure de reprendre le fil rouge. Cherchant toujours rendre notre application de pré-commande complète, deux nouveaux services sont ajoutés, toujours dans des langages différents:
-- **stock-manager** (en Go): Une fois une commande validée par **order-processing**, **stock-manager** rajoute la commande aux stocks requis
-- **receipt-generator** (en Rust): Une fois une commande validée par **order-processing**, **receipt-generator** génère une confirmation
+- **stock-manager** (en Go): Une fois une commande validée par **order-processing**, celui-ci appelle la méthode */stock* de **stock-manager** pour qu'il rajoute la commande aux stocks requis. 
+- **receipt-generator** (en Rust): Une fois une commande validée par **order-processing**,  celui-ci appelle la méthode */* de  **receipt-generator** afin qu'il génère une confirmation
 
-Les deux services seront appelés par **order-processing**.
+Les deux services seront appelés par **order-processing**. Le nom de chaque service est également son ID.
 
 La nouvelle cible est donc: 
 
@@ -83,12 +148,81 @@ La nouvelle cible est donc:
 
 > **Question**: Quelle est l'URL que doit utiliser **order-processing** pour appeler **stock-manager** ? Expliquez.
 
+**Indice** : L'API d'invocation de service de Dapr est disponible [ici](https://docs.dapr.io/reference/api/service_invocation_api/)
+
+Solution : 
+{% collapsible %}
+D'après la documentation, l'URL d'une invocation de service est de la forme :
+```sh 
+PATCH/POST/GET/PUT/DELETE http://localhost:3500/v1.0/invoke/<appId>/method/<method-name>
+```
+
+où : 
+ + localhost:3500 est l'adresse du sidecar
+ + invoke est le préfixe de l'API d'invocation
+ + <appId> est l'id du service à appeler tel que déclaré par le l'option `--app-id` de la ligne de commande de Dapr
+ + <method-name> est le nom de la méthode à appeler sur le service distant
+
+
+Dans ce cas précis, le service à appeler est **stock-manager**, plus particulièrement la méthode */stock* 
+
+
+L'URL recherchée est donc :
+```sh
+http://localhost:3500/v1.0/invoke/stock-manager/method/stock
+```
+
+{% endcollapsible %}
+
 > **Question**: Quelle est l'URL que doit utiliser **order-processing** pour appeler **receipt-generator** ? Expliquez.
+
+Solution : 
+{% collapsible %}
+D'après la documentation, l'URL d'une invocation de service est de la forme :
+```sh 
+PATCH/POST/GET/PUT/DELETE http://localhost:3500/v1.0/invoke/<appId>/method/<method-name>
+```
+
+où : 
+ + localhost:3500 est l'adresse du sidecar
+ + invoke est le préfixe de l'API d'invocation
+ + <appId> est l'id du service à appeler tel que déclaré par le l'option `--app-id` de la ligne de commande de Dapr
+ + <method-name> est le nom de la méthode à appeler sur le service distant
+
+
+Dans ce cas précis, le service à appeler est **receipt-generator**, plus particulièrement la méthode */* 
+
+L'URL recherchée est donc:
+```sh
+http://localhost:3500/v1.0/invoke/receipt-generator/method/
+```
+{% endcollapsible %}
 
 > **En pratique**: A l'aide des deux questions précédentes, renseignez les variables d'environnements **RECEIPT_GENERATOR_INVOKE_URL** et **STOCK_MANAGER_INVOKE_URL** dans `docker-compose.yml`. Executez le fichier docker-compose et lancer une commande via l'interface.
 
-La trace de succès devrait ressembler à :
+La trace de succès devrait avoir cette forme :
 ![Expected result](/media/lab2/service-invocation/expected-result.png)
+
+{% collapsible %}
+Solution:
+```diff
+  ############################
+  # Order Processing
+  ############################
+  order-processing:
+    image: daprbuildworkshopacr.azurecr.io/order-processing
+    #build: ../implementations/order-processing
+    depends_on:
+      - redis
+    environment:
+-      - STOCK_MANAGER_INVOKE_URL=
++      - STOCK_MANAGER_INVOKE_URL=http://localhost:3500/v1.0/invoke/stock-manager/method/stock
+-      - RECEIPT_GEN_INVOKE_URL=
++      - RECEIPT_GEN_INVOKE_URL=http://localhost:3500/v1.0/invoke/receipt-generator/method/
+    networks:
+      - hello-dapr
+```
+{% endcollapsible %}
 
 **Note** : Il est également possible de limiter quel(s) services(s) peuvent appeler un service. Pour cela un object configuration existe qui peut être passé en argument de chaque sidecar avec le switch de CLI **--config**. Voici un exemple où seul **order-processing** aurait le droit d'appeler le microservice.
 ```yml
@@ -104,7 +238,7 @@ spec:
       defaultAction: allow
 ```
 
-Pour appliquer cette configuration à **receipt-generator par exemple il faudrait:
+Pour appliquer cette configuration à **receipt-generator** par exemple il faudrait:
 
 - Créer un dossier config et y enregistrer la configuration ci-dessus (avec pour exemple le nom `config.yml`)
 - Modifier le docker-compose comme suit: 
