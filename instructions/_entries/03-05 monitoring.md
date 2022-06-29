@@ -5,7 +5,7 @@ title: Observabilité
 parent-id: lab-2
 ---
 
-Il est possible d'utiliser la solution Open-source Zipkin pour tracer les appels entre les services. Il suffit opour ça de configurer Dapr de la manière suivante
+Il est possible d'utiliser la solution Open-source [Zipkin](https://zipkin.io/) pour tracer les appels entre les services. Il suffit pour ça de configurer Dapr de la manière suivante
 
 ```yml
 # Fichier : src/Lab2/4-observability/config/config-tracing.yml

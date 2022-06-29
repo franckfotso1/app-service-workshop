@@ -7,7 +7,7 @@ parent-id: lab-2
 
 ### Généralités
 
-> **Question généraliste**: Qu'est-ce que le _Service Meshing_ ? Quels sont les exemples de logiciels proposant cette fonctionnalité ?
+> **Question généraliste**: Qu'est-ce que le _Service Meshing_ ? Quels sont les exemples de logiciels proposants cette fonctionnalité ?
 
 Solution :
 {% collapsible %}
@@ -53,8 +53,8 @@ C'est de cette particuliarité que proviennent les avantages du _gRPC_, la vites
 
 Les inconvénients principaux sont :
 
-- le _gRPC_ est bien plus difficile à interpréter pour un humain que le REST, en faisant une solution plutôt préférée pour la communication service backend à service backend
-- le temps de développement _gRPC_ est accru
+- le _gRPC_ est bien plus difficile à interpréter pour un humain que le REST, en faisant une solution plutôt préférée pour la communication service de backend à service backend
+- le temps de développement _gRPC_ est plus long
   {% endcollapsible %}
 
 ### Dapr
@@ -65,7 +65,7 @@ A l'aide de la [documentation](https://docs.dapr.io/developing-applications/buil
 
 Solution :
 {% collapsible %}
-Le principe de l'invocation de service est de pouvoir invoquer une méthode d'un service distant de manière sécurisé et résiliente. Invoquer un service permet également à Dapr de générer automatiquement logs et traces.
+Le principe de l'invocation de service est de pouvoir invoquer une méthode d'un service distant de manière sécurisée et résiliente. Invoquer un service permet également à Dapr de générer automatiquement les logs et les traces.
 
 Un paquet allant du service A au service B aurait donc le trajet:
 
@@ -110,13 +110,13 @@ Solution:
 Le Service Meshing se déploie sur une infrastructure, et est unique à cette infrastructure. C'est une fonctionnalité OPS.
 L'invocation de service de Dapr est indépendante de l'infrastructure, elle concerne le DEV.
 
-<u>Sur les foctionnalités</u>:
+<u>Sur les fonctionnalités</u>:
 Si un Service Meshing et l'invocation de Service de Dapr permettent tous les deux de faciliter les appels de service à service, le service meshing va travailler au niveau du réseau, tandis que Dapr va travailler au niveau de l'application. Il en suit :
 
 - Dapr **ajoute** une découverte des méthodes de l'application en plus de résoudre le nom du service
-- Dapr **ne permettra pas** de redirections réseau à travers Internet (ou un tunnel) dans un cas d'application cross-cloud par exemple.
+- Dapr **ne permettra pas** de redirections réseau à travers Internet (ou un tunnel) dans un cas d'application multi-clouds par exemple.
 
-Il est donc possible d'utiliser un service comme _Istio_ en conjonction avec Dapr, les services n'ayant pas la même couverture fonctionnelle
+Il est donc possible d'utiliser un service comme _Istio_ en conjonction avec Dapr, les services n'ayant pas la même couverture fonctionnelle.
 
 Voir https://docs.dapr.io/concepts/service-mesh/
 {% endcollapsible %}
@@ -126,26 +126,26 @@ Voir https://docs.dapr.io/concepts/service-mesh/
 Solution:
 
 {%collapsible %}
-Sentry permet le **chiffrage** et **l'authentification mutuelle** des communications entre services. Il permet la communication mTLS entre les services, agissant comme un stockage / broker de certificats.
+Sentry permet le **chiffrage** et **l'authentification mutuelle** des communications entre services. Il permet la communication mTLS entre les services, agissant alors en tant que stockage / broker de certificats.
 
-Sentry est un service totalement optionnel. S'il n'est pas présent au démarrage des sidecars (et son adresse spécifié dans la commande de démarrage), les communications ne seront pas chiffrées.
+Sentry est un service totalement optionnel. S'il n'est pas présent au démarrage des *sidecars* (et son adresse spécifiée dans la commande de démarrage), les communications ne seront simplement pas chiffrées.
 
 Dapr possède donc une architecture modulaire, et il existe d'autres services optionnels :
 
-- **[Placement](https://docs.dapr.io/concepts/dapr-services/placement/)** est un service optionnel permettant l'utilisation du [modèle Acteurs](https://fr.wikipedia.org/wiki/Mod%C3%A8le_d%27acteur)
-- Le **[DNS](https://docs.dapr.io/reference/components-reference/supported-name-resolution/)** interne à Dapr est aussi modulaire. Par défaut, une résolution plate (mDNS) est utilisée, mais **coreDNS**(Kubernetes) ou bien **Consul** peuvent être utilisés selon les plateformes.
+- **[Placement](https://docs.dapr.io/concepts/dapr-services/placement/)**, permettant l'utilisation du [modèle Acteurs](https://fr.wikipedia.org/wiki/Mod%C3%A8le_d%27acteur)
+- Le **[Name Resolution Component](https://docs.dapr.io/reference/components-reference/supported-name-resolution/)** interne à Dapr est aussi modulaire. Par défaut, une résolution plate ([mDNS](https://en.wikipedia.org/wiki/Multicast_DNS)) est utilisée, mais **coreDNS**(Kubernetes) ou bien **Consul** peuvent également être utilisés selon les plateformes.
   {% endcollapsible %}
 
 ### En application
 
-> Note : La nouvelle version de l'application se trouve désormais dans `src/Lab2/2-service-invocation`
+> **Note** : La nouvelle version de l'application se trouve désormais dans `src/Lab2/2-service-invocation`
 
-Il est l'heure de reprendre le fil rouge. Cherchant toujours à rendre notre application de pré-commande complète, deux nouveaux services sont ajoutés, toujours dans des langages différents:
+Il est l'heure de reprendre le fil rouge. Cherchant toujours à rendre notre application de pré-commandes complète, deux nouveaux services ont été ajoutés:
 
-- **stock-manager** (en Go): Une fois une commande validée par **order-processing**, celui-ci appelle la méthode _/stock_ de **stock-manager** pour qu'il rajoute la commande aux stocks requis.
-- **receipt-generator** (en Rust): Une fois une commande validée par **order-processing**, celui-ci appelle la méthode _/_ de **receipt-generator** afin qu'il génère une confirmation
+- **stock-manager** (en Go): Une fois une commande validée,  **order-processing** appelle la méthode _/stock_ de **stock-manager** pour qu'il rajoute la commande aux stocks requis.
+- **receipt-generator** (en Rust): Une fois une commande validée, **order-processing** appelle la méthode _/_ de **receipt-generator** afin qu'il génère une confirmation
 
-Les deux services seront appelés par **order-processing**. Le nom de chaque service est également son ID.
+Le nom de chaque service est également son app-id.
 
 La nouvelle cible est donc:
 
@@ -153,7 +153,7 @@ La nouvelle cible est donc:
 
 > **Question**: Quelle est l'URL que doit utiliser **order-processing** pour appeler **stock-manager** ? Expliquez.
 
-**Indice** : L'API d'invocation de service de Dapr est disponible [ici](https://docs.dapr.io/reference/api/service_invocation_api/)
+**Indice** : L'API d'invocation de Dapr est disponible [ici](https://docs.dapr.io/reference/api/service_invocation_api/)
 
 Solution :
 {% collapsible %}
@@ -165,10 +165,10 @@ PATCH/POST/GET/PUT/DELETE http://localhost:3500/v1.0/invoke/<appId>/method/<meth
 
 où :
 
-- localhost:3500 est l'adresse du sidecar
-- invoke est le préfixe de l'API d'invocation
-- <appId> est l'id du service à appeler tel que déclaré par le l'option `--app-id` de la ligne de commande de Dapr
-- <method-name> est le nom de la méthode à appeler sur le service distant
+- **localhost:3500** est l'adresse du sidecar
+- **invoke** est le préfixe de l'API d'invocation
+- **\<appId\>** est l'id du service à appeler tel que déclaré par le l'option `--app-id` de la ligne de commande de Dapr
+- **\<method-name\>** est le nom de la méthode à appeler sur le service distant
 
 Dans ce cas précis, le service à appeler est **stock-manager**, plus particulièrement la méthode _/stock_
 
@@ -192,10 +192,10 @@ PATCH/POST/GET/PUT/DELETE http://localhost:3500/v1.0/invoke/<appId>/method/<meth
 
 où :
 
-- localhost:3500 est l'adresse du sidecar
-- invoke est le préfixe de l'API d'invocation
-- <appId> est l'id du service à appeler tel que déclaré par le l'option `--app-id` de la ligne de commande de Dapr
-- <method-name> est le nom de la méthode à appeler sur le service distant
+- **localhost:3500** est l'adresse du sidecar
+- **invoke** est le préfixe de l'API d'invocation
+- **\<appId\>** est l'id du service à appeler tel que déclaré par le l'option `--app-id` de la ligne de commande de Dapr
+- **\<method-name\>** est le nom de la méthode à appeler sur le service distant
 
 Dans ce cas précis, le service à appeler est **receipt-generator**, plus particulièrement la méthode _/_
 
@@ -207,7 +207,13 @@ http://localhost:3500/v1.0/invoke/receipt-generator/method/
 
 {% endcollapsible %}
 
-> **En pratique**: A l'aide des deux questions précédentes, renseignez les variables d'environnements **RECEIPT_GENERATOR_INVOKE_URL** et **STOCK_MANAGER_INVOKE_URL** dans `docker-compose.yml`. Executez le fichier docker-compose et lancer une commande via l'interface.
+> **En pratique**: A l'aide des deux questions précédentes, renseignez les variables d'environnements **RECEIPT_GENERATOR_INVOKE_URL** et **STOCK_MANAGER_INVOKE_URL** dans `docker-compose.yml`. Exécutez le fichier docker-compose et lancer une pré-commande via l'interface web (localhost:8089).
+
+**Rappel**: Pour lancer un fichier docker-compose, lancez la commande suivante 
+
+```sh
+docker-compose rm -fsv ; docker-compose up
+```
 
 La trace de succès devrait avoir cette forme :
 ![Expected result](/media/lab2/service-invocation/expected-result.png)

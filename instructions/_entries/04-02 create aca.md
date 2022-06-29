@@ -21,4 +21,4 @@ az group create -n <Nom_ressource_group>  --location westeurope
 az containerapp env create -n <Nom_env> -g <Nom_ressource_group> --location westeurope
 ```
 
-Notre environnement étant crée, il ne nous reste plus que de créer les services à l'intérieur !
+Notre environnement étant crée, il ne nous reste plus qu'à créer les services à l'intérieur !

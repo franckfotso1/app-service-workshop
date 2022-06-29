@@ -1,27 +1,27 @@
 ---
 sectionid: lab1-withouthelp
 sectionclass: h2
-title: Le mode processus
+title: Le mode processus (Facultatif)
 parent-id: lab-1
 ---
 
 Dans les exercices précédents, nous avons surtout travaillé avec des conteneurs, un fichier `docker-compose.yml` étant même fourni.
 
-Il est cependant possible d'utiliser Dapr en mode processus, ce qui permet un processus de développement plus simple
+Il est cependant possible d'utiliser Dapr en mode processus, ce qui permet un processus de développement/débuggage plus simple
 
 > **En pratique** : Installez Dapr localement sur votre PC et initialisez votre environnement local.
 
 **Indication** : [Documentation](https://docs.dapr.io/getting-started/). <u>Ne pas intialiser Dapr pour un environnement Kubernetes !</u>
 
-> **Question** : Quels sont les conteneurs déployés par l'initilisation de Dapr ? Quel est le rôle de chacun ?
+> **Question** : Quels sont les conteneurs déployés par l'initialisation de Dapr ? Quel est le rôle de chacun ?
 
 Solution:
 {% collapsible %}
 Les conteneurs déployés sont :
 
-- Redis : En initialisant Dapr, une instance de Redis ainsi que le composant associé sont crées (dans le répertoire `~/.dapr/components`). Redis pouvant à la fois assurer les fonctionnalités de persistence d'état et de distribution de message, il est souvent choisi comme composant par défaut **dans les environnements de développement**
-- Zipkin : [Logiciel Open-Source](https://github.com/openzipkin/zipkin) permettant de tracer les appels entre les services (Nous y reviendrons dans le _Lab2_)
-- Placement : Un service de Dapr permettant d'utiliser le [modèle de programmation distribuée "Acteurs"](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/). Vous pourrez retrouver une explictaion détaillé du principe de ce modèle [ici](https://github.com/dotnet/orleans)
+- Redis : En initialisant Dapr, une instance de Redis ainsi que le composant associé sont créés (dans le répertoire `~/.dapr/components`). Redis pouvant à la fois assurer les fonctionnalités de persistence d'état et de distribution de message, il est souvent choisi comme composant par défaut **dans les environnements de développement**.
+- Zipkin : [Logiciel Open-Source](https://github.com/openzipkin/zipkin) permettant de tracer les appels entre les services (Voir _Lab2_)
+- Placement : Un service de Dapr permettant d'utiliser le [modèle de programmation distribuée "Acteurs"](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/). Vous pourrez retrouver une explication détaillée du principe de ce modèle [sur le GitHub du projet Orléans](https://github.com/dotnet/orleans)
   {% endcollapsible %}
 
 ### Déployer une application en mode processus
@@ -46,7 +46,7 @@ Puisque le type de déploiement que nous visons n'est pas conteneurisé, il va t
 
 Solution:
 {% collapsible %}
-Après avoir effectué les étapes d'installations, il suffit de lancer les commandes
+Après avoir effectué les étapes ci-dessus, il suffit de lancer les commandes
 
 ```shell
 # cwd: src/Lab2/1-without-help/node
@@ -60,8 +60,8 @@ dapr run --app-id pythonapp --components-path ../components -- python app.py
 
 ### Récapitulatif
 
-Dapr permet à la fois d'assister des applications conteneurisées (pattern du sidecar) mais aussi d'exécuter des processus.
+Dapr permet à la fois d'assister des applications conteneurisées (pattern du sidecar) mais aussi des applications en mode processus.
 
 Si la partie sidecar est indiquée dans des cas d'orchestration de conteneurs (Kubernetes, docker-compose, docker swarm...), la partie processus va nous permettre d'exécuter des applications localement sans avoir à penser à les conteneuriser.
 
-Ces deux modes de fonctionnement assurent une compatibilité avec des services Cloud comme du Kubernetes Managé (AKS) ou simplement de l'hébergement d'application en mode process (App Service\*)
+Ces deux modes de fonctionnement assurent une compatibilité avec des services Cloud comme du Kubernetes Managé (AKS) ou simplement de l'hébergement d'application en mode process (App Service)

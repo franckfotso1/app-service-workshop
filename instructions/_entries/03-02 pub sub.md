@@ -18,14 +18,14 @@ On va retrouver dans ce mode de communication deux types d'acteurs:
 - des **Producteurs** (_Publishers_), qui produisent un contenu, souvent des messages
 - des **Consommateurs** (_Subscribers_), qui attendent du contenu
 
-Si une invocation directe peut par analogie est considéré comme un appel téléphonique, le _pub/sub_ serait une boîte mail, que chacun peut consulter comme bon lui semble.
+Par analogie, si une invocation directe pourrait être considérée comme un appel téléphonique, le _pub/sub_ serait alors une boîte mail, que chacun pourrait consulter quand bon lui semble.
 
 La majorité du temps, le pub/sub fonctionne en **_one to many_**, c'est à dire qu'un message d'un producteur va parvenir à tous les consommateurs. Il existe cependant des configurations **_one to one_**, où un message d'un producteur n'est reçu que par un seul consommateur.
 {% endcollapsible %}
 
 ### Dapr
 
-A l'aide de la [documentation](https://docs.dapr.io/developing-applications/building-blocks/pubsub/), nous allons nous intéresser à ces questions
+A l'aide de la [documentation](https://docs.dapr.io/developing-applications/building-blocks/pubsub/), nous allons nous intéresser à ces questions:
 
 > **Question** : Comment fonctionne la fonctionnalité PUB/SUB de Dapr ? Quel est le chemin d'un message depuis son envoi d'un service A vers un service B ?
 
@@ -35,27 +35,27 @@ Solution :
 En reprenant l'image de la documentation, on peut voir que:
 
 - le message passe du service à son sidecar
-- le sidecar résoud le composant, et redirige le message vers l'implémentation
+- le sidecar résoud le composant, et redirige le message vers l'implémentation sous-jacente
 - l'implémentation notifie tous les sidecars avec le contenu du message
 - les sidecars redirigent le contenu du message vers une route HTTP de leurs services respectifs
   {% endcollapsible %}
 
 > **Question** : Quelle est la garantie de livraison associée à la fonctionnalité de PUB/SUB ? Quels sont les avantages et les incovénients ?
-> Solution :
 
+Solution :
 {% collapsible %}
 La garantie est **at least once**. ([Lien dans la documentation](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/#at-least-once-guarantee)).
 Cette garantie signifie que chaque message envoyé par un producteur sera reçu au moins une fois par chaque consommateur.
-L'avantage est qu'il n'est pas possible de perdre un message, du tout du moins si un moins un consommateur est inscrit au momment de l'envoi du message.
+L'avantage est qu'il n'est pas possible de perdre un message, tout du moins dès lors qu'au moins un consommateur est inscrit au moment de l'envoi du message.
 
 L'inconvénient principal est qu'il est possible de recevoir plusieurs fois le même message.
 Cet inconvénient peut se traiter applicativement. Un exemple est de retenir l'ID des X derniers messages traités, ou simplement d'avoir un service resistant par conception à la duplication.
 
 ##### Pour aller plus loin
 
-Lors de la conception d'un système de communication, si la possibilité de duplication est absolument à éviter il faudra plutôt s'orienter vers une garantie **at most once**. Un message sera alors livré au plus une fois, ce qui évitera la duplictaion mais pourra occasioner des pertes de messages.
+Lors de la conception d'un système de communication, si la possibilité de duplication est absolument à éviter il faudra plutôt s'orienter vers une garantie **at most once**. Un message sera alors livré au plus une fois, ce qui évitera la duplictaion mais pourra occasionner des pertes de messages.
 
-La garantie idéale, **exactly once** n'est pas proposée dans le cas général. En effet, il existera toujours un cas limite où il faudra relancer la transaction (comsommateur qui crash pendant la reception d'un message...).
+La garantie idéale, **exactly once**, n'est pas proposée dans le cas général. En effet, il existera toujours un cas limite où il faudra relancer la transaction (comsommateur qui échoue pendant la reception d'un message...).
 
 {% endcollapsible %}
 
@@ -65,7 +65,7 @@ Solution :
 
 {% collapsible %}
 
-Pour souscrire à un _topic_, Dapr propose deux méthodes
+Pour souscrire à un _topic_, Dapr propose deux méthodes:
 
 ##### Dans le code
 
@@ -142,7 +142,7 @@ scopes:
 Cette fonctionnalité est pensée dans les cas où l'appplication reçoit un grand nombre d'événements différents. Elle permet :
 
 - d'empêcher de créer un grand nombre de topics, un pour chaque cas limite de l'application. Sur le Cloud public, cela résoud notamment une problématique de coût.
-- d'éviter à l'application elle-même de faire le routage, ce qui entraîne une complexité inutile.
+- d'éviter à l'application elle-même de faire le routage, ce qui entraînerait une complexité inutile.
 
 Il faut cependant noter que l'abus de cette fonctionnalité pourrait entraîner une difficulté de compréhension des flux de l'application. La meilleure manière d'éviter une telle situation est de prévoir son utilisation dès l'étape de conception.
 {% endcollapsible %}
@@ -153,7 +153,7 @@ Voici l'état actuel de l'application de pré-commande fil rouge :
 
 ![Step 0](/media/lab2/app-step-0.png)
 
-Le frontend va être la vitrine de notre site, qui s'exécute sur le navigateur du client (raison pour laquelle il n'a pas de sidecar Dapr rattaché, non réaliste) et l'API la porte d'entrée de l'architecture du backend.
+Le frontend va être la vitrine de notre site, qui s'exécute sur le navigateur du client (raison pour laquelle il n'a pas de sidecar Dapr rattaché) et l'API la porte d'entrée de l'architecture du backend.
 
 L'application peut être lancée en se rendant le dossier `src/Lab2/1-pub-sub` puis en lançant la commande
 
@@ -202,9 +202,9 @@ spec:
       value: ""
 ```
 
-Il s'agit du composant dapr faisant le lien avec l'implémentation du pubsub, ici redis.
+Il s'agit du composant Dapr faisant le lien avec l'implémentation du pubsub, ici Redis.
 
-Le nom du composant, (la valeur de la clef du yaml **metadata.name**) est `order-pub-sub`.
+Le nom du composant (la valeur de la clef du yaml **metadata.name**) est `order-pub-sub`.
 Attention à ne pas confondre ce nom avec le nom du fichier qui lui est simplement pubsub.
 
 {% endcollapsible %}
@@ -213,7 +213,7 @@ Attention à ne pas confondre ce nom avec le nom du fichier qui lui est simpleme
 
 **Indice** : L'URL qui permet à **command-api** de publier un message est un appel vers son sidecar. L'API pub/sub de Dapr est détaillée [ici](https://docs.dapr.io/reference/api/pubsub_api/).
 
-**Indice 2** : Il n'est **pas demandé** de faire des modifications dans le code des services ! Souvenez-vous qu'il existe plusieurs manière de souscrire à un *topic*
+**Indice 2** : Il n'est **pas demandé** de faire des modifications dans le code des services ! Souvenez-vous qu'il existe plusieurs manières de souscrire à un *topic*
 
 Solution :
 
@@ -223,7 +223,7 @@ Parmi ces deux services, **command-api** est le producteur. Comme les SDKs ne so
 
 ##### Command API
 
-Le service **command-api** est le producteur. Pour pouvoir publier un événement, il a besoin de l'URL vers laquelle publier.
+Le service **command-api** est le producteur. Pour pouvoir publier un événement, il a besoin de l'URL vers laquelle publier son contenu.
 
 Cette URL peut se trouver dans la [documentation](https://docs.dapr.io/reference/api/pubsub_api/), et est de la forme :
 
@@ -244,7 +244,7 @@ Une fois les variables remplies, l'URL d'invocation est donc
 http://localhost:3500/v1.0/publish/order-pub-sub/orders
 ```
 
-Il ne reste plus qu'à renseigner cette url dans les variables d'environnements du fichier `src/Lab2/1-pub-sub/docker-compose.yml`
+Il ne reste plus qu'à renseigner cette URL dans les variables d'environnements du fichier `src/Lab2/1-pub-sub/docker-compose.yml`
 
 ```diff
 ...
@@ -272,7 +272,7 @@ A l'aide des questions précédentes, nous savons qu'il existe deux méthodes po
 - par le code
 - déclarativement
 
-Le choix ici est rapide : puisqu'il n'est aps demandé de faire des modifications dans le code des services, nous allons utiliser la méthode **déclarative**.
+Le choix ici est rapide : puisqu'il n'est pas demandé de faire des modifications dans le code des services, nous allons utiliser la méthode **déclarative**.
 
 Pour cela, nous devons [créer un yaml représentant la souscription](https://docs.dapr.io/developing-applications/building-blocks/pubsub/subscription-methods/) dans le dossier `src/Lab2/1-pub-sub/components/`. Le nom du fichier n'a aucune importance.
 
@@ -303,8 +303,8 @@ scopes:
 
 > **En pratique**: Implémenter le PUB/SUB entre `command-api` et `order-processing`
 
-Une trace indiquant le success devrait avoir cette forme après avoir lancé une commande
+Une trace indiquant le succès devrait avoir cette forme
 
 ![expected result](/media/lab2/pubsub/expected-result.png)
 
-**Note 1**: Dans un pattern Pub/Sub, un message est supprimé d'un _topic_ après que tous les consommateurs de ce topic l'ai reçu. Dans une véritable application E-commerce, où les microservices peuvent éventuellement _scaler_, c'est à dire multiplier leur nombre d'instances, les commandes pourraient être traitées plusieurs fois. La bonne approche dans ce genre de cas est d'utiliser une file de message, où le message sera supprimé après la première lecture.
+**Note 1**: Dans un pattern Pub/Sub, un message est supprimé d'un _topic_ après que tous les consommateurs de ce topic l'ai reçu. Dans une véritable application E-commerce, où les microservices peuvent éventuellement _scaler_, c'est à dire augmenter leur nombre d'instances, les commandes pourraient être traitées plusieurs fois. La bonne approche dans ce genre de cas est d'utiliser une file de message, où le message serait supprimé après le premier traitement.
