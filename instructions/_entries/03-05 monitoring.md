@@ -192,16 +192,134 @@ De plus, si ce sont bien les sidecars qui émettent les métriques, ces sidecars
     network_mode: "service:order-processing"
 ```
 
-Une fois Prometheus configuré il suffit de configurer Grafana pour utiliser Prometheus de cette manière 
+Une fois Prometheus configuré il suffit de configurer Grafana pour utiliser Prometheus de cette manière
 
 ```ini
 [auth]
-# Remove the login prompt 
+# Remove the login prompt
 disable_login_form = true
 
 [auth.anonymous]
-# enable anonymous access 
+# enable anonymous access
 enabled = true
 # And give "anonymous" admin privileges
 org_role = Admin
 ```
+
+### Observer les logs
+
+Le dernier axe de l'observabilité que nous allons aborder est celui des logs. La possibilité de stocker et d'analyser les logs est une partie intégrante de la vie d'une application distribuée – peut être même encore plus que les parties précédentes – et il est courant que chacun ait déjà une solution plus ou moins managée avec laquelle il est familier.
+
+Il n'est donc pas question ici de discuter de la manière dont les logs des services en eux-mêmes sont traités, cette partie va plutôt se concentrer seulement sur **les logs des sidecars**.
+
+Le support utilisé sera une pile ELK (Elastisearch, Logstash, Kibana).
+
+> **En pratique**: Déployez l'application spécifiée par `src/Lab2/6-logs/docker-compose.yml`. Naviguez maintenant vers Kibana à l'adresse **localhost:5601**
+
+**Note**: Il est possible que le déploiement échoue avec une erreur de type _Dial [1]::24224_, relancez simplement la commande dans ce cas
+
+L'instance de Kibana est déjà configurée pour recevoir les logs des sidecars (voir la partie [**Détails**](#détails) ci-dessous). Il faut maintenant configurer cette instance pour les analyser
+
+Pour cela:
+
+- Une fois sur l'interface, choississez l'option _Explore on my own_ quand il sera proposé d'ajouter des intégrations
+- Cliquez en haut à gauche sur le menu (**☰**), puis sur _Stack Management_ dans la section _Management_
+- Une fois sur la nouvelle page, dans le panneau de gauche, cliquez sur _Data View_ dans la section _Kibana_
+- Cliquez sur _Create Data View_
+- Il sera demandé de renseigner un index. Il ne devrait n'y en avoir qu'un seul disponible de la forme **fluent-\<\>**. Renseignez "fluent\*" dans le champ de gauche
+- Cliquez sur _Create Data View_
+
+En créant cette vue, vous aurez la liste des variables comprises dans les logs.
+
+> **Question**: En comparant les variables affichées avec [le format de logs de Dapr](https://docs.dapr.io/operations/monitoring/logging/logs/#log-schema), quelles différences remarquez-vous ? Pourquoi ?
+
+Solution :
+
+{% collapsible %}
+![Dapr log items list](/media/lab2/logs/log-items-full.png)
+
+Par rapport au format de Dapr, il y a de nombreuses variables supplémentaires. Ces variables proviennent du [format ECS](https://www.elastic.co/guide/en/observability/8.3/logs-app-fields.html) utilisé.  
+{% endcollapsible %}
+
+Il suffit maintenant pour consulter les logs de cliquer à nouveau sur **☰** puis de cliquer sur _Discover_ dans la section _Analytics_.
+
+**Remarque** : On remarque des doublons dans les attributs, suffixés par ".keyword". Il s'aggit d'une spécificité de Elastisearch. Lors de la rencontre d'une chaîne de charactères, Elastisearch va l'indexer à la fois en tant que type _TEXT_, champ dans lequel il est possible de rechercher un sous-texte, et en tant que type _KEYWORD_, non indexé. Il est cependant possible de spécifier quel comportement à adopter pour chaque champ.
+
+> **En pratique** : Isolez les logs du conteneur **order-processing**. Commentez les attributs
+
+{% collapsible %}
+
+Pour isoler les logs du conteneur **order-processing**, il suffit de chercher "app-id : order-processing" dans la barre de recherche.
+
+Une ligne de log a cette forme
+
+```jsonc
+// Note : Les attributs .keyword sont ignorés
+{
+  "_index": "fluentd-20220704",
+  "_id": "sepuyYEB3S4ZspuilsDO",
+  "_version": 1,
+  "_score": null,
+  "fields": {
+    // Payload de Dapr. On remarque que l'on retrouve chacun de ces attributs
+    // séparément dans l'objet "fields". C'est un effet de la configuration de FluentD
+    // qui parse le JSON de cet attribut et l'intègre à l'objet parent
+    "log": [
+      "{\"app_id\":\"order-processing\",\"instance\":\"d900866e4786\",\"level\":\"info\",\"msg\":\"application configuration loaded\",\"scope\":\"dapr.runtime\",\"time\":\"2022-07-04T13:37:51.345159194Z\",\"type\":\"log\",\"ver\":\"edge\"}"
+    ],
+    // Payload -> Descripteur de fichier d'origine
+    "source": ["stdout"],
+    // Payload -> Message de log à proprement parler
+    "msg": ["application configuration loaded"],
+    // Payload -> Log type
+    "type": ["log"],
+    "scope": ["dapr.runtime"],
+    // Payload -> APP-id du service ayant emis le log
+    "app_id": ["order-processing"],
+    // Payload ->Version de Dapr
+    "ver": ["edge"],
+    // Payload ->Log level
+    "level": ["info"],
+    // Meta -> Temps de reception de la ligne de log
+    "@timestamp": ["2022-07-04T13:37:51.345Z"],
+    // Meta -> Nom du conteneur vu par docker-compose
+    "container_name": ["/6-logs_order-processing-dapr_1"],
+    // Meta -> UUID du conteneur docker
+    "container_id": [
+      "1f8457fe7a405ecf8443304558aedbeaa4bd9eff0a45ecd2b7aa24caf4879e73"
+    ]
+  },
+  // Date de réception en format timestamp pour trier les logs
+  "sort": [1656941871345]
+}
+```
+
+{% endcollapsible %}
+
+#### Détails
+
+La manière dont les logs sont envoyés vers Kibana est d'utiliser [FluentD](https://docs.fluentd.org/) en tant que [logging driver](https://docs.docker.com/config/containers/logging/configure/).
+
+Dapr est ensuite configuré pour afficher les logs en format JSON sur stdout avec l'option de commande `-log-as-json`.
+
+```diff
+  command-api-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+     "-app-id", "command-api",
+     "-app-port", "80",
++      "-log-as-json", "true",
+     "-dapr-grpc-port", "50002",
+     "-config", "/config/tracing-config.yml",
+     "-components-path", "/components"]
+     ...
++   logging:
++     driver: "fluentd"
++      options:
++       fluentd-address: localhost:24224
++       tag: httpd.access
+```
+
+Cette méthode étant propre à l'orchestrateur docker-compose, elle n'est pas détaillée dans le coeur de l'activité.
+
+Sur Kubernetes le déploiement serait toutefois similaire. Il suffirait en effet de déployer FluentD sur le cluster et d'ajouter l'annotation `log-as-json` au déploiement des services pour obtenir le même resultat. Un tutoriel complet est disponible [sur le site de Dapr](https://docs.dapr.io/operations/monitoring/logging/fluentd/).
