@@ -1,0 +1,10 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: mail
+spec:
+  type: bindings.http
+  version: v1
+  metadata:
+  - name: url
+    value: https://prod-116.westeurope.logic.azure.com/workflows/0ceb8e48b2254276923acaf348229260/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=SOecSS8lTON4ZTisB1iGA-6rJAlkoC8miHB9kyJp3No
