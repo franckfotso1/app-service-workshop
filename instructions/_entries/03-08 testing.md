@@ -1,5 +1,5 @@
 ---
-sectionid: lab2-secrets
+sectionid: lab2-testing
 sectionclass: h2
 title: (Avancé) Tester avec Dapr
 parent-id: lab-2
