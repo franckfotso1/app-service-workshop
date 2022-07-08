@@ -5,23 +5,24 @@ title: La gestion des secrets
 parent-id: lab-2
 ---
 
-Dans tous les scénarios que nous avons vu jusque là, nous avons
+Dans tous les scénarios que nous avons vu jusque là, nous avons par simplicité utilisé des services sans aucune forme d'authentification.
+Dans un scénario de production, il sera néanmoins essentiel de s'adonner à une bonne gestion des secrets.
 
 ### Généralités
 
-> **Question généraliste** : Qu'est-ce qu'un coffre fort numérique (ou gestionnaire de secrets) ? Quel est l'avatange de stocker des secrets dans ce coffre au lieu de les renseigner directement dans l'environnement des services ?
+> **Question généraliste** : Qu'est-ce qu'un coffre fort numérique (ou gestionnaire de secrets) ? Quel est l'avatange de stocker des secrets dans ce coffre en lieu et place de les renseigner directement dans l'environnement des services ?
 
 Solution :
 
 {% collapsible %}
 
-Un gestionnaire de secrets est un service centralisation la creation/récupération/suppression des secrets d'une application distribuée.
+Un gestionnaire de secrets est un service centralisant la creation/récupération/suppression des secrets d'une application distribuée.
 
-Bien qu'ajoutant une indirection supplémentaire, cette solution a de nombreux avantages comme :
+Bien qu'ajoutant une indirection supplémentaire, cette solution présente des avantages indispensables comme :
 
 - Empêcher la duplication d'un secret utilisé plusieurs fois
-- Permettre une authentification/autorisation, contrôlant quels services accèdent à quels secrets
-- Garder une trace des accès, permettant des audits de sécurité
+- Permettre une forme d'authentification/autorisation, contrôlant quels services accèdent à quels secrets
+- Garder une trace des accès, facilitant les audits de sécurité
 
 {% endcollapsible %}
 
@@ -48,23 +49,23 @@ D'après [la documentation](https://docs.dapr.io/reference/components-reference/
 | GCP Parameter Store                   | Alpha     | Externe                   | Oui. Attention à la maturité du composant                              |
 | Azure Key Vault                       | Stable    | Externe                   | Oui                                                                    |
 
-De manière générale, il sera toujours préférable de stocker des secrets en dehors de la plateforme d'exécution des services, pour ne pas placer tous ses oeufs dans le même panier. Dans le cas où le gestionnaire de secret est hébergée dans la même plateforme que les services, il faudra prévoir une haute fiabilité (mode cluster, persistence, sauvegardes...).
+De manière générale, il sera toujours préférable de stocker les secrets en dehors de la plateforme d'exécution des services, pour ne pas "placer tous ses oeufs dans le même panier". Dans le cas où le gestionnaire de secret est hébergé sur la même plateforme que les services, il faudra prêter attention à la fiabilité de cette partie ultra critique (mode cluster, persistence, sauvegardes...).
 
 {% endcollapsible %}
 
-> **Question** : Quelles sont les deux entités capables de demander la valeur d'un secret ?
+> **Question** : Quels sont les deux moyens pour accéder au gestionnaire de secrets à travers Dapr ?
 
 Solution :
 
 {% collapsible %}
-La page de documentation présente deux moyens de récupérer des secrets stockés après avoir déclaré le composant correspondant au coffre fort:
+La page de documentation présente deux moyens d'accéder au gestionnaire de secrets à travers Dapr:
 
 - Utiliser l'API REST / les SDKs de Dapr depuis les **services** eux-mêmes
 - Utiliser des références aux secrets depuis les **composants** déclarés
 
 #### Depuis les services
 
-Depuis le code des services, il est possible de demander la valeur d'un secret en utilisant une simple requête
+Depuis le code des services, il suffit d'utiliser l'API correspondante :
 
 ```curl
 GET/POST http://localhost:3500/v1.0/secrets/<NOM_COMPOSANT>/<NOM_SECRET>
@@ -72,17 +73,18 @@ GET/POST http://localhost:3500/v1.0/secrets/<NOM_COMPOSANT>/<NOM_SECRET>
 
 où:
 
-- **\<NOM_COMPOSANT\>** : Nom du composant de gestion de secrets Dapr
-- **\<NOM_SECRET\>** : Clef du secret stocké
+- **\<NOM_COMPOSANT\>** : Nom du composant de gestion de secrets
+- **\<NOM_SECRET\>** : Clef / Namespace (en fonction du stockage sous-jacent) du secret stocké
 
 #### Depuis les composants
 
-```yml
+L'autre manière est de modifier les composants Dapr existant pour y intégrer des références au gestionnaire de secret.
+
+```diff
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: default
 spec:
   type: state.redis
   version: v1
@@ -90,11 +92,14 @@ spec:
   - name: redisHost
     value: localhost:6379
   - name: redisPassword
-    secretKeyRef:
-    	name: redis-secret
-      key:  redis-password
-auth:
-  secretStore: <SECRET_STORE_NAME>
+    # Au lieu d'utiliser une valeur 
+-    value: ""
+    # Une référence est passée
++    secretKeyRef:
++    	name: <NAMESPACE>
++     key:  <SECRET_KEY>
++auth:
++  secretStore: <SECRET_STORE_COMPONENT>
 
 ```
 
@@ -107,6 +112,7 @@ Solution :
 {% collapsible %}
 
 Il faudrait simplement appliquer cette configuration (voir partie monitoring) au service **secret-1**.
+
 ```yml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
@@ -122,14 +128,14 @@ spec:
 
 Il faut cependant noter les autres services auraient accès à l'ensemble des secrets, ce qui pourrait poser problème.
 
-Une autre configuration possible dans ce cas serait d'appliquer une configuration à tous les services qui par défaut refuse l'accès à tous les secrets. De manière analogue au fonctionnement d'un pare-feu, il faudrait ensuite explicitement autoriser chaque service à accéder à chaque secret. 
+Une autre configuration possible dans ce cas serait d'appliquer une configuration à tous les services qui par défaut refuse l'accès à tous les secrets. De manière analogue au fonctionnement d'un pare-feu, il faudrait ensuite explicitement autoriser chaque service à accéder à chaque secret.
 {% endcollapsible %}
 
 ### En application
 
 L'application fil rouge continue alors à évoluer. Cette fois-ci, l'instance de Redis servant à la communication entre `command-api` et `order-processing` a été modifiée pour nécessiter un mot de passe : **suchStrongP4ssword!!**
 
-Un nouveau service a également été ajouté dans l'application : un [Vault d'HashiCorp](https://www.vaultproject.io/). Ce coffre fort a été initialisé (en mode de développement) comme suit :
+Un nouveau service a également été ajouté dans l'application : un [Vault d'HashiCorp](https://www.vaultproject.io/). Ce coffre fort a été initialisé (en [mode de développement](https://www.vaultproject.io/docs/concepts/dev-server)) comme suit :
 
 | Namespace | Valeur                          |
 | --------- | ------------------------------- |
@@ -145,9 +151,9 @@ Solution :
 
 {% collapsible %}
 
-Le coffre fort utilisé étant un Vault d'HashiCorp, il faut utiliser le [composant correspondant](https://docs.dapr.io/reference/components-reference/supported-secret-stores/hashicorp-vault/).
+Le coffre fort utilisé étant un Vault d'HashiCorp, il faut utiliser le [composant Dapr correspondant](https://docs.dapr.io/reference/components-reference/supported-secret-stores/hashicorp-vault/).
 
-Ce composant dispose d'un grand nombre de paramètres; mais très peu sont en fait requis pour le déploiement très simple qui est utilisé ici.
+Ce composant dispose d'un grand nombre de paramètres. Cependant, le déploiement du Vault dans ce cas étant très simple, seulement trois paramètres sont réellement requis.
 
 Le composant à créer est donc :
 
@@ -177,7 +183,9 @@ spec:
 
 Le composant étant créé, il est possible de récupérer les secrets des deux manières que nous avons abordées plus haut.
 
-> **En pratique**: Modifiez le composant `pubsub.yml` pour inclure la récupération du mot de passe depuis le composant de gestion de secret. Verfiez le fonctionnement en exécutant l'application située à `src/Lab2/7-secrets/docker-compose.yml`
+> **En pratique**: Modifiez le composant `pubsub.yml` pour inclure la récupération du mot de passe depuis le composant de gestion de secret. Vérifiez le fonctionnement en exécutant l'application située à `src/Lab2/7-secrets/docker-compose.yml`
+
+**Indication** : En cas d'échec de récupération du mot de passe de l'instance de Redis, certains services vont simplement crasher.
 
 Solution :
 
@@ -205,15 +213,14 @@ spec:
 auth:
   secretStore: vault
 ```
-
 {% endcollapsible %}
 
 ### Conclusion
 
 La gestion des secrets est une facette si essentielle de la vie d'une application distribuée qu'elle doit être incluse dès sa conception.
 
-Dans cet exemple, nous utilisons un gestionnaire de secret directement intégré dans l'application, via un Vault. Si cette configuration est amplement suffisante dans le cadre d'un exercice, elle n'est évidemment pas conseillée en production.
+Dans cet exemple, nous utilisons un gestionnaire de secret directement intégré dans l'application, via un Vault. Si cette configuration est amplement suffisante dans le cadre d'un exercice, elle n'est évidemment pas conseillée sous cette forme en production.
 
-Dans une configuration de production entièrement privée, il faudrait ainsi prévoir une persistance pour le secret et une meilleure sécurité pour l'accès.
+Dans une configuration de production entièrement privée, il faudrait ainsi prévoir une couche de persistance pour le gestionnaire de secret et une meilleure sécurité d'accès.
 
-Dans une configuration utilisant le Cloud public, il sera plus conseillé d'utiliser un service managé, comme par exemple Azure Keyvault.
+Dans une configuration utilisant le Cloud public, il sera en revanche plus conseillé de se tourner vers un service managé, comme par exemple [Azure Keyvault](https://azure.microsoft.com/fr-fr/services/key-vault/).

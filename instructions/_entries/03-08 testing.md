@@ -7,15 +7,15 @@ parent-id: lab-2
 
 ## Préambule
 
-Cette partie du laboratoire va s'intéresser au cycle de développement d'une application. Par conséquent elle sera moins accessible aux personnes n'ayant pas ou peu d'expérience dans ce domaine. Ce sujet est donc **facultatif** est peut être passé en faveur du prochain laboratoire.
+Cette partie du laboratoire va s'intéresser à la phase de test du cycle de développement d'une application. Par conséquent elle concernera un public plus restreint, celui ayant déjà une expérience dans le domaine. Ce sujet est donc entièrement **facultatif** est peut être passé en faveur du prochain laboratoire.
 
-Pour commencer, nous allons poser quelques définitions pour cette partie de l'exercices :
+Pour commencer, un certain vocabulaire sera utilisé dans cette partie:
 
-- Une **application** est une réponse partielle ou totale à un problème métier. Les différentes sous-parties du problème sont des **besoins**. L'ensemble des besoins auxquels répond une application est appelé **couverture fonctionelle**.
-- Un **service** est une partie d'une application distribuée orientée (micro)services. Chaque service répond à une partie plus ou moins importante d'un besoin.
-- Un **module** est ici défini comme une partie du code service étant séparé logiquement du reste de l'implémentation via une encapsulation (classe, package, injection...)
+- Une **application** est une réponse partielle ou totale à un problème métier. Les différentes sous-parties du problème sont des **besoins**. L'ensemble des besoins auquel répond une application est appelé **couverture fonctionelle**.
+- Un **service** est une partie d'une application distribuée orientée (micro)services. Chaque service répond à une partie plus ou moins importante d'un ou plusieurs besoin(s).
+- Un **module/package** est ici défini comme une partie du code d'un service étant séparé logiquement du reste de l'implémentation via une encapsulation (classe, package, injection...)
 
-**Que tester**
+### Que tester
 
 Avec toutes les parties précédentes, nous avons pu voir que Dapr est un outil qui vient se greffer facilement sur une application en cours de développement.
 Il reste cependant une question en suspend.
@@ -55,7 +55,7 @@ Parmi les types de tests que nous pourrons effectuer sur cette application nous 
   - Ex: L'utilisateur doit pouvoir effectuer des opérations sur la calculatrice
 
 **Note**: Il existe _beaucoup_ d'autres types de tests (acceptation, performance, mutation, static, A/B, scripts...) qui répondent à des exigences plus particulières de certaines applications.
-Le domaine des tests évolue contamment, et au cours du temps, certains types de tests sont devenus obsolètes avec des langages répondant par conception à des problèmes comme la fuite mémoire (garbage collector, scoped mallocs...) ou les [_deadlocks/livelocks_](https://en.wikipedia.org/wiki/Deadlock) ([borrow checker de Rust](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)). Le tout est d'utiliser les bons types de tests au bon momment.
+Le domaine des tests évolue contamment, et au cours du temps, certains types de tests sont devenus obsolètes avec des langages répondant par leur conception même à des problèmes comme la fuite mémoire (garbage collector, scoped mallocs...) ou les [_deadlocks/livelocks_](https://en.wikipedia.org/wiki/Deadlock) ([borrow checker de Rust](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)).
 
 {% endcollapsible %}
 
@@ -67,14 +67,15 @@ Les tests end2end et fonctionnels sont donc concernés.
 
 Les tests unitaires au contraire ne devraient pas avoir de dépendance externe.
 
-Il est cependant plus difficile d'avoir une réponse catégorique pour les tests d'intégration. Si l'intégration inclue la communication entre services, il peut cepdenant être judicieux dans certains cas de se laisser la liberté ou non d'injecter le sidecar afin de tester un échec de communication.
+Il est cependant plus difficile d'avoir une réponse catégorique pour les tests d'intégration. Si l'intégration inclue la communication entre services, il peut parfois être judicieux de se laisser la liberté ou non d'injecter le sidecar afin de tester un échec de communication.
 
 {% endcollapsible %}
 
-## Comment tester
+### Comment tester
+
 Pour ce laboratoire, nous allons proposer trois méthodologies pour tester une application avec Dapr.
 
-### Méthode 1: Dapr partout
+#### Méthode 1: Le middleware obligatoire
 
 La première méthode est la plus simple. Une fonctionnalité de Dapr est de pouvoir fonctionner indépendament d'un orchestrateur.
 Dans cette optique, il est alors possible de simplement considérer Dapr comme un pré-requis pour les tests **d'intégration**.
@@ -82,21 +83,21 @@ Le pipeline de CI serait alors initié par l'installation de Dapr dans l'environ
 
 Cette méthode, si elle a l'avantage de se pas demander de structure de test particulière, peut cependant contraindre dans certains cas (injection d'un SDK dans une classe, subscription à un evènement dans le constructeur...) à également devoir utiliser Dapr dans les test **unitaires**, ce qui n'est pas forcément souhaitable.
 
-### Méthode 2: L'interface localhost
+#### Méthode 2: L'interface localhost
 
-Une autre méthode est de simplement remplacer les appels aux sidecars par des mocks. Le port par défaut de Dapr est **3500**. Avant d'effectuer une batterie de tests, il est alors possible de démarrer un serveur (type [APItest](https://apitest.dev/) en Go) sur ce port et de _mocker_ les réponses du sidecar.
+Une autre méthode est de simplement remplacer les appels aux sidecars par des _mocks_. Le port par défaut de Dapr est **3500**. Avant d'effectuer une batterie de tests, il est alors possible de démarrer un serveur (type [APItest](https://apitest.dev/) en Go) sur ce port et de _mocker_ les réponses du sidecar.
 
-Cette méthode a l'avantange de donner le contrôle au développeur des réponses du sidecar, permettant des tests plus vastes dans les cas limites. Elle ne structure pas non plus le développement de l'application et peut être appliquée dans tous les cas.
+Cette méthode a l'avantange de donner au développeur le contrôle des réponses du sidecar, permettant une exploration plus vaste des cas limites. Elle ne structure pas non plus le développement de l'application et peut être appliquée dans tous les cas.
 Les inconvénients principaux de cette méthode est qu'il faut connaître le format de réponse du sidecar, et que le serveur de test nécessite une attention particulière pour ne pas grandir de manière incontrolée.
 
-### Méthode 3: Injection de dépendances
+#### Méthode 3: Injection de dépendances
 
 La dernière méthode est la plus complexe à mettre en place mais aussi celle qui donne le plus de contrôle au développeur. Le principe de cette méthode est de considérer Dapr comme une classe/module injectable d'un conteneur d'[injection de dépendances](https://fr.wikipedia.org/wiki/Injection_de_d%C3%A9pendances).
 
-L'injection de dépendances est une méthode de programmation qui consiste à déterminer à l'exécution la chaîne de dépendance entre les objets/classes d'un programme.
+L'injection de dépendances est une méthode de programmation qui consiste à déterminer à l'exécution la chaîne de dépendances entre les objets/classes d'un programme.
 Ainsi, ces dépendances sont reconfigurables en fonction de l'environnement d'exécution de l'application, permettant une meilleure flexibilité quand cette chaîne de dépendance est complexe.
 
-Appliquée au domaine des tests, cette méthode est une solution au problème de tester en isolation des [classes composées]().
+Appliquée au domaine des tests, cette méthode permet de tester en isolation des [classes composées]().
 
 Un exemple pourrait être le suivant :
 
@@ -225,9 +226,10 @@ function getDynamicExternalStore(startValue?: IRecordingState) {
 }
 ```
 
-
-Ayant l'avantage de permettre un contrôle total sur la relation entre Dapr et le reste du service, cette méthode est cepedant structurante, elle demande que l'application utilise l'injection de dépendances.
+Ayant l'avantage de permettre un contrôle total sur la relation entre Dapr et le reste du service, cette méthode est cepedant entièrement structurante, elle impose que l'application utilise l'injection de dépendances.
 
 ## Conclusion
 
-Il est relativement facile de tester avec Dapr. Ne posant aucun problèmes dans les tests fonctionnels ou end2end, il est cependant à la charge du développeur de déterminer une implémentation cohérente avec la granularité du contrôle voulu sur l'intéraction entre un service et son sidecar lors des tests unitaires ou d'intégration. 
+Il est relativement facile de tester avec Dapr dans une configuration micro-services, où chaque service effectue une tâche très simple.
+
+Dans le cas où les services évoluent et leurs responsabilités augmentent, le développeur devra choisir une implémentation de tests en fonction de la granularité de contrôle voulu.

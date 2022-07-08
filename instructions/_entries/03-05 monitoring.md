@@ -105,7 +105,7 @@ On remarquera aussi que les bindings ne sont pas représentés. En effet ceux-ci
 
 ### Observer les métriques
 
-Un autre axe de l'observabilité est celui des métriques des conteneurs. Ces métriques sont des statistiques généralistes qui permettent d'avoir une vue opérationelle sur le cluster.
+Un autre axe de l'observabilité est celui des "métriques" des conteneurs. Ces métriques sont des statistiques généralistes qui permettent d'avoir une vue opérationelle sur le cluster.
 
 Ces statistiques contiennent notamment :
 
@@ -116,11 +116,11 @@ Ces statistiques contiennent notamment :
 - Etats des composants
 - Statistiques des appels HTTP/gRPC
 
-La liste complète des métriques envoyées par chaque composant de Dapr est disponible [ici](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
+La liste complète des métriques envoyées par chaque service de Dapr est disponible [ici](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
 
-Toutes ces métriques sont émises dans des formats ouverts et peuvent être récupérées et analysées par des outils dédiées tels que [Azure Monitor](https://azure.microsoft.com/fr-fr/services/monitor/#overview), ou [Prometheus](https://prometheus.io).
+Toutes ces métriques sont émises dans [un format ouvert](https://github.com/prometheus/docs/blob/main/content/docs/instrumenting/exposition_formats.md) et peuvent être récupérées et analysées par des outils dédiées tels que [Azure Monitor](https://azure.microsoft.com/fr-fr/services/monitor/#overview), ou [Prometheus](https://prometheus.io).
 
-[Chaque release](https://github.com/dapr/dapr/releases) de Dapr propose également des dashboards [Grafana](https://grafana.com/) permettant d'avoir un récapitulatif graphique des métriques collectées.
+[Chaque release](https://github.com/dapr/dapr/releases) de Dapr propose également des dashboards [Grafana](https://grafana.com/) préconçus permettants d'avoir un récapitulatif graphique des métriques collectées.
 
 ![grafana dapr doc](/media/lab2/metrics/grafana-doc-example.png)
 
@@ -128,36 +128,36 @@ Un guide est disponible [sur la documentation](https://docs.dapr.io/operations/m
 
 #### En application (Facultatif)
 
-> **Important** : Cette section va montrer comment obtenir certaines métriques sur notre exemple fil rouge. Il faut cependant noter que les dashboards grafana fournis par l'équipe Dapr sont conçus pour Kubernetes, certaines métriques ne seront pas disponibles.
+> **Important** : Cette section se concentrera sur l'obtention de certaines métriques sur l'exemple fil rouge. Il faut cependant noter que les dashboards grafana fournis par l'équipe Dapr sont conçus pour Kubernetes, certaines métriques ne seront pas disponibles.
 
 Pour obtenir les métriques de notre application, nous allons donc avoir besoin de rajouter deux services à notre déploiement : Prometheus et Grafana.
 
-Prometheus est un outil d'analyse de séries temporelles (variables variant au cours du temps). Il permet de récupérer de plusieurs sources HTTP des informations et de les aggréger, proposant même un système d'alertes.
+Prometheus est un outil d'analyse de séries temporelles (~= variables évoluants sur un axe de temps). Il permet de récupérer et d'aggréger des informations de *n* sources HTTP.
 
-Grafana est un outil de visualisation souvent utilisé en conjonction de Prometheus. Il est capable de créer des _dashboards_ à partir de pluseiurs sources de données, donnant alors une visualisation fine des données à l'utilisateur.
+Grafana est un outil de visualisation souvent utilisé en conjonction de Prometheus. Il est capable de créer des _dashboards_ à partir de plusieurs sources de données, offrant alors une visualisation fine des données à l'utilisateur.
 
 > **En pratique**: Déployez l'application spécifiée par `src/Lab2/5-metrics/docker-compose.yml`. Naviguez maintenant vers Grafana à l'adresse **localhost:9417**, puis choississez le _dashboard_ "dapr-sidecar-dashboard" dans _Dashboards -> Browse_. Qu'observez-vous ?
 
-**Indication** : Il vous faudra sûrement réduire la fenêtre d'observation à 5 minutes pour voir une évolution dans les graphiques, ainsi que de lancer quelques commandes
+**Indication** : Il vous faudra sûrement réduire la fenêtre d'observation à 5 minutes pour voir une évolution dans les graphiques, ainsi que de lancer quelques commandes de Charentaises
 
 Solution:
 {% collapsible %}
 ![sample grafana result](/media/lab2/metrics/sample-grafana-result.png)
 
-On observe que les métriques présente sont celles des latences et des composants.
+On observe que les métriques présentes sont celles des latences et des composants.
 
-L'utilisation CPU/RAM n'est elle pas renseignée pour cet exemple. En effet, ces données sont extrapolées à partir des données des [métriques Kubernetes](https://github.com/kubernetes/kubernetes/blob/master/test/instrumentation/testdata/stable-metrics-list.yaml), qui ne sont pas présentes ici pour des raisons évidentes.
+L'utilisation CPU/RAM n'est elle pas renseignée pour cet exemple. En effet, ces données sont extrapolées à partir des [métriques Kubernetes](https://github.com/kubernetes/kubernetes/blob/master/test/instrumentation/testdata/stable-metrics-list.yaml), qui ne sont pas présentes dans un contexte docker-compose
 
 {% endcollapsible %}
 
 ##### Par curiosité : Quelques détails sur Prometheus et docker-compose
 
-Le déploiement de cette section n'est pas expliqué, seulement exécuté. La raison est que faire fonctionner Prometheus avec Dapr sur docker-compose demande d'utiliser une configuration qui n'a pas vraiment d'intérêt dans un scénario de production.
+Le déploiement de cette section n'est pas expliqué à proprement parler, seulement exécuté. La raison à cela est que faire fonctionner Prometheus avec Dapr sur docker-compose demande d'utiliser une configuration particulière qui n'a pas sa place dans un scénario de production.
 
-En effet, les métriques de Dapr sont émises par chaque sidecar sur leur port 9090 (par défaut).
-Dans une utilisation sur Kubernetes ou sans orchestrateur, chaque sidecar émettrait sur le même endpoint sur le port 9090. Il n'y aurait plus qu'alors qu'à renseigner ce endpoint dans Prometheus.
+En effet, les métriques de Dapr sont émises par chaque sidecar sur leur port respectif 9090 (par défaut).
+Dans le contexte d'une utilisation sur Kubernetes ou sans orchestrateur, chaque sidecar émettrait sur le même endpoint sur le port 9090. Il n'y aurait plus qu'alors qu'à renseigner ce endpoint dans Prometheus.
 
-Cependant, la gestion des [docker networks](https://docs.docker.com/network/) dans docker-compose ne permet pas à chaque sidecar d'émettre sur le même endpoint. Afin de restaurer le fonctionnement, il faut alors lister chacun des services dans la configuration de Prometheus.
+Cependant, la gestion des [docker networks](https://docs.docker.com/network/) dans docker-compose ne permet pas à chaque sidecar d'émettre sur le même endpoint. Afin de retrouver le comportement voulu, il faut alors lister explicitement chacun des services dans la configuration de Prometheus.
 
 ```yml
 global:
@@ -176,7 +176,7 @@ scrape_configs:
           ]
 ```
 
-De plus, si ce sont bien les sidecars qui émettent les métriques, ces sidecars partagent une interface avec leur service. Il faut donc donc exposer le port 9090 du service qui permettra d'accéder à ce port sur le sidecar.
+De plus, chaque couple (service, sidecar) partage une même interface réseau,  il faut donc de manière assez contre-intuitive exposer le port 9090 du service pour atteindre ce même port sur le sidecar.
 
 ```diff
   order-processing:
@@ -192,7 +192,7 @@ De plus, si ce sont bien les sidecars qui émettent les métriques, ces sidecars
     network_mode: "service:order-processing"
 ```
 
-Une fois Prometheus configuré il suffit de configurer Grafana pour utiliser Prometheus de cette manière
+Une fois Prometheus configuré, Graphana lui ne pose pas de problème particulier.
 
 ```ini
 [auth]
@@ -208,11 +208,11 @@ org_role = Admin
 
 ### Observer les logs
 
-Le dernier axe de l'observabilité que nous allons aborder est celui des logs. La possibilité de stocker et d'analyser les logs est une partie intégrante de la vie d'une application distribuée – peut être même encore plus que les parties précédentes – et il est courant que chacun ait déjà une solution plus ou moins managée avec laquelle il est familier.
+Le dernier axe de l'observabilité que nous allons aborder est celui des logs. La possibilité de stocker et d'analyser les logs est une partie intégrante de la vie d'une application distribuée – peut être même encore plus que les parties précédentes – et il est courant que chaque développeur ait déjà une solution plus ou moins managée avec laquelle il est familier.
 
 Il n'est donc pas question ici de discuter de la manière dont les logs des services en eux-mêmes sont traités, cette partie va plutôt se concentrer seulement sur **les logs des sidecars**.
 
-Le support utilisé sera une pile ELK (Elastisearch, Logstash, Kibana).
+Le support utilisé pour cet exemple sera une pile ELK (Elasticsearch, Logstash, Kibana). Ce n'est cependant pas la seule solution supportée par Dapr.
 
 > **En pratique**: Déployez l'application spécifiée par `src/Lab2/6-logs/docker-compose.yml`. Naviguez maintenant vers Kibana à l'adresse **localhost:5601**
 
@@ -243,7 +243,7 @@ Par rapport au format de Dapr, il y a de nombreuses variables supplémentaires. 
 
 Il suffit maintenant pour consulter les logs de cliquer à nouveau sur **☰** puis de cliquer sur _Discover_ dans la section _Analytics_.
 
-**Remarque** : On remarque des doublons dans les attributs, suffixés par ".keyword". Il s'aggit d'une spécificité de Elastisearch. Lors de la rencontre d'une chaîne de charactères, Elastisearch va l'indexer à la fois en tant que type _TEXT_, champ dans lequel il est possible de rechercher un sous-texte, et en tant que type _KEYWORD_, non indexé. Il est cependant possible de spécifier quel comportement à adopter pour chaque champ.
+**Remarque** : On remarque des doublons dans les attributs, suffixés par ".keyword". Il s'aggit d'une spécificité de Elasticsearch : Lors de la rencontre d'une chaîne de charactères, Elasticsearch va l'indexer à la fois en tant que type _TEXT_, champ dans lequel il est possible de rechercher un sous-texte, et en tant que type _KEYWORD_, non indexé. Il est cependant possible de spécifier quel comportement adopter pour chacun des champs.
 
 > **En pratique** : Isolez les logs du conteneur **order-processing**. Commentez les attributs
 
