@@ -9,7 +9,9 @@ Le rôle de Dapr est de permettre une sorte de découplage architecturel. Au lie
 
 Plus important : ce découplage permet au développeur d'un service de se **décharger de la responsabilité de l'implémentation**.
 
-Pour illuster cela, nous allons déployer une autre version de l'application présentée qui elle utilise Dapr. Cette application se trouve dans `src/Lab1-1-decoupling/withDapr`.
+Pour illuster cela, nous allons déployer une autre version de l'application présentée qui elle utilise Dapr. 
+
+> **Note** : Cette nouvelle application est située dans le dossier `src/Lab1/1-decoupling-direct`
 
 Cette nouvelle version est exécutable en utilisant la commande suivante:
 

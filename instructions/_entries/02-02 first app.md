@@ -5,7 +5,7 @@ title: Une première application
 parent-id: lab-1
 ---
 
-> **Note** : Les fichiers utilisés dans ce Lab se trouvent dans `src/Lab1/1-decoupling-direct`
+> **Note** : Les fichiers utilisés dans cette première application se trouvent dans le dossier `src/Lab1/1-decoupling-direct`
 
 ### Une première application
 

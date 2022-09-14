@@ -14,7 +14,7 @@ Solution:
 Les trois services communiquent **directement**:
 
 - Le service Python appelle le service Node via un **appel HTTP** de l'URL de son serveur.
-- Le service Node appelle Redis avec la bibliothèque **[ioredis](https://www.npmjs.com/package/ioredis**, qui elle-même encapsule le protocole **RESP**, le protocole spécifique à Redis.
+- Le service Node appelle Redis avec la bibliothèque **[ioredis](https://www.npmjs.com/package/ioredis)**, qui elle-même encapsule le protocole **RESP**, le protocole spécifique à Redis.
   {% endcollapsible %}
 
 Imaginons que cette application est déployée en production depuis quelques temps. Cependant, après quelques mois, un nouveau besoin émerge : il faut migrer le support de stockage d'état de Redis vers MongoDB.
@@ -25,10 +25,10 @@ Solution:
 {% collapsible %}
 L'appel du service Python vers le service Node ne serait pas impacté.
 
-Le code de l'application Nodejs cependant devrait forcément être réécrit.
+Le code de l'application Nodejs devrait cependant être réécrit.
 En effet, pour communiquer avec Redis, le service utilise la bibliothèque **[ioredis](https://www.npmjs.com/package/ioredis)**.
 Cette bibliothèque n'a plus sa place dans le code si l'implémentation change de Redis à MongoDb.
 
-C'est une des conséquence d'un **couplage applicatif fort**
+C'est une des conséquences d'un **couplage applicatif fort**
 
 {% endcollapsible %}
