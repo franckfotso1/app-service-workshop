@@ -107,7 +107,7 @@ L'avantage est que les services "orderprocessing" et "checkout" pourront rester 
 
 {% endcollapsible %}
 
-> **Ouverture** : Une fonctionnalité **en pré-version** est le routage basé sur le contenu (_Content-Based Routing_). Quel est le principe de cette fonctionnalité ? A quel besoin repond t-elle ?
+> **Ouverture** : Sur la documentation, une fonctionnalité mise en avant est le routage basé sur le contenu (_Content-Based Routing_). Quel est le principe de cette fonctionnalité ? A quel besoin repond t-elle ?
 
 {% collapsible %}
 Le routage basé sur le contenu permet à Dapr de choisir l'endpoint HTTP sur lequel sera redirigé le message en fonction du contenu du message.
