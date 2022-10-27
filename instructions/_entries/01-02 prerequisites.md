@@ -12,7 +12,7 @@ Ce workshop va demander les éléments suivants:
 - une souscription Azure
 - Azure CLI (**>= 2.30**) **et son extension** pour Containers Apps
 - [Docker](https://www.docker.com/) et [docker-compose](https://docs.docker.com/compose/install/)
-- [Les sources du workshop](https://github.com/SoTrx/dapr-build-workshop/archive/refs/tags/v0.2.0.zip)
+- [Les sources du workshop](https://aka.ms/daprartifacts) (Si le téléchargement ne fonctionne pas en cliquant, copiez l'URL du lien et collez là dans un nouvel onglet)
 
 ### Installer Azure CLI et l'extension pour Azure Container Apps
 
