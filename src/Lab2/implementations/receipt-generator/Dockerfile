@@ -1,7 +1,7 @@
 ####################################################################################################
 ## Builder
 ####################################################################################################
-FROM rust:latest AS builder
+FROM rust:1.64.0 AS builder
 
 RUN apt update && apt install -y musl-tools musl-dev pkg-config libssl-dev binutils upx-ucl
 # We're targeting alpine, which is using musl instead of the glibc
