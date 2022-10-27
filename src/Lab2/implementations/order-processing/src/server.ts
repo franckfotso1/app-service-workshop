@@ -1,12 +1,9 @@
 // VS Code : Deno initialize workspace
 import "https://deno.land/x/dotenv@v3.1.0/load.ts";
-import * as log from "https://deno.land/std@0.117.0/log/mod.ts";
-// Requires deno 1.18.2 to run
-// See https://github.com/keroxp/servest/issues/170
-import { createApp } from "https://deno.land/x/servest@v1.3.4/mod.ts";
+import * as log from "https://deno.land/std@0.160.0/log/mod.ts";
+import { serve } from "https://deno.land/std@0.160.0/http/server.ts";
 
 const PORT = Number(Deno.env.get("PORT") ?? 8080);
-const app = createApp();
 
 // TODO: Fill in which service to call
 const daprPort = Deno.env.get("DAPR_HTTP_PORT") || 3500;
@@ -93,7 +90,10 @@ async function callService(
   }
 }
 
-app.post("/process-order", async (req) => {
+async function handleRequest(req: Request): Promise<Response> {
+  if (req.method !== "POST" || !req.url.endsWith("process-order"))
+    return new Response("Route not found !", { status: 404 });
+
   const bodyJson = (await req.json()).data as { type: string; qty: string };
   // qty is a positive integer
   const isQtyValid =
@@ -108,19 +108,21 @@ app.post("/process-order", async (req) => {
   if (!isTypeValid || !isQtyValid) {
     log.error("Invalid payload :");
     log.error(JSON.stringify(bodyJson));
-    req.respond({
-      status: 400,
-      body: "Invalid arguments provided. Both qty and type must be provided, qty must be a positive integer",
-    });
-    return;
+    return new Response(
+      "Invalid arguments provided. Both qty and type must be provided, qty must be a positive integer",
+      { status: 400 }
+    );
   }
+
+  let res: Response;
   try {
     await processOrder(bodyJson.type, Number(bodyJson.qty));
-    req.respond({ status: 204 });
+    res = new Response(undefined, { status: 204 });
   } catch (e) {
-    req.respond({ status: 500, body: e.message });
+    res = new Response(e.message, { status: 500 });
   }
-});
+  return res;
+}
 
-app.listen({ port: PORT });
 log.info(`Server running at localhost:${PORT}`);
+await serve(handleRequest, { port: PORT });
