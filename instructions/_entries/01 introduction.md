@@ -1,7 +1,7 @@
 ---
 sectionid: intro
 sectionclass: h1
-title: Workshop Dapr
+title: Workshop Daprs
 type: nocount
 is-parent: yes
 ---
