@@ -10,11 +10,13 @@ parent-id: intro
 Ce workshop va demander les éléments suivants:
 
 - une souscription Azure
-- Azure CLI (**>= 2.30**) **et son extension** pour Containers Apps
+- Azure CLI (**>= 2.30**)
+- [VS Code](https://code.visualstudio.com/) ou équivalent
+- [un compte Github](https://github.com/join)
 - [Docker](https://www.docker.com/) et [docker-compose](https://docs.docker.com/compose/install/)
 - [Les sources du workshop](https://aka.ms/daprartifacts) (Si le téléchargement ne fonctionne pas en cliquant, copiez l'URL du lien et collez là dans un nouvel onglet)
 
-### Installer Azure CLI et l'extension pour Azure Container Apps
+### Installer Azure CLI
 
 #### Si CLI non installée : Installer le CLI
 
@@ -28,18 +30,20 @@ az version
 az upgrade
 ```
 
-#### Installer l'extension Azure Container Apps
-
-Une fois la CLI installé, installez l'extension de la CLI pour Azure Container Apps
-
-```bash
-az extension add -n containerapp
-```
-
 #### Se connecter à sa souscription
 
 Puis enfin connectez vous à votre souscription à l'aide de la commande suivante
 
+{% collapsible %}
+
 ```bash
 az login
+# choisir la souscription 
+az account set –s <SubscriptionID> 
+# vérifier la souscription
+az account show
 ```
+
+connectez vous au portail : to <https://portal.azure.com>
+
+{% endcollapsible %}  
