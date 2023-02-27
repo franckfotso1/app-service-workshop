@@ -13,7 +13,7 @@ Ce workshop va demander les éléments suivants:
 - Azure CLI (**>= 2.30**)
 - [VS Code](https://code.visualstudio.com/) ou équivalent
 - [un compte Github](https://github.com/join)
-- [Docker](https://www.docker.com/) et [docker-compose](https://docs.docker.com/compose/install/)
+- [Docker](https://www.docker.com/) et [docker-compose](https://docs.docker.com/compose/install 
 - [Les sources du workshop](https://aka.ms/daprartifacts) (Si le téléchargement ne fonctionne pas en cliquant, copiez l'URL du lien et collez là dans un nouvel onglet)
 
 ### Installer Azure CLI
