@@ -18,13 +18,15 @@ Examinons quelques paramètres dont vous avez besoin pour créer une application
 - la pile d'exécution : langage, version du SDK
 - le système d’exploitation : Linux ou Windows
 - le plan App Service : l'application doit etre associée à un plan App Service pour établir les ressources et les capacités disponibles.
+  > D'autres applications peuvent également etre associés au meme plan donc utiliser les meme ressources.
 
 Définissons quelques variables d'environnement :
 
 ``` bash
 $RESOURCE_GROUP = Franck-rg         # name of the resource group
 $LOCATION = francecentral           # the azure region where resources are hosted
-$APP_NAME = webapp-workshop         # name of the Web application
+$APP_NAME_1 = webapp-workshop-1     # name of the Web application 1
+$APP_NAME_2 = webapp-workshop-2     # name of the Web application 2
 $APP_SERVICE_PLAN = workshop-plan   # name of the App plan
 $APP_DB_SERVER = appdbserver57 # name of the database server,respect naming convention or generate random
 $APP_DATABASE = appdb576       # name of the database
@@ -32,6 +34,7 @@ $SERVER_ADMIN_USER = user123  # bad practice
 $PASSWORD = SampleWebApp456@7 # bad practice
 $START_IP = "0.0.0.0"
 $END_IP = "0.0.0.0"
+$GIT_REPO = https://github.com/Azure-Samples/php-docs-hello-world # Replace the following URL with your own public GitHub repo URL if you have one
 
 ```
 
@@ -44,23 +47,50 @@ az group create --name $RESOURCE_GROUP --location "$LOCATION"
 
 {% endcollapsible %}
 
-##### Créez un [plan AppService](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement`)**
+##### Créez un [plan AppService](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement && et auto-scale`)**
+
+> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan. Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**
 
 {% collapsible %}
 
 ```bash
-az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --sku S1
+# Create a standard app service plan Linux with 4/four Linux workers
+az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 4 --sku S1
 ```
 
 {% endcollapsible %}
 
-##### Créez l'application web
+##### hébergez l'application web 1 - méthode 1
+
+Exécutez la commande suivante pour cloner le référentiel de l’exemple d’application sur votre répertoire
+
+```bash
+git clone https://github.com/Azure-Samples/php-docs-hello-world
+cd php-docs-hello-world
+```
 
 {% collapsible %}
 
 ```bash
+# The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
+# Create a webapp and deploy code from a local workspace to the app. The command is required to run from the folder where the code is present
+az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
+# Deploy code from a public GitHub repository. 
+az webapp deployment source config --name $APP_NAME_1 --resource-group $RESOURCE_GROUP \
+--repo-url $GIT_REPO --branch master --manual-integration
+```
+
+{% endcollapsible %}
+
+##### hébergez l'application web 2 - méthode 2
+
+{% collapsible %}
+
+```bash
+
 #The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
-az webapp create -g $RESOURCE_GROUP -n $APP_NAME -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
+# Create a webapp, you will then need to deploy code to it
+az webapp create -g $RESOURCE_GROUP -n $APP_NAME_2 -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
 ```
 
 {% endcollapsible %}
@@ -68,7 +98,8 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME -p  $APP_SERVICE_PLAN -r "PHP:8
 Une fois le déploiment effectué, Sélectionnez **Accéder à la ressource**. Pour avoir un apercu de l'application web, cliquez sur l'URL en haut à droite du portail ou celui renvoyé par la commande suivante :
 
 ```bash
-az webapp show -n $APP_NAME -g $RESOURCE_GROUP --query "defaultHostName"
+az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
+az webapp show -n $APP_NAME_2 -g $RESOURCE_GROUP --query "defaultHostName"
 ```
 
 {% collapsible %}
@@ -102,45 +133,6 @@ echo "Creating $database"
 az sql db create --server $APP_DB_SERVER \
  --resource-group $RESOURCE_GROUP --name $APP_DATABASE \
 --service-objective S0
-```
-
-##### Connectez la web app à la BD
-
-```bash
-# Get connection string for the database
-connstring=$(az sql db show-connection-string --name $APP_DATABASE --server $APP_DB_SERVER \
---client ado.net --output tsv)
-
-# Assign the connection string to an app setting in the web app
-az webapp config connection-string set \
-    -n $APP_NAME -g $RESOURCE_GROUP \
-    --settings "SQLSRV_CONNSTR=$connstring" \
-    --connection-string-type SQLAzure
-
-## configure app parameters
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_HOST=appdbserver57.database.windows.net ## to move
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_USERNAME=$SERVER_ADMIN_USER
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_PASSWORD=$PASSWORD
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_DATABASE=$APP_DATABASE 
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings APP_DEBUG=true 
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings APP_KEY=base64:Dsz40HWwbCqnq0oxMsjq7fItmKIeBfCBGORfspaI1Kw=
 ```
 
 > Une bonne pratique consiste notamment à automatiser le provisionement de son infrastructure à laide doutils Iac comme [Bicep](https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-bicep) ou [Terraform](https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-terraform).
