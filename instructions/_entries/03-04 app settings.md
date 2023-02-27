@@ -1,179 +1,68 @@
 ---
 sectionid: lab2-bindings
 sectionclass: h2
-title: Bindings
+title: Définir les paramètres d'application
 parent-id: lab-2
 ---
 
-### Généralités
 
-> **Question généraliste** : Qu'est-ce qu'une architecture orientée services ? Qu'est-ce qu'une architecture orientée événements ? Quelle est la différence entre les deux ?
+### Paramètres d'application
 
-Solution:
-{%collapsible %}
-**/!\ Approximations /!\\**
+#### paramètres applications
 
-Une architetcure orientée services (SOA) est une architecture où une tâche à accomplir est répartie entre plusieurs programmes (services) s'appelant les uns les autres. Selon la part de responsabilité de chaque service, on peut les appeler microservices.
+Dans App Service, les paramètres d’application sont des variables transmises comme des variables d’environnement au code de l’application.
+Vous pouvez accéder aux paramètres d’application à partir de la page de gestion de votre application, en sélectionnant **Configuration > Paramètres d’application**
 
-Une architecture orientée événement (EDA) est une architecture où la communication entre les composantes d'une application (qui peuvent être des services) est assurée au travers d'événements. Ces événements transitent généralement par des **bus d'événements**.
+> Les développeurs ASP.NET et ASP.NET Core définissent les paramètres de l'application dans App Service comme ils le font avec <appSettings> dans Web.config ou appsettings.json, mais les valeurs dans App Service remplacent celles du fichier Web.config ou appsettings.json. Vous pouvez conserver les paramètres de développement (par exemple le mot de passe MySQL local) dans Web.config ou appsettings.json, mais garder les secrets de production (par exemple le mot de passe de la base de données MySQL Azure) en sécurité dans App Service. Le même code utilise vos paramètres de développement lorsque vous déboguez localement, et utilise vos secrets de production lorsque vous les déployez sur Azure. Une fois stockés, les paramètres d’application sont toujours chiffrés (chiffrement au repos)
 
-Deux différences importantes entre les deux :
+##### Connectez la web app à la BD**
 
-- **Couplage**
-  - En SOA les services sont couplés plus ou moins fortements (URLs, files de messages...)
-  - En EDA le couplage est lâche, ceux publiant des événements ne savent pas qui les écoutent et réciproquement
-- **Cohérence**:
-  - En SOA quand un service A appelle un Service B, l'état de Service A ne change qu'après le succès de l'appel (ex : HTTP 200)
-  - En EDA quand un service A publie un événement et qu'un service B l'écoute, l'état de service A a déjà changé au moment de la publication, puisqu'il n'y a pas de retour du service B
+```bash
+# Get connection string for the database
+connstring=$(az sql db show-connection-string --name $APP_DATABASE --server $APP_DB_SERVER \
+--client ado.net --output tsv)
 
-Nous avons vu deux manières de pouvoir approcher la communication avec les deux derniers exercices, il reste maintenant la communication externe.
+# Assign the connection string to an app setting in the web app
+az webapp config connection-string set \
+    -n $APP_NAME -g $RESOURCE_GROUP \
+    --settings "SQLSRV_CONNSTR=$connstring" \
+    --connection-string-type SQLAzure
 
-{% endcollapsible %}
+## configure app parameters
+az webapp config appsettings set --name $APP_NAME \
+--resource-group $RESOURCE_GROUP \
+--settings DB_HOST=appdbserver57.database.windows.net ## to move
 
-### Dapr
+az webapp config appsettings set --name $APP_NAME \
+--resource-group $RESOURCE_GROUP \
+--settings DB_USERNAME=$SERVER_ADMIN_USER
 
-A l'aide de la [documentation](https://docs.dapr.io/developing-applications/building-blocks/bindings/bindings-overview/), nous allons nous intéresser à ces questions
+az webapp config appsettings set --name $APP_NAME \
+--resource-group $RESOURCE_GROUP \
+--settings DB_PASSWORD=$PASSWORD
 
-> **Question** : Quelle est l'utilité d'un _binding_ ?
+az webapp config appsettings set --name $APP_NAME \
+--resource-group $RESOURCE_GROUP \
+--settings DB_DATABASE=$APP_DATABASE 
 
-Solution:
-{%collapsible %}
+az webapp config appsettings set --name $APP_NAME \
+--resource-group $RESOURCE_GROUP \
+--settings APP_DEBUG=true 
 
-Un binding est simplement un moyen d'intéragir avec un système en dehors de notre périmètre applicatif.
-
-Le principe est simplement de lier un nom à un système externe et de pouvoir appeller ce nom dans les services de l'application.
-
-L'avantage est que cet appel est réalisé de manière transparente, le service appelant ne sait pas (et ne devrait pas savoir) que le système appelé par le binding est externe.
-
-{% endcollapsible %}
-
-> **Question** : Quelle est la différence entre un _input binding_ et un _output binding_ ? En quoi un _output binding_ est-il différent d'une invocation de service ?
-
-Solution:
-
-{%collapsible %}
-##### Input binding
-
-Un _input binding_ permet de réagir à un changement d'état d'un système externe.
-
-Un exemple serait de réagir à un nouveau message sur une file de message située sur un autre fournisseur de Cloud
-
-##### Output binding
-
-Un _output binding_ permet de faire réagir un système externe à un changement d'état de notre application
-
-Un exemple serait de définir un binding vers un fournisseur de mail. Au lieu d'avoir un service dédié dans l'application, ce binding pourrait être appelé par tous les services en ayant besoin.
-L'avantage étant que si le fournisseur de mail vient à changer, seulement le binding sera à mettre à jour, les services resteront inchangés.
-
-#### Différence output binding / invocation de service
-
-Une invocation de service est une invocation **synchrone** d'un service **interne**. Ces services peuvent être découverts par [discovery](Une invocation de service est une invocation **synchrone** d'un service **interne**). L'appel peut être sécurisé/authentifié automatiquement par l'utilisation de [Sentry](https://docs.dapr.io/concepts/dapr-services/sentry/)
-
-Un output binding est une invocation **sychrone ou asynchrone** d'un service **externe**. Une partie de la sécurisation des bindings sera forcément laissée au système externe.
-
-{% endcollapsible %}
-
-### En application
-
-> **Note** : La nouvelle version de l'application se trouve désormais dans `src/Lab2/3-bindings`
-
-
-Revenons une fois encore à notre fil rouge. Cette fois-ci, deux nouvelles demandes:
-
-- Il faut maintenant pouvoir s'interfacer avec le système d'informations du fournisseur qui réapprovisionne notre stock. Le service **stock-manager** a un endpoint HTTP POST specifique _/newproduct_
-
-Pour simuler ça, nous pouvons utiliser une tâche CRON. S'il est possible de l'utiliser directement dans l'application, nous pouvons utiliser un binding Dapr spécifique pour ça.
-
-- La maison mère de l'entreprise dispose d'un service de mailing dedié. Le service **receipt-generator** doit être capable d'envoyer des mails aux clients pour confirmer les pré-commandes. Le service de mailing est disponible à l'URL suivante :
-
-```shell
-# Le paramètre "sig" de l'URL est volontairement faux, demandez la correction le jour du workshop
-https://prod-116.westeurope.logic.azure.com/workflows/0ceb8e48b2254276923acaf348229260/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lTON4ZTisB1iGA-6rJAlkoC8miHB9kyJp3No
+az webapp config appsettings set --name $APP_NAME \
+--resource-group $RESOURCE_GROUP \
+--settings APP_KEY=base64:Dsz40HWwbCqnq0oxMsjq7fItmKIeBfCBGORfspaI1Kw=  ## to move or generate
 ```
 
-Comme les deux systèmes avec lesquels nous devons intéragir sont externes, nous choississons d'utiliser des bindings.
+#### paramères généraux (ARR affinity, SDK version, Command start)
 
-La cible est donc la suivante :
+Le cycle de vie de l’application Laravel commence dans le répertoire /public. Le conteneur PHP 8.0 par défaut pour App Service utilise Nginx, qui démarre dans le répertoire racine de l’application. Pour changer la racine du site, vous devez modifier le fichier de configuration Nginx dans le conteneur PHP 8.0 (/etc/nginx/sites-available/default)
 
-![Step 3](/media/lab2/bindings/app-step-3-bindings.png)
+Dans la page App Service :
+Dans le menu de gauche, sélectionnez Configuration.
 
-> **Question** : Quel binding utiliser pour le premier besoin ? Quelle est l'impact du nom du endpoint HTTP POST de reception de produit (**newproduct**) sur le binding ?
+Sélectionnez l’onglet Paramètres généraux.
 
-Solution :
-{%collapsible %}
-Etant donné que nous voulons **réagir à un événement lancé par un système externe**, nous devons utiliser un _input binding_.
-
-Pour simuler une tâche CRON, nous pouvons utiliser le [binding associé](https://docs.dapr.io/reference/components-reference/supported-bindings/cron/)
-
-Le endpoint HTTP s'appelant newproduct, la propriété `metadata.name` du binding devra également s'appeller newproduct.
-
-{% endcollapsible %}
-
-> **Question** : Quel binding utiliser pour le deuxième besoin ?
-
-Solution :
-{%collapsible %}
-Etant donné que nous voulons **faire parvenir un événement à système externe**, nous devons utiliser un _output binding_.
-
-Comme le système utilisé par le service externe est une simple requête HTTP, nous pouvons utiliser le [binding HTTP](https://docs.dapr.io/reference/components-reference/supported-bindings/http/)
-
-{% endcollapsible %}
-
-> **En pratique** : Mettez en place les deux bindings et vérifiez leur fonctionnement. Pour vérifier que le service de mailing fonctionne, vous pouvez remplir la variable d'environnement **MAIL_TO** du service **receipt-generator** avec un email valide. L'expediteur du mail sera une adresse gmail avec l'objet "Validated Command"
-
-**Important**: Le nom du binding devra être `mail`, car c'est celui qui est appelé dans le code de **receipt-generator**
-
-Une trace indiquant le succès devrait avoir cette forme :
-
-![Expected result](/media/lab2/bindings/expected-result.png)
-
-Solution :
-{%collapsible %}
-
-##### Output binding : mail
-
-L'output binding à utiliser pour le mail est donc un simple binding http. Il suffit donc de créer un nouveau fichier yaml dans le dossier `src/Lab2/3-bindings/components`.
-
-```yml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  # Important : Comme indiqué plus haut, le nom du binding doit être "mail"
-  name: mail
-spec:
-  type: bindings.http
-  version: v1
-  metadata:
-    # On utilise l'URL d'invocation du service externe (attention à la clef)
-    - name: url
-      value: https://prod-116.westeurope.logic.azure.com/workflows/0ceb8e48b2254276923acaf348229260/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=<clef-api>
-```
-
-##### Input binding : CRON
-
-L'input binding à utiliser est un CRON.
-On crée donc encore une fois un nouveau fichier yaml dans le dossier `src/Lab2/3-bindings/components`.
-
-```yml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  # Important : Comme indiqué ci-dessus, le nom du binding correspondra au
-  # nom de la méthode appelée sur les services
-  name: newproduct
-spec:
-  type: bindings.cron
-  version: v1
-  metadata:
-    # La valeur du CRON n'a pas d'importance
-    - name: schedule
-      value: "@every 15s"
-```
-
-{% endcollapsible %}
-
-### Par curiosité: Le "système externe"
-
-Le système "externe" présenté est en fait la [LogicApp](https://docs.microsoft.com/fr-fr/azure/logic-apps/logic-apps-overview) suivante:
-
-![Mailing](/media/lab2/bindings/logic-app-mailing.png)
+Capture d’écran montrant comment ouvrir l’onglet Paramètres généraux dans la page de configuration d’App Service.
+Sous l’onglet Paramètres généraux :
+Dans la zone **Commande de démarrage**, entrez la commande suivante : cp /home/site/wwwroot/default /etc/nginx/sites-available/default && service nginx reload
