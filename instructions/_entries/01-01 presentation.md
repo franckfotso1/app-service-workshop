@@ -9,7 +9,7 @@ parent-id: intro
 
 Pourquoi App Service ?
 
-C’est un service Paas complètement managé pour les développeurs offrant cette liste non exhaustive de fonctionnalités :
+C’est un service **Paas complètement managé** pour les développeurs offrant cette liste non exhaustive de fonctionnalités :
 
 - **Plusieurs langages et frameworks** : offre une prise en charge pour .NET, Java, Ruby, Node.js, PHP, ou Python.
 - **Mise à l’échelle globale avec une haute disponibilité** : héberge vos applications n’importe où et bénéficiez de la haute disponibilité de son SLA

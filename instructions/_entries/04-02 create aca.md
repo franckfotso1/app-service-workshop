@@ -1,24 +1,18 @@
 ---
 sectionid: lab3-create-aca
 sectionclass: h2
-title: Créer un nouvel environnement ACA
+title: Observabilité
 parent-id: lab-3
 ---
 
-Pour créer votre prmière application Container Apps nous allons utiliser la CLI, plus particulièrement une des commandes de l'extension qui a été installée en pré-requis `az containerapp create`.
-
-Mais avant de créer une application, il faut tout d'abord créer un nouvel environnement Container Apps.
-
-**Explication**:
-Un **environnement** Containers Apps est un groupe dans lequel sont publiés des services. Tous les services publiés dans le même environement partage le même réseau (vNet), le même aggrégateur de logs (workspace Logs Analytics) et éventuellement les mêmes ressources de calcul sous-jacentes (si l'orchestrateur les affectes sur la même machine).
-Pour que deux services puissent communiquer avec Dapr, ils doivent partager le même environnement.
-![Aca env explanation](/media/lab3/create-aca-env-explanation.png)
-
-Pour créer un nouvel environnement, les commandes suivantes peuvent être utilisée :
+### Visualisez et collecter les logs de l'application (Tbd)
 
 ```bash
-az group create -n <Nom_ressource_group>  --location westeurope
-az containerapp env create -n <Nom_env> -g <Nom_ressource_group> --location westeurope
-```
+# Enable all logging options for the Web App
+az webapp log config --name $APP_NAME --resource-group $RESOURCE_GROUP --application-logging azureblobstorage --detailed-error-messages true --failed-request-tracing true --web-server-logging filesystem
 
-Notre environnement étant crée, il ne nous reste plus qu'à créer les services à l'intérieur !
+# Create a Web Server Log
+curl -s -L $url/404
+
+# Download the log files for review
+az webapp log download --name $webapp --resource-group $resourceGroup
