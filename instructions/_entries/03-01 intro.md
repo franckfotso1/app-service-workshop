@@ -5,11 +5,11 @@ title: Contexte
 parent-id: lab-2
 ---
 
-Dans ce deuxième Lab, nous allons voir d'autres fonctionnalités ajoutées par AppService, à travers une nouvelle application qui évoluera au fur et à mesure des exercices. Cette fois il s'agira d'une application web que l'on va connecter à une base de données
+Dans ce deuxième Lab, nous allons voir d'autres fonctionnalités ajoutées par AppService, à travers une nouvelle application qui évoluera au fur et à mesure des exercices. Cette fois il s'agira d'une application NodeJs sécurisée connectée à une base de données Mongo.
 
-Cette nouvelle application va permettre de précommander un produit très spécifique. Elle a également une particularité, tous ses services sont codés dans des langages différents.  
+Il faut cependant noter que le but de cet exercice n'est pas de s'intéresser au code de l'application mais plutôt de voir comment AppService nous fournit un certains nombre de briques intéressantes pour héberger notre code. A la fin de ce lab, vous disposerez d'une application Express s'executant sur App Service sur Linux. (voir diagramme ci-dessous)
 
-Il faut cependant noter que le but de cet exercice n'est pas de s'intéresser au code des services mais plutôt de voir comment on peut obtenir un niveau de service équivalent indépendamment des langages utilisés.
+![App Lab 2 overview](/media/lab1/mongo_app_service.png)
 
 Nous allons dans ce lab 2 :
 

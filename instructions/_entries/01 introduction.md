@@ -9,6 +9,6 @@ is-parent: yes
 
 Ce document est un support pour une **introduction à AppService et ses concepts**. Au travers de différentes activités, le but sera de découvrir les fonctionnalités de ce service.
 
-If you find any issue or have any remark, don’t hesitate to open an issue on the dedicated repository.
+Si vous trouvez un problème ou avez une remarque, n'hésitez pas à ouvrir une issue sur le référentiel dédié.
 
-> This workshop is **NOT** an official resource from the product group so it may not be up to date with the vary last features but we are working to do so. Don’t hesitate to read the official documentation to [know more about App Service](https://learn.microsoft.com/en-us/azure/app-service/).
+> Cet atelier **n'est PAS** une ressource officielle du groupe de produits, il n'est donc peut-être pas à jour avec les dernières fonctionnalités, mais nous travaillons pour le faire. N'hésitez pas à lire la documentation officielle [pour en savoir plus sur App Service](https://learn.microsoft.com/en-us/azure/app-service/).

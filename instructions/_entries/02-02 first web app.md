@@ -13,32 +13,33 @@ parent-id: lab-1
 
 Examinons quelques paramètres dont vous avez besoin pour créer une application App Service :
 
-- le nom : le nom de l’application doit être unique
-- Publier : App Service publie votre application sous forme de code ou conteneur Docker
-- la pile d'exécution : langage, version du SDK
-- le système d’exploitation : Linux ou Windows
-- le plan App Service : l'application doit etre associée à un plan App Service pour établir les ressources et les capacités disponibles.
-  > D'autres applications peuvent également etre associés au meme plan donc utiliser les meme ressources.
+- **le nom** : le nom de l’application doit être unique globallement
+- **Publier** : App Service publie votre application sous forme de code ou conteneur Docker
+- **la pile d'exécution** : langage, version du SDK
+- **le système d’exploitation** : Linux ou Windows
+- **le plan App Service** : l'application doit etre associée à un plan App Service pour établir les ressources et les capacités disponibles.
+  > D'autres applications peuvent également etre associés au **meme** plan donc utiliser les meme ressources.
 
 Définissons quelques variables d'environnement :
 
 ``` bash
+
 $RESOURCE_GROUP = Franck-rg         # name of the resource group
 $LOCATION = francecentral           # the azure region where resources are hosted
 $APP_NAME_1 = webapp-workshop-1     # name of the Web application 1
 $APP_NAME_2 = webapp-workshop-2     # name of the Web application 2
 $APP_SERVICE_PLAN = workshop-plan   # name of the App plan
-$APP_DB_SERVER = appdbserver57 # name of the database server,respect naming convention or generate random
-$APP_DATABASE = appdb576       # name of the database
-$SERVER_ADMIN_USER = user123  # bad practice
-$PASSWORD = SampleWebApp456@7 # bad practice
+$APP_DB_SERVER = appdbserver57      # name of the database server,respect naming convention or generate random
+$APP_DATABASE = appdb576            # name of the database
+$SERVER_ADMIN_USER = user123        # bad practice
+$PASSWORD = SampleWebApp456@7       # bad practice
 $START_IP = "0.0.0.0"
 $END_IP = "0.0.0.0"
 $GIT_REPO = https://github.com/Azure-Samples/php-docs-hello-world # Replace the following URL with your own public GitHub repo URL if you have one
 
 ```
 
-**Avec ces variables, créez un groupe de ressources relatif à votre application**
+> **Avec ces variables, créez un groupe de ressources relatif à votre application**
 {% collapsible %}
 
 ```bash
@@ -47,9 +48,12 @@ az group create --name $RESOURCE_GROUP --location "$LOCATION"
 
 {% endcollapsible %}
 
-##### Créez un [plan AppService](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement && et auto-scale`)**
+> ##### Créez un [plan AppService](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement && et auto-scale`)**
 
+---
 > le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan. Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**
+
+Solution :
 
 {% collapsible %}
 
@@ -60,14 +64,19 @@ az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --n
 
 {% endcollapsible %}
 
-##### hébergez l'application web 1 - méthode 1
+##### hébergez l'application web 1 en l'associant au plan crée - méthode 1
 
-Exécutez la commande suivante pour cloner le référentiel de l’exemple d’application sur votre répertoire
+> Exécutez la commande suivante pour cloner le référentiel de l’exemple d’application sur votre répertoire
 
 ```bash
 git clone https://github.com/Azure-Samples/php-docs-hello-world
 cd php-docs-hello-world
+# make it run locallly
+php -S localhost:8080
+curl http://localhost:8080
 ```
+
+Solution :
 
 {% collapsible %}
 
@@ -75,19 +84,24 @@ cd php-docs-hello-world
 # The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
 # Create a webapp and deploy code from a local workspace to the app. The command is required to run from the folder where the code is present
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
+az webapp up -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP:8.0"
+```
+
+{% endcollapsible %}
+
+> Exécutez la commande suivante pour déployer le code de l'application depuis le repo Github défini dans les variables (si pas az webapp up)
+
+```bash
 # Deploy code from a public GitHub repository. 
 az webapp deployment source config --name $APP_NAME_1 --resource-group $RESOURCE_GROUP \
 --repo-url $GIT_REPO --branch master --manual-integration
 ```
-
-{% endcollapsible %}
 
 ##### hébergez l'application web 2 - méthode 2
 
 {% collapsible %}
 
 ```bash
-
 #The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
 # Create a webapp, you will then need to deploy code to it
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME_2 -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
