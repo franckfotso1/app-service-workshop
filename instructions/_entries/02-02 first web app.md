@@ -57,9 +57,7 @@ az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --n
 {% endcollapsible %}
 
 ---
-> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan.
-
-Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**.
+> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan. Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**.
 Il existe plusieurs niveaux tarifaires pour chaque catégorie, plus le niveau est elevé et plus de fonctionnalités sont disponibles.  
 ![ASP tier ](/media/lab1/tier_app_service_plan.png)
 
@@ -101,7 +99,7 @@ Solution :
 
 {% endcollapsible %}
 
-> NB : App Service prend en charge différentes infrastructures de développement, telles qu’ASP.NET, ASP classique, Node.js, PHP et Python. Les infrastructures et les composants d’exécution fournis par la plateforme sont régulièrement **mis à jour** pour répondre aux exigences de sécurité et de conformité.
+> NB : App Service prend en charge différentes infrastructures de développement, telles qu’ASP.NET, Node.js, PHP et Python, etc. Les infrastructures et les composants d’exécution fournis par la plateforme sont régulièrement **mis à jour** pour répondre aux exigences de sécurité et de conformité.
 
 #### Exécutez la commande suivante pour déployer manuellement le code de l'application depuis le repo Github
 
