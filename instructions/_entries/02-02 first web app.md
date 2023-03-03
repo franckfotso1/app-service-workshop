@@ -29,12 +29,8 @@ $LOCATION = francecentral           # the azure region where resources are hoste
 $APP_NAME_1 = php_app               # name of the PHP web app
 $APP_NAME_2 = donet_app             # name of the ASP.NET web app 
 $APP_SERVICE_PLAN = my-asp          # name of the Linux App Service Plan
-$APP_DB_SERVER = appdbserver57      # name of the database server,respect naming convention or generate random
-$APP_DATABASE = appdb576            # name of the database
-$SERVER_ADMIN_USER = user123        # bad practice
-$PASSWORD = SampleWebApp456@7       # bad practice
 $GIT_REPO_1 = https://github.com/Azure-Samples/php-docs-hello-world # Replace the following URL with your own public GitHub repo URL if you have one
-$GIT_REPO_2 = https://github.com/Azure-Samples/app-service-web-dotnet-get-started
+$GIT_REPO_2 = https://github.com/Azure-Samples/dotnet-core-api
 ```
 
 #### Avec ces variables, créez un groupe de ressources relatif à votre application
@@ -95,16 +91,13 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP
 
 {% endcollapsible %}
 
-#### Créez une 2e Web App sur ce plan App Service en spécifiant le runtime ASPNET
+#### Créez une 2e Web App sur ce plan App Service en spécifiant le runtime .NET
 
 Solution :
 
 {% collapsible %}
 
-```bash
-# create the web app 
-az webapp create -g $RESOURCE_GROUP -n $APP_NAME_2 -p  $APP_SERVICE_PLAN -r "DOTNETCORE:6.0"
-```
+![Web app creation](/media/lab1/web_app_2_creation.png)
 
 {% endcollapsible %}
 
