@@ -5,7 +5,7 @@ title: Avant-propos
 parent-id: intro
 ---
 
-[**Azure App Service**](https://learn.microsoft.com/en-us/azure/app-service/) est un service pour l’hébergement d’applications web, d’API REST, et de backends mobiles. Il offre une mise à l’échelle automatique, une gestion automatisée, et une sécurité pour vos différentes applications s'exécutant dans des environnements Windows ou Linux.
+[Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/) est un service pour l’hébergement d’applications web, d’API REST, et de backends mobiles. Il offre une mise à l’échelle automatique, une gestion automatisée, et une sécurité pour vos différentes applications s'exécutant dans des environnements Windows ou Linux.
 
 Pourquoi App Service ?
 

@@ -49,12 +49,6 @@ az group create --name $RESOURCE_GROUP --location "$LOCATION"
 
 #### Créez un [plan AppService] Linux (https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement && et mise à l'echelle automatique`)
 
----
-> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan.
- Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**.
- Il existe plusieurs niveaux tarifaires pour chaque catégorie, plus le niveau est elevé et plus de fonctionnalités sont disponibles.  
- ![ASP tier ](/media/lab1/tier_app_service_plan.png)
-
 Solution :
 
 {% collapsible %}
@@ -66,9 +60,17 @@ az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --n
 
 {% endcollapsible %}
 
+---
+> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan.
+
+Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**.
+Il existe plusieurs niveaux tarifaires pour chaque catégorie, plus le niveau est elevé et plus de fonctionnalités sont disponibles.  
+![ASP tier ](/media/lab1/tier_app_service_plan.png)
+
 #### Lancer l'application php en local
 
 ```bash
+# clone the repo
 git clone https://github.com/Azure-Samples/php-docs-hello-world
 cd php-docs-hello-world
 # make it run locallly
@@ -104,18 +106,22 @@ Solution :
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME_2 -p  $APP_SERVICE_PLAN -r "DOTNETCORE:6.0"
 ```
 
-> The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
-
 {% endcollapsible %}
 
-> App Service prend en charge différentes infrastructures de développement, telles qu’ASP.NET, ASP classique, Node.js, PHP et Python. Les infrastructures et les composants d’exécution fournis par la plateforme sont régulièrement mis à jour pour répondre aux exigences de sécurité et de conformité.
+> NB : App Service prend en charge différentes infrastructures de développement, telles qu’ASP.NET, ASP classique, Node.js, PHP et Python. Les infrastructures et les composants d’exécution fournis par la plateforme sont régulièrement **mis à jour** pour répondre aux exigences de sécurité et de conformité.
 
 #### Exécutez la commande suivante pour déployer manuellement le code de l'application depuis le repo Github
 
 ```bash
 # Deploy code from a public GitHub repository. 
 az webapp deployment source config --name $APP_NAME_1 --resource-group $RESOURCE_GROUP \
---repo-url $GIT_REPO --branch master --manual-integration
+--repo-url $GIT_REPO_2 --branch master --manual-integration
+```
+
+```bash
+# Deploy code from a public GitHub repository. 
+az webapp deployment source config --name $APP_NAME_2 --resource-group $RESOURCE_GROUP \
+--repo-url $GIT_REPO_2 --branch master --manual-integration
 ```
 
 Une fois le déploiment effectué, Sélectionnez **Accéder à la ressource**. Pour avoir un apercu de l'application web, cliquez sur l'URL en haut à droite du portail ou celui renvoyé par la commande suivante :
