@@ -96,7 +96,7 @@ Solution :
 
 {% collapsible %}
 
-![Web app creation](/media/lab1/web_app_2_creation.png)
+![Web app 2 creation](/media/lab1/web-app-2.png)
 
 {% endcollapsible %}
 
