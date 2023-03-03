@@ -43,7 +43,7 @@ az group create --name $RESOURCE_GROUP --location "$LOCATION"
 
 {% endcollapsible %}
 
-#### Créez un [plan AppService] Linux (https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement && et mise à l'echelle automatique`)
+#### Créez un [plan AppService Linux](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement && et mise à l'echelle automatique`)
 
 Solution :
 
