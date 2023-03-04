@@ -23,15 +23,17 @@ Suivez [ce lien](https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli) e
 
 #### Si CLI installée : Upgrade sa version du CLI
 
+{% collapsible %}
+
 ```bash
 az version
 # Si version az-core <= 2.30
 az upgrade
 ```
 
-#### Se connecter à sa souscription
+{% endcollapsible %}
 
-Puis enfin connectez vous à votre souscription à l'aide de la commande suivante
+#### Se connecter à sa souscription
 
 {% collapsible %}
 
@@ -45,4 +47,4 @@ az account show
 
 connectez vous au portail : to <https://portal.azure.com>
 
-{% endcollapsible %}  
+{% endcollapsible %}
