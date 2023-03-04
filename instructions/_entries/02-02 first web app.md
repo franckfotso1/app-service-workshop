@@ -25,8 +25,8 @@ Examinons quelques paramètres dont vous avez besoin pour créer une application
 ``` bash
 $RESOURCE_GROUP = "Franck-rg"         # name of the resource group
 $LOCATION = "francecentral"           # azure region where resources are hosted
-$APP_NAME_1 = "php_app_1"             # name of the PHP Web app
-$APP_NAME_2 = "donet_app_1"           # name of the ASP.NET Core API app 
+$APP_NAME_1 = "php_app"               # name of the PHP Web app
+$APP_NAME_2 = "donet_app"             # name of the ASP.NET Core Web app 
 $APP_SERVICE_PLAN = "my-asp-app"      # name of the Linux App Service Plan
 $GIT_REPO = "https://github.com/Azure-Samples/php-docs-hello-world"
 ```
@@ -166,6 +166,21 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 - Dans la page Publier, sélectionnez Publier. Si vous voyez un message d’avertissement, sélectionnez Continuer.
 
 > Visual Studio génère, empaquète et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut
+
+#### Vérifiez la présence des deux Web Apps dans votre plan App Service Linux
+
+{% collapsible %}
+
+- via CLI
+
+```bash
+az webapp list -g $RESOURCE_GROUP -p $APP_SERVICE_PLAN --output table
+```
+
+- via Portail
+  ![asp-deploy](/media/lab1/asp_list_app.png)
+  
+{% endcollapsible %}
 
 ---
 
