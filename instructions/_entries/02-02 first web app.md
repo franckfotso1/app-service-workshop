@@ -25,10 +25,9 @@ Examinons quelques paramètres dont vous avez besoin pour créer une application
 ``` bash
 $RESOURCE_GROUP = "Franck-rg"         # name of the resource group
 $LOCATION = "francecentral"           # azure region where resources are hosted
-$APP_NAME_1 = "php_app_1"               # name of the PHP Web app
-$APP_NAME_2 = "donet_app_1"             # name of the ASP.NET Core API app 
-$APP_SERVICE_PLAN = "my-asp-app"          # name of the Linux App Service Plan
-# Replace the following URL with your own public GitHub repo URL if you have one
+$APP_NAME_1 = "php_app_1"             # name of the PHP Web app
+$APP_NAME_2 = "donet_app_1"           # name of the ASP.NET Core API app 
+$APP_SERVICE_PLAN = "my-asp-app"      # name of the Linux App Service Plan
 $GIT_REPO = "https://github.com/Azure-Samples/php-docs-hello-world"
 ```
 
@@ -42,7 +41,7 @@ az group create --name $RESOURCE_GROUP --location "$LOCATION"
 
 {% endcollapsible %}
 
-#### Créez un [plan AppService Linux](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard (`minimum pour les emplacements de déploiement && et mise à l'echelle automatique`)
+#### Créez un [plan AppService Linux](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard
 
 Solution :
 
@@ -125,19 +124,19 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 - Ouvrez Visual Studio 2022, puis sélectionnez Créer un projet
   
 {% collapsible %}
-![Web app 2 creation](/media/lab1/create-new-project.png)
+![new project](/media/lab1/create-new-project.png)
 {% endcollapsible %}
 
 - Dans Créer un projet, recherchez et sélectionnez Application web ASP.NET Core, puis sélectionnez Suivant.
 {% collapsible %}
-![Web app 2 creation](/media/lab1/asp-web-app.png)
+![asp web app](/media/lab1/asp-web-app.png)
 {% endcollapsible %}
 
 - Dans Configurer votre nouveau projet, nommez l’application MyFirstAzureWebApp, puis sélectionnez Suivant
   
 - Sélectionnez .NET Core 6.0 (prise en charge à long terme).
 {% collapsible %}
-![Web app 2 creation](/media/lab1/stack-asp.png)
+![choose stack](/media/lab1/stack-asp.png)
 {% endcollapsible %}
 
 - Assurez-vous que Type d’authentification est défini sur Aucun et Sélectionnez Create (Créer)
@@ -147,12 +146,12 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 - cliquez avec le bouton droit sur le projet MyFirstAzureWebApp, puis sélectionnez Publier.
   
 {% collapsible %}
-![Web app 2 creation](/media/lab1/publish-asp.png)
+![publish](/media/lab1/publish-asp.png)
 {% endcollapsible %}
 
 - Dans Publier, sélectionnez Azure, puis Suivant
  {% collapsible %}
-![Web app 2 creation](/media/lab1/azure-asp.png)
+![azure](/media/lab1/azure-asp.png)
 {% endcollapsible %}
   
 - Choisissez la cible spécifique, Azure App Service (Linux)
@@ -161,10 +160,13 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
   
 - À droite d’Instances App Service, sélectionnez + et choisir le nom, l'ASP et le RG
 {% collapsible %}
-![Web app 2 creation](/media/lab1/asp-app-deploy.png)
+![asp-deploy](/media/lab1/asp-app-deploy.png)
 {% endcollapsible %}
 
 - Dans la page Publier, sélectionnez Publier. Si vous voyez un message d’avertissement, sélectionnez Continuer.
 
 > Visual Studio génère, empaquète et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut
+
+---
+
 > Une bonne pratique consiste notamment à automatiser le provisionement de son infrastructure à laide doutils Iac comme [Bicep](https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-bicep) ou [Terraform](https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-terraform).
