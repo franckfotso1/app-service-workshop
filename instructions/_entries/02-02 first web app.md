@@ -57,9 +57,13 @@ az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --n
 
 ---
 > le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan. Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**.
-Il existe plusieurs niveaux tarifaires pour chaque catégorie, plus le niveau est elevé et plus de fonctionnalités sont disponibles.  
+Il existe plusieurs niveaux tarifaires pour chaque catégorie, plus le niveau est elevé et plus de fonctionnalités sont disponibles.
+
+{% collapsible %}
 
 ![ASP tier ](/media/lab1/tier_app_service_plan.png)
+
+{% endcollapsible %}
 
 #### Lancer l'application php en local (optionel)
 
@@ -78,6 +82,8 @@ Solution :
 
 {% collapsible %}
 
+- via CLI
+
 ```bash
 # get the list of supported runtimes for each Os
 az webapp list-runtimes
@@ -85,6 +91,8 @@ az webapp list-runtimes
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
 ```
 
+- via le Portail
+  
 ![Web app 2 creation](/media/lab1/web-app-2.png)
 
 > The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
@@ -159,7 +167,4 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 - Dans la page Publier, sélectionnez Publier. Si vous voyez un message d’avertissement, sélectionnez Continuer.
 
 > Visual Studio génère, empaquète et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut
----
-> NB : App Service prend en charge différentes infrastructures de développement, telles qu’ASP.NET, Node.js, PHP et Python, etc. Les infrastructures et les composants d’exécution fournis par la plateforme sont régulièrement **mis à jour** pour répondre aux exigences de sécurité et de conformité.
----
 > Une bonne pratique consiste notamment à automatiser le provisionement de son infrastructure à laide doutils Iac comme [Bicep](https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-bicep) ou [Terraform](https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-terraform).
