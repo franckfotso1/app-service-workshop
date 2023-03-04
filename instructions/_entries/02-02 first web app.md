@@ -94,9 +94,9 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP
   
 ![Web app 2 creation](/media/lab1/web-app-2.png)
 
-> The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
-
 {% endcollapsible %}
+
+> The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
 
 #### Exécutez la commande suivante pour déployer manuellement le code de l'application php depuis le repo Github
 
@@ -124,19 +124,19 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 - Ouvrez Visual Studio 2022, puis sélectionnez Créer un projet
   
 {% collapsible %}
-![new project](/media/lab1/create-new-project.png)
+![new project](/media/lab1/create_new_project.png)
 {% endcollapsible %}
 
 - Dans Créer un projet, recherchez et sélectionnez Application web ASP.NET Core, puis sélectionnez Suivant.
 {% collapsible %}
-![asp web app](/media/lab1/asp-web-app.png)
+![asp web app](/media/lab1/asp_web_app.png)
 {% endcollapsible %}
 
 - Dans Configurer votre nouveau projet, nommez l’application MyFirstAzureWebApp, puis sélectionnez Suivant
   
 - Sélectionnez .NET Core 6.0 (prise en charge à long terme).
 {% collapsible %}
-![choose stack](/media/lab1/stack-asp.png)
+![choose stack](/media/lab1/stack_asp.png)
 {% endcollapsible %}
 
 - Assurez-vous que Type d’authentification est défini sur Aucun et Sélectionnez Create (Créer)
@@ -146,12 +146,12 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 - cliquez avec le bouton droit sur le projet MyFirstAzureWebApp, puis sélectionnez Publier.
   
 {% collapsible %}
-![publish](/media/lab1/publish-asp.png)
+![publish](/media/lab1/publish_asp.png)
 {% endcollapsible %}
 
 - Dans Publier, sélectionnez Azure, puis Suivant
  {% collapsible %}
-![azure](/media/lab1/azure-asp.png)
+![azure](/media/lab1/azure_asp.png)
 {% endcollapsible %}
   
 - Choisissez la cible spécifique, Azure App Service (Linux)
@@ -160,7 +160,7 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
   
 - À droite d’Instances App Service, sélectionnez + et choisir le nom, l'ASP et le RG
 {% collapsible %}
-![asp-deploy](/media/lab1/asp-app-deploy.png)
+![asp-deploy](/media/lab1/asp_app_deploy.png)
 {% endcollapsible %}
 
 - Dans la page Publier, sélectionnez Publier. Si vous voyez un message d’avertissement, sélectionnez Continuer.
