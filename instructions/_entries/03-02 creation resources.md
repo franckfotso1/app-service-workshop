@@ -46,6 +46,8 @@ az webapp list-runtimes
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME -p $APP_SERVICE_PLAN -r "dotnet:6" 
 ```
 
+{% endcollapsible %}
+
 ##### Créez une base de données SQL
 
 Solution :
