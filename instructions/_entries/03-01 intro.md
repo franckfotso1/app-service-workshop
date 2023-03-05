@@ -13,9 +13,9 @@ Il faut cependant noter que le but de cet exercice n'est pas de s'intéresser au
 
 Nous allons dans ce lab 2 :
 
-- créer les environnement de déploiement    (Slot)
-- configurer les paramètres de déploiement  (deployment Center / Github Actions)
 - configurer les paramètres d'application   (appSettings)
+- créer les environnement de déploiement    (Slot)
+- configurer les paramètres de déploiement  (Github Actions)
 - Configurer la mise à l'échelle            (scaling)
 - Creer un nom de domaine personnalisé
 

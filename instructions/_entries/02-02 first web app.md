@@ -48,8 +48,8 @@ Solution :
 {% collapsible %}
 
 ```bash
-# Create a standard app service plan with four Linux workers
-az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 4 --sku S1
+# Create a standard app service plan with 2 Linux workers
+az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 2 --sku S1
 ```
 
 {% endcollapsible %}

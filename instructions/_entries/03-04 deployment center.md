@@ -1,38 +1,11 @@
 ---
-sectionid: lab2-service-invocation
+sectionid: lab2-deployment-center
 sectionclass: h2
-title: Paramètres du déploiement et de l'application
+title: Paramètres du déploiement 
 parent-id: lab-2
 ---
 
-Une fois l'emplacement de pré-production crée, nous allons créer un ensemble de ressources sécurisées par défaut qui incluent App Service et Mongo DB.
-
-Connectez-vous au portail Azure et procédez comme suit pour créer vos ressources Azure App Service.
-
-**Étape 1**. Dans le portail Azure et entrez « base de données d’application web » dans la barre de recherche située en haut du portail Azure
-![Web app database](/media/lab1/webapp-database.png)
-
-**Etape 2** : Dans la page Créer une application web + base de données, remplissez le formulaire comme suit
-![Web app database](/media/lab1/web-app-database-entry.png)
-
-**Étape 3**. Le déploiement prend quelques minutes. Une fois le déploiement terminé, sélectionnez le bouton Accéder à la ressource. L’application App Service s’ouvre automatiquement, mais les ressources suivantes sont créées :
-
-{% collapsible %}
-
-**Groupe de ressources** → Conteneur pour toutes les ressources créées.
-**Plan App Service** → Définit les ressources de calcul pour App Service. Un plan Linux est créé sur le niveau De base.
-**App Service** → Représente votre application et s’exécute dans le plan App Service.
-**Réseau virtuel** → Intégré à l’application App Service, isole le trafic réseau principal.
-**Point de terminaison privé** → point de terminaison d’accès de la ressource de base de données dans le réseau virtuel.
-**Interface réseau** → représente une adresse IP privée pour le point de terminaison privé.
-**Azure Cosmos DB for MongoDB** → accessible uniquement derrière le point de terminaison privé. Une base de données et un utilisateur sont créés pour vous sur le serveur.
-Zone DNS privée → active la résolution DNS du serveur Azure Cosmos DB dans le réseau virtuel
-
-{% endcollapsible %}
-
-> Notez que ce qui nous interesse sont l'application App Service et la base de données Cosmos, les autres ressources sont utiles pour sécuriser notre BD afin que l'accès ne soit public.
-
-Une fois les ressources provisonnées, nous alons **déployer** le code dessus.
+- Une fois l'emplacement de pré-production crée et les ressources provisonnées, nous alons **déployer** le code dessus.
 
 ### paramètres de déploiement
 
@@ -73,4 +46,3 @@ You can customize the GitHub Actions build provider in these ways:
 - Customize the workflow file after it's generated in your GitHub repository. For more information, see Workflow syntax for GitHub Actions. Just make sure that the workflow deploys to App Service with the azure/webapps-deploy action.
 - If the selected branch is protected, you can still preview the workflow file without saving the configuration and then manually add it into your repository. This method doesn't give you log integration with the Azure portal.
 - Instead of using a publishing profile, deploy by using a service principal in Azure Active Directory.
-  
