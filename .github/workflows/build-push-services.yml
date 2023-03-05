@@ -18,7 +18,7 @@ jobs:
 
       - run: gem install jekyll
 
-      - run: jekyll build
+      - run: jekyll build --trace
         working-directory: ./instructions
 
       - uses: tibor19/static-website-deploy@v1
