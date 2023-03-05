@@ -8,7 +8,7 @@ parent-id: lab-1
 
 ### diagramme de l'architecture
 
-![Première app](/media/lab1/first_app_lab_1.png)
+![Première app](/media/lab1/lab_1_archi.png)
 
 Examinons quelques paramètres dont vous avez besoin pour créer une application App Service :
 
@@ -179,7 +179,7 @@ az webapp list -g $RESOURCE_GROUP -p $APP_SERVICE_PLAN --output table
 
 - via Portail
   ![asp-deploy](/media/lab1/asp_list_app.png)
-  
+
 {% endcollapsible %}
 
 ---
