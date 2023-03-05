@@ -1,5 +1,5 @@
 ---
-sectionid: lab2-pubsub
+sectionid: lab2-resources-creation
 sectionclass: h2
 title: creation ressources
 parent-id: lab-2
