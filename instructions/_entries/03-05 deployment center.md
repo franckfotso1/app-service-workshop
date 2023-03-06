@@ -11,12 +11,13 @@ parent-id: lab-2
 
 Azure App Service permet un déploiement continu et manuel à partir des dépôts GitHub, Bitbucket et Azure Repos en extrayant les dernières mises à jour. Dans cette étape, vous allez configurer le déploiement GitHub avec **GitHub Actions**. Cette méthode fait partie des nombreuses façons de déployer sur App Service, mais elle permet également de bénéficier d’une intégration continue dans votre processus de déploiement. Par défaut, chaque git push dans votre dépôt GitHub lance l’action de build et de déploiement.
 
-Connectez-vous à votre compte GitHub et Fork [le repo](https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app) contenant les sources de l'application de ce Lab.
+Connectez-vous à votre compte GitHub et Forkez [le repo](https://github.com/Azure-Samples/msdocs-app-service-sqldb-dotnetcorecontenant)
 
- Pour télécharger un exemple de référentiel, exécutez la commande suivante dans la fenêtre de terminal locale :
+clonez ensuite les sources de l'application.
 
  ```bash
-git clone https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app.git
+git clone https://github.com/Azure-Samples/msdocs-app-service-sqldb-dotnetcore.git
+cd msdocs-app-service-sqldb-dotnetcore
  ```
 
  **pour executer l'application localement** :

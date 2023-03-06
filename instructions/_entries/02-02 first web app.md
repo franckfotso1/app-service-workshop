@@ -8,7 +8,9 @@ parent-id: lab-1
 
 ### diagramme de l'architecture
 
+{% collapsible %}
 ![Première app](/media/lab1/lab_1_archi.png)
+{% endcollapsible %}
 
 Examinons quelques paramètres dont vous avez besoin pour créer une application App Service :
 

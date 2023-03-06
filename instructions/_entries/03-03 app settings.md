@@ -13,45 +13,35 @@ Dans App Service, les paramètres d’application sont des variables transmises 
 
 > Les développeurs ASP.NET définissent les paramètres de l'application dans App Service comme ils le font avec appSettings dans Web.config ou appsettings.json, mais les valeurs dans App Service remplacent celles du fichier Web.config ou appsettings.json. Vous pouvez conserver les paramètres de développement (par exemple le mot de passe MySQL local) dans Web.config ou appsettings.json, mais garder les secrets de production (par exemple le mot de passe de la base de données MySQL Azure) en sécurité dans App Service. Le même code utilise vos paramètres de développement lorsque vous déboguez localement, et utilise vos secrets de production lorsque vous les déployez sur Azure. Une fois stockés, les paramètres d’application sont toujours chiffrés (chiffrement au repos).
 
+#### Démarrer l'application localement
+
+```bash
+# clonez le repo
+git clone https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app.git
+cd msdocs-nodejs-mongodb-azure-sample-app
+# Installez les dépendances des packages
+npm install
+# Copiez le fichier .env.sample dans .env et renseignez la valeur DATABASE_URL avec votre URL MongoDB (par exemple, mongodb://localhost:27017/)
+# Démarrez l’application 
+npm start
+# accédez à http://localhost:3000
+```
+
+> Ouvrez le fichier **connection.js** dans le dossier **config** et notez les 2 variables dont vous aurez besoin pour connecter l'application à la BD. Que remarquez vous dans le fichier **app.js, ligne 17** ?
+
 #### Connectez la web app à la BD
 
 ```bash
-# Get connection string for the database
-$connstring = (az sql db show-connection-string --name $APP_DATABASE --server $APP_DB_SERVER \
---client ado.net --output tsv)
-
-# Assign the connection string to an app setting in the web app
-az webapp config connection-string set \
-    -n $APP_NAME -g $RESOURCE_GROUP \
-    --settings "SQLSRV_CONNSTR=$connstring" \
-    --connection-string-type SQLAzure
-
-## configure app parameters
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_HOST= appdbserver57.database.windows.net ## to move
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_USERNAME=$SERVER_ADMIN_USER
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_PASSWORD=$PASSWORD
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings DB_DATABASE=$APP_DATABASE 
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings APP_DEBUG=true 
-
-az webapp config appsettings set --name $APP_NAME \
---resource-group $RESOURCE_GROUP \
---settings APP_KEY=base64:Dsz40HWwbCqnq0oxMsjq7fItmKIeBfCBGORfspaI1Kw=  ## to move or generate
-
-az webapp config appsettings set --resource-group $groupName --name $appName --settings CS_ACCOUNT_NAME="@Microsoft.KeyVault(SecretUri=$csResourceKVUri)" CS_ACCOUNT_KEY="@Microsoft.KeyVault(SecretUri=$csKeyKVUri)"
+# Retrieve the connection string to your MongoDB database 
+az cosmosdb list-connection-strings --name myCosmosDBAccount --resource-group myResourceGroup
 ```
+
+> This command will return a JSON object containing the connection string for your Cosmos DB account. Copy the value of the **primaryConnectionString** property
+
+#### Assign the connection string as an application setting in the web app
+
+az webapp config appsettings set --name $APP_NAME \
+--resource-group $RESOURCE_GROUP \
+--settings DATABASE_URL = $primaryConnectionString DATABASE_NAME=$myDatabase
 
 #### paramères généraux (ARR affinity, SDK version, Command start)
