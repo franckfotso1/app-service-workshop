@@ -40,8 +40,17 @@ az cosmosdb list-connection-strings --name myCosmosDBAccount --resource-group my
 
 #### Assign the connection string as an application setting in the web app
 
+Solution :
+
+{% collapsible %}
+
+```bash
 az webapp config appsettings set --name $APP_NAME \
 --resource-group $RESOURCE_GROUP \
 --settings DATABASE_URL = $primaryConnectionString DATABASE_NAME=$myDatabase
+```
+
+![Web App connection string](/media/lab1/app_settings.png)
+{% endcollapsible %}
 
 #### paramères généraux (ARR affinity, SDK version, Command start)

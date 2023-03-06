@@ -11,25 +11,9 @@ parent-id: lab-2
 
 Azure App Service permet un déploiement continu et manuel à partir des dépôts GitHub, Bitbucket et Azure Repos en extrayant les dernières mises à jour. Dans cette étape, vous allez configurer le déploiement GitHub avec **GitHub Actions**. Cette méthode fait partie des nombreuses façons de déployer sur App Service, mais elle permet également de bénéficier d’une intégration continue dans votre processus de déploiement. Par défaut, chaque git push dans votre dépôt GitHub lance l’action de build et de déploiement.
 
-Connectez-vous à votre compte GitHub et Forkez [le repo](https://github.com/Azure-Samples/msdocs-app-service-sqldb-dotnetcorecontenant)
+Connectez-vous à votre compte GitHub et Forkez [le repo](https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app)
 
-clonez ensuite les sources de l'application.
-
- ```bash
-git clone https://github.com/Azure-Samples/msdocs-app-service-sqldb-dotnetcore.git
-cd msdocs-app-service-sqldb-dotnetcore
- ```
-
- **pour executer l'application localement** :
-
-- Installez les dépendances des packages en exécutant **npm install**.
-- Copiez le fichier .env.sample dans .env et renseignez la valeur DATABASE_URL avec votre URL MongoDB (par exemple, mongodb://localhost:27017/).
-- Démarrez l’application à l’aide de **npm start**.
-- Pour visualiser l’application, accédez à http://localhost:3000.
-
-- Dans .env, configurez les paramètres de base de données (par exemple DB_DATABASE, DB_USERNAME et DB_PASSWORD) à l’aide des paramètres de votre base de données MySQL locale. Vous avez besoin d’un serveur MySQL local pour exécuter cet exemple.
-
-  **Pour configurer le déploiement continu** :
+**Pour configurer le déploiement continu** :
 
 - aller dans **Deployment center**
 - choisir **Github** comme source
@@ -46,4 +30,4 @@ You can customize the GitHub Actions build provider in these ways:
 
 - Customize the workflow file after it's generated in your GitHub repository. For more information, see Workflow syntax for GitHub Actions. Just make sure that the workflow deploys to App Service with the azure/webapps-deploy action.
 - If the selected branch is protected, you can still preview the workflow file without saving the configuration and then manually add it into your repository. This method doesn't give you log integration with the Azure portal.
-- Instead of using a publishing profile, deploy by using a service principal in Azure Active Directory.
+- Instead of using a **publishing profile**, you can deploy by using a **service principal** in Azure Active Directory.
