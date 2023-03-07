@@ -21,17 +21,19 @@ Il existe deux workflows de mise à l’échelle dans App Service : scale-up et 
 
 {% endcollapsible %}
 
-#### Scale Web App to 3 Workers
+#### Scale web app to 3 workers
 
 ```bash
 az appservice plan update --number-of-workers 3 --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP
 ```
 
+#### Pour un ASP de tier Basic, F1, etc < S1 l'autoscale est indisponible
+
 {% collapsible %}
 ![no scale up](/media/lab1/scale_up_not_available.png)
 {% endcollapsible %}
 
-#### Scale Up the App Service Plan to support custom autoscale
+#### Pour rendre la fonctionnalité disponible, Scale Up the App Service Plan to support custom autoscale
 
 - Upgrade the pricing tier of the ASP.
 {% collapsible %}

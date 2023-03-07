@@ -1,7 +1,7 @@
 ---
 sectionid: lab4
 sectionclass: h1
-title: Advanced Concepts (Networking, Cache, Vnet, Cache)
+title: Lab 4 - Advanced Concepts
 type: nocount
 is-parent: yes
 ---

@@ -1,5 +1,5 @@
 ---
-sectionid: lab3-create-aca
+sectionid: lab3-logs-monitor
 sectionclass: h2
 title: Observabilité
 parent-id: lab-3
