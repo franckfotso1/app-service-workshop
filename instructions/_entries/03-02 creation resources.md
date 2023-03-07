@@ -14,8 +14,8 @@ $RESOURCE_GROUP = "Franck-rg"          # name of the resource group
 $LOCATION = "northeurope"              # azure region where resources are hosted
 $APP_NAME = "nodeapp256"               # name of the Todo Express Js Web app 
 $APP_SERVICE_PLAN = "my-asp-app"       # name of the Linux App Service Plan
-$myCosmosDBAccount = "cosmosaccount23" # name of the cosmosdb account
-$myDatabase = "nodeappdatabase23"      # name of the mongo database
+$COSMOSDB_ACCOUNT = "cosmosaccount23"  # name of the cosmosdb account
+$APP_DATABASE = "nodeappdatabase23"    # name of the mongo database
 $APP_VAULT = "kv4789"                  # name of the Key vault
 $GIT_REPO = "https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app"
 ```
@@ -27,8 +27,8 @@ Solution :
 {% collapsible %}
 
 ```bash
-# Create a standard app service plan with four Linux workers
-az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 4 --sku S1
+# Create a standard app service plan with 2 Linux workers
+az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 2 --sku S1
 ```
 
 {% endcollapsible %}
@@ -58,12 +58,12 @@ Solution :
 
 ```bash
 # Create a new Cosmos DB account with MongoDB API
-az cosmosdb create --name $myCosmosDBAccount --kind MongoDB -g $RESOURCE_GROUP
+az cosmosdb create --name $COSMOSDB_ACCOUNT --kind MongoDB -g $RESOURCE_GROUP
 ```
 
 ```bash
 # Create a new MongoDB database
-az cosmosdb mongodb database create --account-name $myCosmosDBAccount -g $RESOURCE_GROUP --name $myDatabase
+az cosmosdb mongodb database create --account-name $COSMOSDB_ACCOUNT -g $RESOURCE_GROUP --name $APP_DATABASE
 ```
 
 ```bash
