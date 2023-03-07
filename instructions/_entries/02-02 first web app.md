@@ -100,6 +100,10 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP
 
 > The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
 
+{% collapsible %}
+![App UI default](/media/lab1/php_app_quick.png)
+{% endcollapsible %}
+
 #### Exécutez la commande suivante pour déployer manuellement le code de l'application php depuis le repo Github
 
 ```bash
@@ -117,7 +121,7 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 {% collapsible %}
 
 ![App overview](/media/lab1/overview_php_app.png)
-![App UI default](/media/lab1/dotnet_app_quick.png)
+![App UI default](/media/lab1/php_app_deploy.png)
 
 {% endcollapsible %}
 

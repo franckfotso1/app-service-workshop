@@ -12,10 +12,13 @@ parent-id: lab-2
 Il existe deux workflows de mise à l’échelle dans App Service : scale-up et scale-out
 
 {% collapsible %}
-![Web App connection string](/media/lab1/app_settings.png)
+![Web App connection string](/media/lab1/asp_scaling.png)
 
 > en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité d’UC, de mémoire et d’espace disque, ainsi que de fonctionnalités supplémentaires, comme des machines virtuelles dédiées, des domaines et des certificats personnalisés, des emplacements intermédiaires, la mise à l’échelle automatique, et bien davantage. Pour monter en puissance en modifiant le niveau tarifaire du plan App Service auquel appartient votre application
+---
+
 > en faisant un **scale out**, vous augmentez le nombre d’instances de machine virtuelle qui exécutent votre application. Vous y trouverez comment utiliser la mise à l’échelle automatique, qui permet de mettre à l’échelle le nombre d’instances automatiquement en fonction des planifications et des règles prédéfinies
+
 {% endcollapsible %}
 
 #### Scale Web App to 3 Workers
@@ -32,7 +35,7 @@ az appservice plan update --number-of-workers 3 --name $APP_SERVICE_PLAN --resou
 
 - Upgrade the pricing tier of the ASP.
 {% collapsible %}
-![scale up](/media/lab1/scale_up.png)
+![scale up](/media/lab1/scale_up_asp.png)
 {% endcollapsible %}
 
 #### Configure Custom autoscaling

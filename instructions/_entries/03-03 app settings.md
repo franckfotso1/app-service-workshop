@@ -67,5 +67,4 @@ az webapp config set --resource-group <group-name> --name <app-name> --use-32bit
 ```
 
 > alawys-on : Garde l'application chargée même s’il n'y a aucun trafic.Par défaut, l’application est déchargée après 20 minutes sans requêtes entrantes. Cela peut provoquer une latence élevée pour les nouvelles requêtes en raison de son temps de préparation. Lorsque l’option Always on est activée, l’équilibreur de charge frontal envoie une requête GET à la racine de l’application toutes les cinq minutes. La commande ping continue empêche le déchargement de l’application. Cette option peut etre utile pour les WebJobs continus.
----
 > remote debug : Activez le débogage à distance pour les applications ASP.NET, ASP.NET Core ou Node.js. Cette option se désactive automatiquement au bout de 48 heures.

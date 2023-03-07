@@ -39,3 +39,6 @@ curl -s -L $url/404
 
 # Download the log files for review
 az webapp log download --name $webapp --resource-group $resourceGroup
+
+
+"https://learn.microsoft.com/fr-fr/azure/app-service/tutorial-troubleshoot-monitor"
