@@ -20,6 +20,5 @@ Nous allons dans ce lab 2 :
 - configurer les paramètres de déploiement  
 - Configurer la mise à l'échelle
 - rendre l'application hautement disponible
-- Creer un nom de domaine personnalisé
 
 Dans la suite nous allons explorer plus en détails ces fonctionnalités supplémentaires.

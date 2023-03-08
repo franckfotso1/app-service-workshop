@@ -15,4 +15,6 @@ Sélectionnez ensuite une ressource Application Insights existante ou créez-en 
 Enfin, sélectionnez Appliquer en bas. Pour instrumenter votre application web à l’aide de PowerShell, consultez ces instructions.
 Cet agent supervise votre application de Node.js côté serveur. Pour superviser votre code JavaScript côté client, ajoutez le SDK JavaScript à votre projet.
 
+{% collapsible %}
 ![app_insights](/media/lab1/app_insights.png)
+{% endcollapsible %}
