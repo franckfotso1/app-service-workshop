@@ -16,7 +16,6 @@ $APP_NAME = "nodeapp256"               # name of the Todo Express Js Web app
 $APP_SERVICE_PLAN = "my-asp-app"       # name of the Linux App Service Plan
 $COSMOSDB_ACCOUNT = "cosmosaccount23"  # name of the cosmosdb account
 $APP_DATABASE = "nodeappdatabase23"    # name of the mongo database
-$APP_VAULT = "kv4789"                  # name of the Key vault
 $GIT_REPO = "https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app"
 ```
 
@@ -64,17 +63,6 @@ az cosmosdb create --name $COSMOSDB_ACCOUNT --kind MongoDB -g $RESOURCE_GROUP
 ```bash
 # Create a new MongoDB database
 az cosmosdb mongodb database create --account-name $COSMOSDB_ACCOUNT -g $RESOURCE_GROUP --name $APP_DATABASE
-```
-
-```bash
-# Create an Azure Key Vault to store credentials of .... (tbd)
-az keyvault create --name $APP_VAULT -g $RESOURCE_GROUP -l $LOCATION
-```
-
-```bash
-# Add a secret to the Azure key Vault
-$SERVER_ADMIN_USER = $ (az keyvault secret set --vault-name $APP_VAULT --name SERVERADMINUSER --value <secret-value> --query id --output tsv ) # secret value = admin 
-$PASSWORD = $ (az keyvault secret set --vault-name $APP_VAULT --name PASSWORD --value <secret-value> --query id --output tsv ) # secret value = password12376@ 
 ```
 
 {% endcollapsible %}

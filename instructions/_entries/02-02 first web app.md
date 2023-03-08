@@ -15,7 +15,7 @@ parent-id: lab-1
 Examinons quelques paramètres dont vous avez besoin pour créer une application App Service :
 
 - **le nom** : le nom de l’application doit être unique globallement
-- **Publier** : App Service publie votre application sous forme de code ou conteneur Docker
+- **le format de publication** : App Service publie votre application sous forme de code ou conteneur Docker
 - **la pile d'exécution** : langage, version du SDK
 - **le système d’exploitation** : Linux ou Windows
 - **le plan App Service** : l'application doit etre associée à un plan App Service pour établir les ressources et les capacités disponibles.
@@ -25,10 +25,10 @@ Examinons quelques paramètres dont vous avez besoin pour créer une application
 #### Définissons quelques variables d'environnement  
 
 ``` bash
-$RESOURCE_GROUP = "Franck-rg"         # name of the resource group
-$LOCATION = "francecentral"           # azure region where resources are hosted
-$APP_NAME_1 = "php_app"               # name of the PHP Web app
-$APP_NAME_2 = "donet_app"             # name of the ASP.NET Core Web app 
+$RESOURCE_GROUP = "my-rg"               # name of the resource group
+$LOCATION = "francecentral"             # azure region where resources are hosted
+$APP_NAME_1 = "phpapp156"               # name of the PHP Web app
+$APP_NAME_2 = "dotnetapp156"             # name of the ASP.NET Core Web app 
 $APP_SERVICE_PLAN = "my-asp-app"      # name of the Linux App Service Plan
 $GIT_REPO = "https://github.com/Azure-Samples/php-docs-hello-world"
 ```
@@ -57,8 +57,7 @@ az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --n
 {% endcollapsible %}
 
 ---
-> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan. Par exemple, vos applications peuvent s'executer sur les machines virtuelles d'autres clients pour une option de **calcul partagé** ou peuvent s'executer sur des machines dédiées sur des réseaux virtuels dédiés  pour une option de **calcul isolé**.
-Il existe plusieurs niveaux tarifaires pour chaque catégorie, plus le niveau est elevé et plus de fonctionnalités sont disponibles.
+> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan.
 
 {% collapsible %}
 
@@ -138,7 +137,7 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 ![asp web app](/media/lab1/asp_web_app.png)
 {% endcollapsible %}
 
-- Dans Configurer votre nouveau projet, nommez l’application MyFirstAzureWebApp, puis sélectionnez Suivant
+- Dans Configurer votre nouveau projet, nommez l’application mydotnetapp, puis sélectionnez Suivant
   
 - Sélectionnez .NET Core 6.0 (prise en charge à long terme).
 {% collapsible %}
@@ -149,7 +148,7 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
   
 #### Publiez l'application sur le meme plan App Service Linux
 
-- cliquez avec le bouton droit sur le projet MyFirstAzureWebApp, puis sélectionnez Publier.
+- cliquez avec le bouton droit sur le projet mydotnetapp, puis sélectionnez Publier.
   
 {% collapsible %}
 ![publish](/media/lab1/publish_asp.png)
