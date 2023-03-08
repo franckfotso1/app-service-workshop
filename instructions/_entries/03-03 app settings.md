@@ -1,7 +1,7 @@
 ---
 sectionid: lab2-app-settings
 sectionclass: h2
-title: Définir les paramètres d'application
+title: Paramètres d'application
 parent-id: lab-2
 ---
 

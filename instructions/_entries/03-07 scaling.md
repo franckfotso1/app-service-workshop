@@ -4,10 +4,7 @@ sectionclass: h2
 title: Autoscaling
 parent-id: lab-2
 ---
-
-- Une fois le déploiement effectué, nous allons mettre à l'échelle l'application. Mais avant, nous allons la déployer sur l'environnement de production by  Swap the staging slots.
-  
-#### partie swapping
+- Une fois le déploiement effectué, nous allons mettre à l'échelle l'application
 
 Il existe deux workflows de mise à l’échelle dans App Service : scale-up et scale-out
 

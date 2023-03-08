@@ -28,8 +28,8 @@ Examinons quelques paramètres dont vous avez besoin pour créer une application
 $RESOURCE_GROUP = "my-rg"               # name of the resource group
 $LOCATION = "francecentral"             # azure region where resources are hosted
 $APP_NAME_1 = "phpapp156"               # name of the PHP Web app
-$APP_NAME_2 = "dotnetapp156"             # name of the ASP.NET Core Web app 
-$APP_SERVICE_PLAN = "my-asp-app"      # name of the Linux App Service Plan
+$APP_NAME_2 = "dotnetapp156"            # name of the ASP.NET Core Web app 
+$APP_SERVICE_PLAN = "my-asp-app"        # name of the Linux App Service Plan
 $GIT_REPO = "https://github.com/Azure-Samples/php-docs-hello-world"
 ```
 

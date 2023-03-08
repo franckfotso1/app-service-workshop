@@ -1,7 +1,7 @@
 ---
 sectionid: lab2-resources-creation
 sectionclass: h2
-title: creation ressources
+title: Creation ressources
 parent-id: lab-2
 ---
 
@@ -10,7 +10,7 @@ parent-id: lab-2
 #### Définissons quelques variables d'environnement  
 
 ``` bash
-$RESOURCE_GROUP = "Franck-rg"          # name of the resource group
+$RESOURCE_GROUP = "my-rg"              # name of the resource group
 $LOCATION = "northeurope"              # azure region where resources are hosted
 $APP_NAME = "nodeapp256"               # name of the Todo Express Js Web app 
 $APP_SERVICE_PLAN = "my-asp-app"       # name of the Linux App Service Plan

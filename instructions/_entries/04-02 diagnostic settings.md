@@ -7,7 +7,7 @@ parent-id: lab-3
 
 #### Gestion des erreurs
 
-> Quand vous exécutez une application web, vous souhaitez anticiper tout problème, des erreurs 500 à l’arrêt de votre site. Avec les **diagnostics App Service**, vous pouvez résoudre les problèmes de votre application de manière intelligente et interactive sans effectuer de configuration particulière. les **diagnostics App Service** vous en indiquent la nature des problèmes de votre application afin que vous disposiez des informations appropriées pour les résoudre plus facilement et plus rapidement.
+> Quand vous exécutez une application web, vous souhaitez anticiper tout problème, des erreurs 500 à l’arrêt de votre site. Avec les **diagnostics App Service**, vous pouvez résoudre les problèmes de votre application de manière intelligente et interactive sans effectuer de configuration particulière. Ils vous indiquent la nature des problèmes de votre application afin que vous disposiez des informations appropriées pour les résoudre plus facilement et plus rapidement.
 Cette fonctionnalité est particulièrement utile quand vous rencontrez des problèmes avec votre application au cours des dernières 24 heures, mais vous pouvez aussi analyser tous les graphiques de diagnostic à tout moment.
 
 #### Ask Genie
@@ -32,7 +32,7 @@ La page d’accueil des diagnostics App Service effectue une série de vérifica
 ![Alert](/media/lab1/app_alert.png)
 {% endcollapsible %}
 
-#### Activer la journalisation et streamez les logs de l'application
+#### Activez la journalisation et streamez les logs de l'application
 
 Azure App Service capture tous les messages consignés dans la console pour vous aider à diagnostiquer les problèmes liés à votre application, aider au debogage. On a plusieurs types de journaux (applications, serveurs, erreurs détaillées, déploiement)
 
@@ -55,7 +55,7 @@ router.get('/', function(req, res, next) {
 });
 ```
 
-Ajoutez une tache à la ToDoApp et dirigez vous vers l'option **Log Stream**
+Ajoutez **une tache** à la ToDoApp et dirigez vous vers l'option **Log Stream**, Que remarquez vous ?
 
 {% collapsible %}
 ![Logs_stream](/media/lab1/log_stream.png)
@@ -74,8 +74,6 @@ az webapp log download --name $APP_NAME --resource-group $RESOURCE_GROUP
 
 Lorsque vous avez des applications critiques et des processus métier basés sur des ressources Azure, vous voulez superviser ces ressources pour connaître leur disponibilité, leurs performances et leur fonctionnement. **Azure Monitor** optimise la disponibilité et les performances de vos applications et services en fournissant une solution complète pour collecter, analyser et utiliser la télémétrie de vos environnements cloud et locaux.
 
-Scénario :
-L’exemple d’application inclut le code destiné à saturer la mémoire et à générer des erreurs HTTP 500.
 Nous allons :
 
 - Configurer la ToDo App avec Azure Monitor et envoyer des journaux de console à Log Analytics.
@@ -125,7 +123,9 @@ az monitor diagnostic-settings create --resource $resourceID \
 
 {% collapsible %}
 
-- Requeter les logs de "suppression de taches" fournis par la console
+- Allez dans votre Workspace Log Anaytics
+- dans la section **Logs**, selectionner votre webapp comme scope et filtrer 'appservice'
+- Requeter les logs de **"suppression de taches"** fournis par la console
 
 ![kusto_conso](/media/lab1/kusto_1.png)
 
