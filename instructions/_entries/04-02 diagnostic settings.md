@@ -36,7 +36,7 @@ La page d’accueil des diagnostics App Service effectue une série de vérifica
 
 Azure App Service capture tous les messages consignés dans la console pour vous aider à diagnostiquer les problèmes liés à votre application, aider au debogage. On a plusieurs types de journaux (applications, serveurs, erreurs détaillées, déploiement)
 
-L’exemple d’application du Lab2 sort les messages du journal de la console dans chacun de ses points de terminaison pour illustrer cette capacité. Par exemple dans le fichier **index.js**, le point de terminaison get génère un message sur le nombre de tâches récupérées dans la base de données et un message d’erreur s’affiche en cas de problème.
+L’exemple d’application du **Lab2** sort les messages du journal de la console dans chacun de ses points de terminaison pour illustrer cette capacité. Par exemple dans le fichier **index.js**, le point de terminaison get génère un message sur **le nombre de tâches récupérées dans la base de données** et un message d’erreur s’affiche en cas de problème.
 
 ```bash
 router.get('/', function(req, res, next) {

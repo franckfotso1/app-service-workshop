@@ -6,7 +6,7 @@ parent-id: lab-1
 ---
 
 
-### diagramme de l'architecture
+### Diagramme de l'architecture
 
 {% collapsible %}
 ![Première app](/media/lab1/lab_1_archi.png)

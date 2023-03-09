@@ -5,7 +5,7 @@ title: Paramètres d'application
 parent-id: lab-2
 ---
 
-Une fois les ressources provisonnées, nous allons connecter l'application à la base de données.
+- Une fois les ressources provisonnées, nous allons connecter l'application à la base de données.
 
 ### Paramètres d'application
 

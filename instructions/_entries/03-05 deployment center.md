@@ -26,11 +26,16 @@ vérifiez que vous etes bien en environnement de staging
 
 > Azure commit un fichier de flux de travail dans le référentiel GitHub sélectionné pour gérer les tâches de Build et de déploiement. Pour afficher le fichier avant d'enregistrer vos modifications, sélectionnez **Preview file**
 
-Le fournisseur de build GitHub Actions est une option pour CI/CD de GitHub. Il effectue ces actions pour configurer la CI/CD :
+Le fournisseur de build GitHub Actions effectue ces actions pour configurer la CI/CD :
 
-- dépose un fichier de workflow GitHub Actions dans votre référentiel GitHub pour gérer les tâches de génération et de déploiement sur App Service
+- dépose un fichier de workflow GitHub Actions dans votre référentiel GitHub pour gérer les tâches de build et de déploiement sur App Service
 - Ajoute le profil de publication de votre application en tant que secret GitHub. Le fichier de workflow utilise ce secret pour s'authentifier auprès d'App Service.
 - Capture les informations des journaux d'exécution du flux de travail et les affiche dans l'onglet Journaux du centre de déploiement de votre application.
+
+Apercu du fichier :
+{% collapsible %}
+![Workflow file](/media/lab1/workflow_file.png)
+{% endcollapsible %}
   
 Vous pouvez **personnaliser** le fournisseur de build GitHub Actions de cette manière:
 

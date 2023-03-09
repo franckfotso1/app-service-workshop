@@ -14,7 +14,7 @@ Il existe deux workflows de mise à l’échelle dans App Service : scale-up et 
 
 > en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité d’UC et de mémoire. Pour monter en puissance en modifiant le niveau tarifaire du plan App Service auquel appartient votre application.
 
-[----]
+[---------------]
 > en faisant un **scale out**, vous augmentez le nombre d’instances de machine virtuelle qui exécutent votre application. Vous y trouverez comment utiliser  la mise à l'echelle manuelle ou automatique basé sur des règles prédéfinies et en fonction des planifications.
 
 {% endcollapsible %}
