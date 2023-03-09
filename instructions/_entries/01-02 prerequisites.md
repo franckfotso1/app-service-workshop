@@ -45,6 +45,6 @@ az account set –s <SubscriptionID>
 az account show
 ```
 
-connectez vous au portail : to <https://portal.azure.com>
+connectez vous au portail : <https://portal.azure.com>
 
 {% endcollapsible %}

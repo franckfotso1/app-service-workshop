@@ -1,7 +1,7 @@
 ---
 sectionid: lab2-custom domain
 sectionclass: h2
-title: resilience
+title: Résilience
 parent-id: lab-2
 ---
 

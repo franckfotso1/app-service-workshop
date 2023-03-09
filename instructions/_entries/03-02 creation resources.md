@@ -19,14 +19,14 @@ $APP_DATABASE = "nodeappdatabase23"    # nom de la base de données mongo
 $GIT_REPO = "https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app"
 ```
 
-#### Créez un plan AppService Linux avec un tier Standard (minimum required for Slot)
+#### Créez un plan AppService Linux avec un tier Standard (minimum requis pour les Slots)
 
 Solution :
 
 {% collapsible %}
 
 ```bash
-## Créez un plan App Service Standard avec 2 instances de machine Linux
+# Créez un plan App Service Standard avec 2 instances de machine Linux
 az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 2 --sku S1
 ```
 
@@ -61,7 +61,7 @@ az cosmosdb create --name $COSMOSDB_ACCOUNT --kind MongoDB -g $RESOURCE_GROUP
 ```
 
 ```bash
-# Créer une nouvelle base de données MongoDB
+# Créez une nouvelle base de données MongoDB
 az cosmosdb mongodb database create --account-name $COSMOSDB_ACCOUNT -g $RESOURCE_GROUP --name $APP_DATABASE
 ```
 

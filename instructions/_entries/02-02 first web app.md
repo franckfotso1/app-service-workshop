@@ -14,13 +14,13 @@ parent-id: lab-1
 
 Examinons quelques paramètres dont vous avez besoin pour créer une application App Service :
 
-- **le nom** : le nom de l’application doit être unique globallement
+- **le nom** : le nom de l’application doit être unique globalement
 - **le format de publication** : App Service publie votre application sous forme de code ou conteneur Docker
 - **la pile d'exécution** : langage, version du SDK
 - **le système d’exploitation** : Linux ou Windows
-- **le plan App Service** : l'application doit etre associée à un plan App Service pour établir les ressources et les capacités disponibles.
+- **le plan App Service** : l'application doit être  associée à un plan App Service pour établir les ressources et les capacités disponibles.
 
-> D'autres applications peuvent également etre associées au **meme** plan donc utiliser les meme ressources.
+> D’autres applications peuvent également être associées au même plan App Service et donc utiliser les même ressources.
 
 #### Définissons quelques variables d'environnement  
 
@@ -50,7 +50,7 @@ Solution :
 {% collapsible %}
 
 ```bash
-## Créez un plan App Service Standard avec 2 instances de machine Linux
+# Créez un plan App Service Standard avec 2 instances de machine Linux
 az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 2 --sku S1
 ```
 
@@ -97,7 +97,7 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP
 
 {% endcollapsible %}
 
-> Le nom de l'application Web doit pouvoir produire un nom de domaine complet et unique sous la forme **AppName.azurewebsites.net**
+> un nom de domaine unique sous la forme **AppName.azurewebsites.net** sera attribuée à la web app
 
 {% collapsible %}
 ![App UI default](/media/lab1/php_app_quick.png)
@@ -106,7 +106,6 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP
 #### Exécutez la commande suivante pour déployer manuellement le code de l'application php depuis le repo Github
 
 ```bash
-# Déployez manuellement le code depuis le référentiel GitHub  
 az webapp deployment source config --name $APP_NAME_1 --resource-group $RESOURCE_GROUP \
 --repo-url $GIT_REPO --branch master --manual-integration
 ```
@@ -170,7 +169,7 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 
 - Dans la page Publier, sélectionnez Publier. Si vous voyez un message d’avertissement, sélectionnez Continuer.
 
-> Visual Studio génère, empaquète et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut
+> Visual Studio génère, build et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut
 
 #### Vérifiez la présence des deux Web Apps dans votre plan App Service Linux
 

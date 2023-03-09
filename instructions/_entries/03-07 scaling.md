@@ -4,7 +4,8 @@ sectionclass: h2
 title: Autoscaling
 parent-id: lab-2
 ---
-- Une fois le déploiement effectué, nous allons mettre à l'échelle l'application
+
+Une fois le déploiement effectué, nous allons mettre à l'échelle l'application
 
 Il existe deux workflows de mise à l’échelle dans App Service : scale-up et scale-out
 
@@ -13,7 +14,7 @@ Il existe deux workflows de mise à l’échelle dans App Service : scale-up et 
 
 > en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité d’UC et de mémoire. Pour monter en puissance en modifiant le niveau tarifaire du plan App Service auquel appartient votre application.
 
-[------------------------------------]
+[----]
 > en faisant un **scale out**, vous augmentez le nombre d’instances de machine virtuelle qui exécutent votre application. Vous y trouverez comment utiliser  la mise à l'echelle manuelle ou automatique basé sur des règles prédéfinies et en fonction des planifications.
 
 {% endcollapsible %}
@@ -32,7 +33,6 @@ az appservice plan update --number-of-workers 3 --name $APP_SERVICE_PLAN --resou
 
 #### Mettez à jour le tier de l'ASP pour rendre disponible la fonctionnalité de mise à l'échelle automatique basé sur des règles (scale up)
 
-- Upgrade the pricing tier of the ASP.
 {% collapsible %}
 ![scale up](/media/lab1/scale_up_asp.png)
 {% endcollapsible %}
@@ -43,7 +43,7 @@ az appservice plan update --number-of-workers 3 --name $APP_SERVICE_PLAN --resou
 ![Add a scale Rule](/media/lab1/custom_scale_out.png)
 {% endcollapsible %}
   
-> La règle utilise le pourcentage de CPU pour augmenter le nombre d'instances. Si en moyenne sur une durée de 5 min, cette métrique > 10%, on incrémente de 1 ce nombre en limitant à 5.
+> La règle utilise le pourcentage de CPU pour augmenter le nombre d'instances. Si en moyenne, sur une durée de 5 min, cette métrique > 10%, on incrémente de 1 ce nombre en limitant à 5.
 
 {% collapsible %}
 ![Add a scale Rule](/media/lab1/scale_rule.png)
@@ -58,7 +58,7 @@ while ($true) { Invoke-WebRequest -Uri $webapp.DefaultHostName }
 
 - Vérifiez bien que le nombre d'instances évolue automatiquement
 
-Regardez le nombre d'instances s'accroitre Dans **Process Explorer** (for Windows Apps)
+Regardez le nombre d'instances s'accroitre Dans **Process Explorer** (for Windows Apps), la vue de l'app, ou l'ASP
 
 ```bash
 # s'il était à 3, il passera à 4, et ensuite 5

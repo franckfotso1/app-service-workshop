@@ -5,7 +5,7 @@ title: Paramètres d'application
 parent-id: lab-2
 ---
 
-- Une fois les ressources provisonnées, nous allons connecter l'application à la base de données.
+Une fois les ressources provisonnées, nous allons connecter l'application à la base de données.
 
 ### Paramètres d'application
 
@@ -16,7 +16,7 @@ Dans App Service, les paramètres d’application sont des variables transmises 
 #### Démarrer l'application localement
 
 ```bash
-# clonez le dépôt
+# Clonez le dépôt
 git clone https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app.git
 cd msdocs-nodejs-mongodb-azure-sample-app
 # Installez les dépendances des packages
@@ -24,7 +24,7 @@ npm install
 # Copiez le fichier .env.sample dans .env et renseignez la valeur DATABASE_URL avec votre URL MongoDB (par exemple, mongodb://localhost:27017/)
 # Démarrez l’application 
 npm start
-# accédez à http://localhost:3000
+# Accédez à http://localhost:3000
 ```
 
 > Ouvrez le fichier **connection.js** dans le dossier **config** et notez les 2 variables dont vous aurez besoin pour connecter l'application à la BD. Que remarquez vous dans le fichier **app.js, ligne 17** ?
@@ -32,7 +32,7 @@ npm start
 #### Connectez la web app à la BD
 
 ```bash
-# Récupérer la 'chaîne de connexion' de votre base de données Mongo
+# Récupérez la 'chaîne de connexion' de votre base de données Mongo
 az cosmosdb list-connection-strings --name myCosmosDBAccount --resource-group myResourceGroup
 ```
 
@@ -55,7 +55,7 @@ az webapp config appsettings set --name $APP_NAME \
 - via le Portail
 
 ![Web App connection string](/media/lab1/app_settings.png)
-> Penser à enregistrer ses modifications
+> Pensez à enregistrer ses modifications
 {% endcollapsible %}
 
 #### paramères généraux
@@ -67,7 +67,7 @@ az webapp config set --resource-group <group-name> --name <app-name> --use-32bit
 # ARR affinity, SDK version, Command start, etc ...
 ```
 
-> **alawys-on** : Garde l'application chargée même s’il n'y a aucun trafic.Par défaut, l’application est déchargée après 20 minutes sans requêtes entrantes. Cela peut provoquer une latence élevée pour les nouvelles requêtes en raison de son temps de préparation. Lorsque l’option Always on est activée, l’équilibreur de charge frontal envoie une requête GET à la racine de l’application toutes les cinq minutes. La commande ping continue empêche le déchargement de l’application. Cette option peut etre utile pour les WebJobs continus.
+> **always-on** : Garde l'application chargée même s’il n'y a aucun trafic.Par défaut, l’application est déchargée après 20 minutes sans requêtes entrantes. Cela peut provoquer une latence élevée pour les nouvelles requêtes en raison de son temps de préparation. Lorsque l’option Always on est activée, l’équilibreur de charge frontal envoie une requête GET à la racine de l’application toutes les cinq minutes. La commande ping continue empêche le déchargement de l’application. Cette option peut etre utile pour les WebJobs continus.
 
 ---
 

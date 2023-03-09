@@ -6,4 +6,4 @@ parent-id: lab-4
 ---
 
 
-- nous allons configurer un nom de domaine personalisé pour notre application (certificats)
+- Configurez un nom de domaine personalisé pour notre application (certificats)
