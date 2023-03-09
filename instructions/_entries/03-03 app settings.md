@@ -16,7 +16,7 @@ Dans App Service, les paramètres d’application sont des variables transmises 
 #### Démarrer l'application localement
 
 ```bash
-# clonez le repo
+# clonez le dépôt
 git clone https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app.git
 cd msdocs-nodejs-mongodb-azure-sample-app
 # Installez les dépendances des packages
@@ -32,13 +32,13 @@ npm start
 #### Connectez la web app à la BD
 
 ```bash
-# Retrieve the connection string to your MongoDB database 
+# Récupérer la 'chaîne de connexion' de votre base de données Mongo
 az cosmosdb list-connection-strings --name myCosmosDBAccount --resource-group myResourceGroup
 ```
 
-> This command will return a JSON object containing the connection string for your Cosmos DB account. Copy the value of the **primaryConnectionString** property
+> Cette commande renverra un objet JSON contenant la chaîne de connexion de votre compte Cosmos DB. Copiez la valeur de la propriété **primaryConnectionString**
 
-#### Assign the connection string as an application setting in the web app
+#### Attribuez la chaîne de connexion en tant que paramètre d'application à l'application Web
 
 Solution :
 

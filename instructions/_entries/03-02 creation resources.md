@@ -10,12 +10,12 @@ parent-id: lab-2
 #### Définissons quelques variables d'environnement  
 
 ``` bash
-$RESOURCE_GROUP = "my-rg"              # name of the resource group
-$LOCATION = "northeurope"              # azure region where resources are hosted
-$APP_NAME = "nodeapp256"               # name of the Todo Express Js Web app 
-$APP_SERVICE_PLAN = "my-asp-app"       # name of the Linux App Service Plan
-$COSMOSDB_ACCOUNT = "cosmosaccount23"  # name of the cosmosdb account
-$APP_DATABASE = "nodeappdatabase23"    # name of the mongo database
+$RESOURCE_GROUP = "my-rg"              # nom du groupe de ressources
+$LOCATION = "northeurope"              # la region Azure où seront déployées les ressources
+$APP_NAME = "nodeapp256"               # nom de la web app Express Js
+$APP_SERVICE_PLAN = "my-asp-app"       # nom du plan App Service Linux
+$COSMOSDB_ACCOUNT = "cosmosaccount23"  # nom du compte CosmosDB
+$APP_DATABASE = "nodeappdatabase23"    # nom de la base de données mongo
 $GIT_REPO = "https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app"
 ```
 
@@ -26,7 +26,7 @@ Solution :
 {% collapsible %}
 
 ```bash
-# Create a standard app service plan with 2 Linux workers
+## Créez un plan App Service Standard avec 2 instances de machine Linux
 az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 2 --sku S1
 ```
 
@@ -39,9 +39,9 @@ Solution :
 {% collapsible %}
 
 ```bash
-# get the list of supported runtimes for each Os
+# Obtenez la liste des runtimes supportés pour chaque OS
 az webapp list-runtimes
-# create the web app
+# Créez la web app
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME -p $APP_SERVICE_PLAN -r "NODE:16-lts" 
 ```
 
@@ -56,12 +56,12 @@ Solution :
 {% collapsible %}
 
 ```bash
-# Create a new Cosmos DB account with MongoDB API
+# Créez un nouveau compte Cosmos DB avec l'API MongoDB
 az cosmosdb create --name $COSMOSDB_ACCOUNT --kind MongoDB -g $RESOURCE_GROUP
 ```
 
 ```bash
-# Create a new MongoDB database
+# Créer une nouvelle base de données MongoDB
 az cosmosdb mongodb database create --account-name $COSMOSDB_ACCOUNT -g $RESOURCE_GROUP --name $APP_DATABASE
 ```
 

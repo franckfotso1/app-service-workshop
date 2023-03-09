@@ -25,11 +25,11 @@ Examinons quelques paramètres dont vous avez besoin pour créer une application
 #### Définissons quelques variables d'environnement  
 
 ``` bash
-$RESOURCE_GROUP = "my-rg"               # name of the resource group
-$LOCATION = "francecentral"             # azure region where resources are hosted
-$APP_NAME_1 = "phpapp156"               # name of the PHP Web app
-$APP_NAME_2 = "dotnetapp156"            # name of the ASP.NET Core Web app 
-$APP_SERVICE_PLAN = "my-asp-app"        # name of the Linux App Service Plan
+$RESOURCE_GROUP = "my-rg"               # nom du groupe de ressources
+$LOCATION = "francecentral"             # la region Azure où seront déployées les ressources
+$APP_NAME_1 = "phpapp156"               # nom de la web app php
+$APP_NAME_2 = "dotnetapp156"            # nom de la web app ASP.NET Core Web  
+$APP_SERVICE_PLAN = "my-asp-app"        # nom du plan App Service Linux
 $GIT_REPO = "https://github.com/Azure-Samples/php-docs-hello-world"
 ```
 
@@ -50,7 +50,7 @@ Solution :
 {% collapsible %}
 
 ```bash
-# Create a standard app service plan with 2 Linux workers
+## Créez un plan App Service Standard avec 2 instances de machine Linux
 az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 2 --sku S1
 ```
 
@@ -68,10 +68,10 @@ az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --n
 #### Lancer l'application php en local (optionel)
 
 ```bash
-# clone the repo
+# clonez le dépôt
 git clone https://github.com/Azure-Samples/php-docs-hello-world
 cd php-docs-hello-world
-# make it run locallly
+# Démarrez l'application localement
 php -S localhost:8080
 curl http://localhost:8080
 ```
@@ -85,9 +85,9 @@ Solution :
 - via CLI
 
 ```bash
-# get the list of supported runtimes for each Os
+# Obtenez la liste des runtimes supportés pour chaque OS
 az webapp list-runtimes
-# create the web app
+# Créez la web app
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
 ```
 
@@ -97,7 +97,7 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP
 
 {% endcollapsible %}
 
-> The web app's name must be able to produce a unique FQDN as AppName.azurewebsites.net
+> Le nom de l'application Web doit pouvoir produire un nom de domaine complet et unique sous la forme **AppName.azurewebsites.net**
 
 {% collapsible %}
 ![App UI default](/media/lab1/php_app_quick.png)
@@ -106,7 +106,7 @@ az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP
 #### Exécutez la commande suivante pour déployer manuellement le code de l'application php depuis le repo Github
 
 ```bash
-# Deploy code from a php app  public GitHub repository. 
+# Déployez manuellement le code depuis le référentiel GitHub  
 az webapp deployment source config --name $APP_NAME_1 --resource-group $RESOURCE_GROUP \
 --repo-url $GIT_REPO --branch master --manual-integration
 ```
@@ -161,7 +161,7 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
   
 - Choisissez la cible spécifique, Azure App Service (Linux)
 
-- Sélectionnez Ajouter un compte ou Connexion pour vous connecter à votre abonnement Azure
+- Sélectionnez **Ajouter un compte ou Connexion** pour vous connecter à votre abonnement Azure
   
 - À droite d’Instances App Service, sélectionnez + et choisir le nom, l'ASP et le RG
 {% collapsible %}

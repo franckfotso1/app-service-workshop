@@ -18,7 +18,7 @@ Il existe deux workflows de mise à l’échelle dans App Service : scale-up et 
 
 {% endcollapsible %}
 
-#### Scale web app to 3 workers
+#### Mettez à jour le nombre de workers à 3 (scale out)
 
 ```bash
 az appservice plan update --number-of-workers 3 --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP
@@ -30,35 +30,37 @@ az appservice plan update --number-of-workers 3 --name $APP_SERVICE_PLAN --resou
 ![no scale up](/media/lab1/scale_up_not_available.png)
 {% endcollapsible %}
 
-#### Pour rendre la fonctionnalité disponible, Scale Up the App Service Plan to support custom autoscale
+#### Mettez à jour le tier de l'ASP pour rendre disponible la fonctionnalité de mise à l'échelle automatique basé sur des règles (scale up)
 
 - Upgrade the pricing tier of the ASP.
 {% collapsible %}
 ![scale up](/media/lab1/scale_up_asp.png)
 {% endcollapsible %}
 
-#### Configure Custom autoscaling
-  
-- Configure a custom autoscale on the production deployment slot.
+#### Configurez un 'Rule Based autoscale'
+
 {% collapsible %}
 ![Add a scale Rule](/media/lab1/custom_scale_out.png)
 {% endcollapsible %}
-
-- Add a rule
   
-> The scale rule should use the CPU percentage to increase the resource count.
+> La règle utilise le pourcentage de CPU pour augmenter le nombre d'instances. Si en moyenne sur une durée de 5 min, cette métrique > 10%, on incrémente de 1 ce nombre en limitant à 5.
+
 {% collapsible %}
 ![Add a scale Rule](/media/lab1/scale_rule.png)
 {% endcollapsible %}
 
-- Use Azure PowerShell to start an infinite loop that sends the HTTP requests to your web app.
+- Utilisez Azure PowerShell pour démarrer une boucle infinie qui envoie les requêtes HTTP à votre application Web.
   
 ```bash
-# start an infinite loop that sends the HTTP requests to web app
-$webapp = Get-AzWebApp -ResourceGroupName $rgName
+$webapp = Get-AzWebApp -ResourceGroupName $RESOURCE_GROUP
 while ($true) { Invoke-WebRequest -Uri $webapp.DefaultHostName }
 ```
 
-- Confirm the resource count automatically scales
+- Vérifiez bien que le nombre d'instances évolue automatiquement
 
-Dans **Process Explorer** (for Windows Apps) ou dans l'ASP, regardez le nombre d'instances s'accroitre.
+Regardez le nombre d'instances s'accroitre Dans **Process Explorer** (for Windows Apps)
+
+```bash
+# s'il était à 3, il passera à 4, et ensuite 5
+az appservice plan show --name $APP_SERVICE_PLAN  --resource-group <nom_du_groupe_de_ressources> --query 'sku.capacity'
+```

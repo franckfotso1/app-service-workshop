@@ -18,16 +18,21 @@ Connectez-vous à votre compte GitHub et Forkez [le repo](https://github.com/Azu
 - aller dans **Deployment center**
 - choisir **Github** comme source
 - remplir les paramètres (organisation, repo, branch)
+
+{% collapsible %}
+vérifiez que vous etes bien en environnement de staging
+![Deployment center](/media/lab1/deployment_center.png)
+{% endcollapsible %}
+
+> Azure commit un fichier de flux de travail dans le référentiel GitHub sélectionné pour gérer les tâches de Build et de déploiement. Pour afficher le fichier avant d'enregistrer vos modifications, sélectionnez **Preview file**
+
+Le fournisseur de build GitHub Actions est une option pour CI/CD de GitHub. Il effectue ces actions pour configurer la CI/CD :
+
+- dépose un fichier de workflow GitHub Actions dans votre référentiel GitHub pour gérer les tâches de génération et de déploiement sur App Service
+- Ajoute le profil de publication de votre application en tant que secret GitHub. Le fichier de workflow utilise ce secret pour s'authentifier auprès d'App Service.
+- Capture les informations des journaux d'exécution du flux de travail et les affiche dans l'onglet Journaux du centre de déploiement de votre application.
   
-> Azure commits this workflow file into your selected GitHub repository to handle build and deploy tasks.To see the file before saving your changes, select **Preview file**
+Vous pouvez **personnaliser** le fournisseur de build GitHub Actions de cette manière:
 
-The GitHub Actions build provider is an option for CI/CD from GitHub. It completes these actions to set up CI/CD:
-
-- Deposits a GitHub Actions workflow file into your GitHub repository to handle build and deploy tasks to App Service.
-- Adds the publishing profile for your app as a GitHub secret. The workflow file uses this secret to authenticate with App Service.
-- Captures information from the workflow run logs and displays it on the Logs tab in your app's Deployment Center.
-You can customize the GitHub Actions build provider in these ways:
-
-- Customize the workflow file after it's generated in your GitHub repository. For more information, see Workflow syntax for GitHub Actions. Just make sure that the workflow deploys to App Service with the azure/webapps-deploy action.
-- If the selected branch is protected, you can still preview the workflow file without saving the configuration and then manually add it into your repository. This method doesn't give you log integration with the Azure portal.
-- Instead of using a **publishing profile**, you can deploy by using a **service principal** in Azure Active Directory.
+- Personnalisez le fichier de workflow après sa génération dans votre référentiel GitHub. Assurez-vous simplement que le flux de travail se déploie sur App Service avec l'action azure/webapps-deploy.
+- Au lieu d'utiliser un **profil de publication**, vous pouvez déployer à l'aide d'un **service principal** dans Azure Active Directory.
