@@ -50,8 +50,8 @@ Solution :
 {% collapsible %}
 
 ```bash
-# Créez un plan App Service Standard avec 2 instances de machine Linux
-az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 2 --sku S1
+# Créez un plan App Service Standard avec 4 instances de machine Linux
+az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 4 --sku S1
 ```
 
 {% endcollapsible %}
@@ -162,14 +162,14 @@ az webapp show -n $APP_NAME_1 -g $RESOURCE_GROUP --query "defaultHostName"
 
 - Sélectionnez **Ajouter un compte ou Connexion** pour vous connecter à votre abonnement Azure
   
-- À droite d’Instances App Service, sélectionnez + et choisir le nom, l'ASP et le RG
+- À droite d’Instances App Service, sélectionnez + et choisir le nom, l'ASP et le RG puis sélectionnez Créer
 {% collapsible %}
 ![asp-deploy](/media/lab1/asp_app_deploy.png)
 {% endcollapsible %}
 
 - Dans la page Publier, sélectionnez Publier. Si vous voyez un message d’avertissement, sélectionnez Continuer.
 
-> Visual Studio génère, build et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut
+> Visual Studio build, génère un profil de publication et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut
 
 #### Vérifiez la présence des deux Web Apps dans votre plan App Service Linux
 
@@ -183,6 +183,16 @@ az webapp list -g $RESOURCE_GROUP -p $APP_SERVICE_PLAN --output table
 
 - via Portail
   ![asp-deploy](/media/lab1/asp_list_app.png)
+
+{% endcollapsible %}
+
+#### Supprimez le groupe de ressources
+
+{% collapsible %}
+
+```bash
+az group delete -n $RESOURCE_GROUP
+```
 
 {% endcollapsible %}
 

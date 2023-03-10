@@ -25,7 +25,19 @@ Pour attacher **l’agent Application Insights** :
 - Enfin, sélectionnez Appliquer en bas.
 
 {% collapsible %}
+
+- activer l'agent App Insights
+
 ![app_insights](/media/lab1/app_insights.png)
+
+- créer une ressource App Insights
+  
+![app_insights_create](/media/lab1/app_insights1.png)
+
+- Observez l'ensemble des métriques et options disponibles
+  
+![app_insights_metrics](/media/lab1/app_insights_metrics.png)
+
 {% endcollapsible %}
 
 > Obtenez plus d'informations sur les éléments supervisés par Application Insights [ici](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net)

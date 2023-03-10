@@ -33,7 +33,7 @@ npm start
 
 ```bash
 # Récupérez la 'chaîne de connexion' de votre base de données Mongo
-az cosmosdb list-connection-strings --name myCosmosDBAccount --resource-group myResourceGroup
+az cosmosdb list-connection-strings -n $COSMOSDB_ACCOUNT -g $RESOURCE_GROUP
 ```
 
 > Cette commande renverra un objet JSON contenant la chaîne de connexion de votre compte Cosmos DB. Copiez la valeur de la propriété **primaryConnectionString**

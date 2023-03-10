@@ -19,7 +19,7 @@ Cette fonctionnalité est particulièrement utile quand vous rencontrez des prob
 ![Ask Genie](/media/lab1/ask_genie.png)
 ![Ask Genie diagnostic](/media/lab1/genie_diagnostic.png)
 
-- On dispose aussi d'un Bot pour soumettre nos problèmes, et Genie nous fournit des recommandations
+- On dispose aussi d'un Bot sous l'option **Ask Genie** pour soumettre nos problèmes, et ce dernier nous fournit des recommandations
 ![Ask Genie 1](/media/lab1/ask_genie_1.png)
 
 {% endcollapsible %}

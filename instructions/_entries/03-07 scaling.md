@@ -12,7 +12,7 @@ Il existe deux workflows de mise à l’échelle dans App Service : scale-up et 
 {% collapsible %}
 ![Web App connection string](/media/lab1/asp_scaling.png)
 
-> en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité d’UC et de mémoire. Pour monter en puissance en modifiant le niveau tarifaire du plan App Service auquel appartient votre application.
+> en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité d’UC et de mémoire. Pour monter en puissance il faut modifier le niveau tarifaire du plan App Service auquel appartient votre application.
 
 [---------------]
 > en faisant un **scale out**, vous augmentez le nombre d’instances de machine virtuelle qui exécutent votre application. Vous y trouverez comment utiliser  la mise à l'echelle manuelle ou automatique basé sur des règles prédéfinies et en fonction des planifications.
@@ -62,5 +62,5 @@ Regardez le nombre d'instances s'accroitre Dans **Process Explorer** (for Window
 
 ```bash
 # s'il était à 3, il passera à 4, et ensuite 5
-az appservice plan show --name $APP_SERVICE_PLAN  --resource-group <nom_du_groupe_de_ressources> --query 'sku.capacity'
+az appservice plan show -n $APP_SERVICE_PLAN  -g $RESOURCE_GROUP  --query 'sku.capacity'
 ```
