@@ -1,5 +1,5 @@
 full_rebuild: true
-name: "Dapr Workshop"
+name: "App Service Workshop"
 tracking: "acaworkshop"
 author: Microsoft
 encoding: utf-8

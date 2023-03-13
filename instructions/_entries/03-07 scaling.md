@@ -12,7 +12,7 @@ Il existe deux workflows de mise à l’échelle dans App Service : scale-up et 
 {% collapsible %}
 ![Web App connection string](/media/lab1/asp_scaling.png)
 
-> en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité d’UC et de mémoire. Pour monter en puissance il faut modifier le niveau tarifaire du plan App Service auquel appartient votre application.
+> en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité de vCPU et de mémoire. Pour monter en puissance il faut modifier le niveau tarifaire du plan App Service auquel appartient votre application.
 
 [---------------]
 > en faisant un **scale out**, vous augmentez le nombre d’instances de machine virtuelle qui exécutent votre application. Vous y trouverez comment utiliser  la mise à l'echelle manuelle ou automatique basé sur des règles prédéfinies et en fonction des planifications.
@@ -58,7 +58,7 @@ while ($true) { Invoke-WebRequest -Uri $webapp.DefaultHostName }
 
 - Vérifiez bien que le nombre d'instances évolue automatiquement
 
-Regardez le nombre d'instances s'accroitre Dans **Process Explorer** (for Windows Apps), la vue de l'app, ou l'ASP
+Regardez la valeur du paramètre Instance count du plan App Service dans la vue globale
 
 ```bash
 # s'il était à 3, il passera à 4, et ensuite 5

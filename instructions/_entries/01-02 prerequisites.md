@@ -13,7 +13,6 @@ Ce workshop va demander les éléments suivants:
 - Azure CLI (**>= 2.30**)
 - [VS Code](https://code.visualstudio.com/) ou équivalent
 - [un compte Github](https://github.com/join)
-- [Docker](https://www.docker.com/)
 
 ### Installer Azure CLI
 
