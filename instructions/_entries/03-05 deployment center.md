@@ -21,7 +21,7 @@ Connectez-vous à votre compte GitHub et Forkez [le repo](https://github.com/Azu
 
 {% collapsible %}
 vérifiez que vous etes bien en environnement de staging
-![Deployment center](/media/lab1/deployment_center.png)
+![Deployment center](/media/lab2/deployment_center.png)
 {% endcollapsible %}
 
 > Azure commit un fichier de flux de travail dans le référentiel GitHub sélectionné pour gérer les tâches de Build et de déploiement. Pour afficher le fichier avant d'enregistrer vos modifications, sélectionnez **Preview file**
@@ -34,7 +34,7 @@ Le fournisseur de build GitHub Actions effectue ces actions pour configurer la C
 
 Apercu du fichier :
 {% collapsible %}
-![Workflow file](/media/lab1/workflow_file.png)
+![Workflow file](/media/lab2/workflow_file.png)
 {% endcollapsible %}
   
 Vous pouvez **personnaliser** le fournisseur de build GitHub Actions de cette manière:

@@ -10,7 +10,7 @@ Une fois le déploiement effectué, nous allons mettre à l'échelle l'applicati
 Il existe deux workflows de mise à l’échelle dans App Service : scale-up et scale-out
 
 {% collapsible %}
-![Web App connection string](/media/lab1/asp_scaling.png)
+![Web App connection string](/media/lab2/asp_scaling.png)
 
 > en faisant un **scale up**, vous bénéficiez d’un surcroît de capacité de vCPU et de mémoire. Pour monter en puissance il faut modifier le niveau tarifaire du plan App Service auquel appartient votre application.
 
@@ -28,25 +28,25 @@ az appservice plan update --number-of-workers 3 --name $APP_SERVICE_PLAN --resou
 #### Pour un ASP de tier Basic, F1, etc < S1 l'autoscale est indisponible
 
 {% collapsible %}
-![no scale up](/media/lab1/scale_up_not_available.png)
+![no scale up](/media/lab2/scale_up_not_available.png)
 {% endcollapsible %}
 
 #### Mettez à jour le tier de l'ASP pour rendre disponible la fonctionnalité de mise à l'échelle automatique basé sur des règles (scale up)
 
 {% collapsible %}
-![scale up](/media/lab1/scale_up_asp.png)
+![scale up](/media/lab2/scale_up_asp.png)
 {% endcollapsible %}
 
 #### Configurez un 'Rule Based autoscale'
 
 {% collapsible %}
-![Add a scale Rule](/media/lab1/custom_scale_out.png)
+![Add a scale Rule](/media/lab2/custom_scale_out.png)
 {% endcollapsible %}
   
 > La règle utilise le pourcentage de CPU pour augmenter le nombre d'instances. Si en moyenne, sur une durée de 5 min, cette métrique > 10%, on incrémente de 1 ce nombre en limitant à 5.
 
 {% collapsible %}
-![Add a scale Rule](/media/lab1/scale_rule.png)
+![Add a scale Rule](/media/lab2/scale_rule.png)
 {% endcollapsible %}
 
 - Utilisez Azure PowerShell pour démarrer une boucle infinie qui envoie les requêtes HTTP à votre application Web.

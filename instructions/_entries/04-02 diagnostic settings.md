@@ -16,11 +16,11 @@ Cette fonctionnalité est particulièrement utile quand vous rencontrez des prob
 
 - La zone de recherche Genie permet de rapidement trouver un diagnostic. Par exemple si mon application est lent, je search **"Web App Slow"**. Le même diagnostic est disponible dans les catégories Availability & Performance.
   
-![Ask Genie](/media/lab1/ask_genie.png)
-![Ask Genie diagnostic](/media/lab1/genie_diagnostic.png)
+![Ask Genie](/media/lab3/ask_genie.png)
+![Ask Genie diagnostic](/media/lab3/genie_diagnostic.png)
 
 - On dispose aussi d'un Bot sous l'option **Ask Genie** pour soumettre nos problèmes, et ce dernier nous fournit des recommandations
-![Ask Genie 1](/media/lab1/ask_genie_1.png)
+![Ask Genie 1](/media/lab3/ask_genie_1.png)
 
 {% endcollapsible %}
 
@@ -29,7 +29,7 @@ Cette fonctionnalité est particulièrement utile quand vous rencontrez des prob
 La page d’accueil des diagnostics App Service effectue une série de vérifications de la configuration et formule des recommandations basées sur la configuration unique de votre application.
 
 {% collapsible %}
-![Alert](/media/lab1/app_alert.png)
+![Alert](/media/lab3/app_alert.png)
 {% endcollapsible %}
 
 #### Activez la journalisation et streamez les logs de l'application
@@ -58,7 +58,7 @@ router.get('/', function(req, res, next) {
 Ajoutez **une tache** à la ToDoApp et dirigez vous vers l'option **Log Stream**, Que remarquez vous ?
 
 {% collapsible %}
-![Logs_stream](/media/lab1/log_stream.png)
+![Logs_stream](/media/lab3/log_stream.png)
 {% endcollapsible %}
 
 ```bash
@@ -100,7 +100,7 @@ az monitor log-analytics workspace create -g $RESOURCE_GROUP --workspace-name $A
 
 - via le Portail
 
-![Logs](/media/lab1/nodeapp_logs.png)
+![Logs](/media/lab3/nodeapp_logs.png)
 
 - via CLI
 
@@ -127,10 +127,10 @@ az monitor diagnostic-settings create --resource $resourceID \
 - dans la section **Logs**, selectionner votre webapp comme **scope** et filtrer 'appservice'
 - Requeter les logs de **"suppression de taches"** fournis par la console
 
-![kusto_conso](/media/lab1/kusto_1.png)
+![kusto_conso](/media/lab3/kusto_1.png)
 
 - Diagnostiquer les erreurs HTTP 500 en utilisant la requete Kusto AppServiceHTTPLogs
 
-![kusto_http](/media/lab1/kusto_2.png)
+![kusto_http](/media/lab3/kusto_2.png)
 
 {% endcollapsible %}

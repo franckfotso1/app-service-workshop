@@ -54,7 +54,7 @@ az webapp config appsettings set --name $APP_NAME \
 
 - via le Portail
 
-![Web App connection string](/media/lab1/app_settings.png)
+![Web App connection string](/media/lab2/app_settings.png)
 > Pensez à enregistrer ses modifications
 {% endcollapsible %}
 

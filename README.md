@@ -1,6 +1,6 @@
 # App Service Workshop
 
-![The App Service Workshop](/media/lab1/readme_photo.png)
+![App Service Workshop](/media/lab1/readme.png)
 
 Ce document est un support pour une introduction à App Service et ses concepts. Au travers de différentes activités, le but sera de découvrir les fonctionnalités de ce service
 

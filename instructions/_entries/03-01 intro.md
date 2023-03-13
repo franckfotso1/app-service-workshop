@@ -10,7 +10,7 @@ Dans ce deuxième Lab, nous allons voir d'autres fonctionnalités ajoutées par 
 Il faut cependant noter que le but de cet exercice n'est pas de s'intéresser au code de l'application mais plutôt de voir comment AppService nous fournit un certain nombre de briques intéressantes pour héberger notre code. A la fin de ce lab, vous disposerez d'une simple application Express Js s’exécutant sur Azure App Service sur Linux  et connectée à une base de Azure Cosmos DB for MongoDB. (voir diagramme ci-dessous)
 
 {% collapsible %}
-![App Lab 2 overview](/media/lab1/ex_arch_lab2.png)
+![App Lab 2 overview](/media/lab2/ex_arch_lab2.png)
 {% endcollapsible %}
 
 Nous allons dans ce lab 2 :
