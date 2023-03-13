@@ -18,9 +18,9 @@ Examinons quelques paramètres dont vous avez besoin pour créer une application
 - **le format de publication** : App Service publie votre application sous forme de code ou conteneur Docker
 - **la pile d'exécution** : langage, version du SDK
 - **le système d’exploitation** : Linux ou Windows
-- **le plan App Service** : l'application doit être  associée à un plan App Service pour établir les ressources et les capacités disponibles.
+- **le plan App Service** : l'application doit être associée à un plan App Service pour établir les ressources et les capacités disponibles.
 
-> D’autres applications peuvent également être associées au même plan App Service et donc utiliser les même ressources.
+> D’autres applications peuvent également être associées au même plan App Service et donc utiliser les mêmes ressources.
 
 #### Définissons quelques variables d'environnement  
 

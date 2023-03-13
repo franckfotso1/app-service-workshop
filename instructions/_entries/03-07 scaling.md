@@ -58,7 +58,7 @@ while ($true) { Invoke-WebRequest -Uri $webapp.DefaultHostName }
 
 - Vérifiez bien que le nombre d'instances évolue automatiquement
 
-Regardez la valeur du paramètre Instance count du plan App Service dans la vue globale
+Regardez la valeur du paramètre **Instance count** du plan App Service dans la vue globale
 
 ```bash
 # s'il était à 3, il passera à 4, et ensuite 5
