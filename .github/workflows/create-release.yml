@@ -44,4 +44,4 @@ jobs:
       with:
         enabled-static-website: 'true'
         folder: 'instructions/_site'
-        connection-string: ${{ secrets.STATIC_WEBSITE_CONNECTION_STRING }}
+        connection-string: ${{ secrets.STATIC_WEBSITE_BUILD_CONNECTION_STRING }}
