@@ -1,12 +1,12 @@
 ---
 sectionid: lab1-intro
 sectionclass: h2
-title: Contexte
+title: Context
 parent-id: lab-1
 ---
 
-Avec App Service, on peut héberger des WebApps, Mobile Apps ou API Apps. Cette première activité consistera à héberger des Web Apps.
+With App Service, you can host WebApps, Mobile Apps or API Apps. This first activity will consist of hosting Web Apps.
 
-**Scénario** :
+**Scenerio:**
 
-Votre organisation est en train de migrer 2 applications web locales vers Azure App Service. L'une est écrite PHP et l'autre en .NET 6. Pour optimiser ses couts, elle aimerait bien que ces 2 applications utilisent les mêmes ressources de calcul. En tant qu’admin/dev Azure, vous devez héberger ces applications web sur un Os Linux.
+Your organization is migrating 2 on-premises web apps to Azure App Service. One is written in PHP and the other in .NET 6. To optimize its costs, your organization would like these 2 applications to use the same computing resources. As an Azure admin/dev, you must host these web applications on a Linux OS.

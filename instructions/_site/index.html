@@ -77,12 +77,17 @@
                 
                 
                     <li >
-                        <a href="#discover">Avant-propos</a>
+                        <a href="#discover">Foreword</a>
                         
                     </li>
                 
                     <li >
-                        <a href="#prereq">Prérequis</a>
+                        <a href="#prereq">Prerequisites</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#prereq">Naming conventions</a>
                         
                     </li>
                 
@@ -91,18 +96,18 @@
     </li>
     
     <li  class="parent">
-        <a href="#lab-1">Lab 1 - Une première app</a>
+        <a href="#lab-1">Lab 1 - First application</a>
         
             <ul>
                 
                 
                     <li >
-                        <a href="#lab1-intro">Contexte</a>
+                        <a href="#lab1-intro">Context</a>
                         
                     </li>
                 
                     <li >
-                        <a href="#first-app">Une première application</a>
+                        <a href="#first-app">First application</a>
                         
                     </li>
                 
@@ -247,12 +252,12 @@
                     
                 
 
-            <p>Ce document est un support pour une <strong>introduction à AppService et ses concepts</strong>. Au travers de différentes activités, le but sera de découvrir les fonctionnalités de ce service.</p>
+            <p>This document is a support for an <strong>introduction to AppService and its concepts</strong>. Through various activities, the goal will be to discover the functionalities of this service.</p>
 
-<p>Si vous trouvez un problème ou avez une remarque, n’hésitez pas à contacter les contributeurs.</p>
+<p>If you find a problem or have a comment, do not hesitate to contact the contributors.</p>
 
 <blockquote>
-  <p>Cet atelier <strong>n’est PAS</strong> une ressource officielle du groupe de produits, il n’est donc peut-être pas à jour avec les dernières fonctionnalités, mais nous travaillons pour le faire. N’hésitez pas à lire la documentation officielle <a href="https://learn.microsoft.com/en-us/azure/app-service/">pour en savoir plus sur App Service</a>.</p>
+  <p>This workshop is <strong>NOT</strong> an official product group resource, so it may not be up to date with the latest features, but we are working to make it happen. Feel free to read the official documentation <a href="https://learn.microsoft.com/en-us/azure/app-service/">to learn more about App Service</a>.</p>
 </blockquote>
 
         </section>
@@ -261,30 +266,30 @@
     
         <section id="discover" class="h2">
             
-                    <h2>Avant-propos</h2>
+                    <h2>Foreword</h2>
                 
 
-            <p><a href="https://learn.microsoft.com/en-us/azure/app-service/">Azure App Service</a> est un service pour l’hébergement d’applications web, d’API REST, et de backends mobiles. Il offre une mise à l’échelle automatique, une gestion automatisée, et une sécurité pour vos différentes applications s’exécutant dans des environnements Windows ou Linux.</p>
+            <p><a href="https://learn.microsoft.com/en-us/azure/app-service/">Azure App Service</a> is a service for hosting web applications, REST APIs, and mobile backends. It offers automatic scaling, automated management, and security for your various applications running in Windows or Linux environments.</p>
 
-<p>Pourquoi App Service ?</p>
+<p><strong>Why AppService?</strong></p>
 
-<p>C’est un service <strong>Paas complètement managé</strong> pour les développeurs offrant cette liste non exhaustive de fonctionnalités :</p>
+<p>It is a fully managed <strong>PaaS</strong> service for developers offering this non-exhaustive list of features:</p>
 
 <ul>
-  <li><strong>Plusieurs langages et frameworks</strong> : offre une prise en charge pour .NET, Java, Ruby, Node.js, PHP, ou Python.</li>
-  <li><strong>Mise à l’échelle globale avec une haute disponibilité</strong> : héberge vos applications n’importe où et bénéficiez de la haute disponibilité de son SLA</li>
-  <li><strong>Infrastructure de production managée</strong> : met à jour l’os, les frameworks et vous permet de vous concentrer sur le code applicatif.</li>
-  <li><strong>Conteneurisation</strong> : dockerisez votre application et hébergez un conteneur Windows ou Linux. utilisez Docker Compose pour une application multi conteneurs.</li>
-  <li><strong>DevOps</strong> : configurez l’intégration et le déploiement continu avec Azure DevOps, GitHub, BitBucket, etc (voir source).</li>
-  <li><strong>Sécurité et conformité</strong> : Authentifiez les utilisateurs avec Azure AD, Google, Facebook, Twitter ou même un compte Microsoft, certi</li>
-  <li><strong>Connexion aux plateformes Saas</strong> : connectez vous à vos systèmes d’entreprises tels que SAP, Salesforce, etc.</li>
-  <li><strong>Modèles d’application</strong> : tirez parti d’une liste complète de modèles d’applications sur Azure Marketplace, tels que WordPress.</li>
+  <li><strong>Multiple languages and frameworks</strong>: Offers support for .NET, Java, Ruby, Node.js, PHP, or Python.</li>
+  <li><strong>Global scaling with high availability</strong>: host your applications anywhere and benefit from the high availability of its SLA</li>
+  <li><strong>Managed production infrastructure</strong>: updates the OS, the frameworks and allows you to focus on the application code.</li>
+  <li><strong>Containerization</strong>: dockerize your application and host a Windows or Linux container. Use Docker Compose for a multi-container application.</li>
+  <li><strong>DevOps</strong>: configure continuous integration and deployment with Azure DevOps, GitHub, BitBucket, etc (see source).</li>
+  <li><strong>Security and Compliance</strong>: Authenticate users with Azure AD, Google, Facebook, Twitter or even a Microsoft account.</li>
+  <li><strong>Connection to Saas platforms</strong>: connect to your business systems such as SAP, Salesforce, etc.</li>
+  <li><strong>App Templates</strong>: Take advantage of a comprehensive list of app templates on Azure Marketplace, such as WordPress.</li>
 </ul>
 
-<p>Azure offre d’autres services qui peuvent être utilisés pour l’hébergement de sites et d’applications web. Pour la plupart des scénarios, App Service est le meilleur choix. Si vous avez besoin d’avantage de contrôle sur les machines virtuelles exécutant vos applications, utilisez plutôt <a href="https://learn.microsoft.com/en-us/azure/virtual-machines/">Azure Virtual Machine</a>. Par contre, orientez vous vers <a href="https://learn.microsoft.com/en-us/azure/spring-apps/">ASA</a>, <a href="https://learn.microsoft.com/en-us/azure/service-fabric/">Service Fabric</a>, ou <a href="https://learn.microsoft.com/en-us/azure/container-apps/">ACA</a> pour une architecture de microservices.</p>
+<p>Azure offers other services that can be used for hosting web sites and applications. For most scenarios, App Service is the best choice. If you need more control over the virtual machines running your applications, use <a href="https://learn.microsoft.com/en-us/azure/virtual-machines/">Azure Virtual Machine</a> instead. On the other hand, orient yourself towards <a href="https://learn.microsoft.com/en-us/azure/spring-apps/">Azure Spring Apps</a>, <a href="https://learn.microsoft.com/en-us/azure/service-fabric/">Service Fabric</a>, or <a href="https://learn.microsoft.com/en-us/azure/container-apps/">Azure Container Apps</a> for a microservices architecture.</p>
 
-<p>Avec App Service, vous payez pour les ressources de calcul Azure que vous utilisez.
-ces ressources sont déterminées par <strong>le plan App Service</strong> sur lequel sont exécutées vos applications.</p>
+<p>With App Service, you pay for the Azure compute resources you use.
+these resources are determined by the <strong>App Service plan</strong> your apps are running on.</p>
 
         </section>
     
@@ -292,27 +297,25 @@ ces ressources sont déterminées par <strong>le plan App Service</strong> sur l
     
         <section id="prereq" class="h2">
             
-                    <h2>Prérequis</h2>
+                    <h2>Prerequisites</h2>
                 
 
-            <h3 id="prérequis">Prérequis</h3>
+            <h3 id="prerequisites">Prerequisites</h3>
 
-<p>Ce workshop va demander les éléments suivants:</p>
+<p>This workshop will require the following:</p>
 
 <ul>
-  <li>une souscription Azure</li>
-  <li>Azure CLI (<strong>&gt;= 2.30</strong>)</li>
-  <li><a href="https://code.visualstudio.com/">VS Code</a> ou équivalent</li>
-  <li><a href="https://github.com/join">un compte Github</a></li>
+  <li>Access to the <a href="https://portal.azure.com">Azure Portal</a> subscription</li>
+  <li><a href="https://github.com/Azure/azure-cli">Azure CLI</a> (<strong>&gt;= 2.30</strong>)</li>
+  <li><a href="https://code.visualstudio.com/">VS Code</a> or equivalent</li>
+  <li>A <a href="https://github.com/join">Github</a> account</li>
 </ul>
 
-<h3 id="installer-azure-cli">Installer Azure CLI</h3>
+<h3 id="install-azure-cli">Install Azure CLI</h3>
 
-<h4 id="si-cli-non-installée--installer-le-cli">Si CLI non installée : Installer le CLI</h4>
+<p>If the CLI is not installed, just follow <a href="https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli">this link</a> to do it and follow the tab corresponding to your operating system.</p>
 
-<p>Suivez <a href="https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli">ce lien</a> et suivez l’onglet correspondant à votre système d’exploitation.</p>
-
-<h4 id="si-cli-installée--upgrade-sa-version-du-cli">Si CLI installée : Upgrade sa version du CLI</h4>
+<p>If your CLI is already installed, upgrade it to be sure to have the lastest version</p>
 
 <!-- Begin collapsible container div -->
 <div class="collapsible-content-container">
@@ -323,7 +326,7 @@ ces ressources sont déterminées par <strong>le plan App Service</strong> sur l
     <!-- Begin parsedText -->
     
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az version
-<span class="c"># Si version az-core &lt;= 2.30</span>
+<span class="c"># If version az-core &lt;= 2.30</span>
 az upgrade
 </code></pre></div></div>
 
@@ -334,7 +337,7 @@ az upgrade
 </div>
 <!-- End collapsible container div -->
 
-<h4 id="se-connecter-à-sa-souscription">Se connecter à sa souscription</h4>
+<h4 id="log-in-to-your-subscription">Log in to your subscription</h4>
 
 <!-- Begin collapsible container div -->
 <div class="collapsible-content-container">
@@ -345,13 +348,13 @@ az upgrade
     <!-- Begin parsedText -->
     
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az login
-<span class="c"># choisir la souscription </span>
-az account <span class="nb">set</span> –s &lt;SubscriptionID&gt; 
-<span class="c"># vérifier la souscription</span>
+<span class="c"># Choose the subscription</span>
+az account <span class="nb">set</span> –s &lt;subscription-id&gt; 
+<span class="c"># Verify subscription</span>
 az account show
 </code></pre></div></div>
 
-<p>connectez vous au portail : <a href="https://portal.azure.com">https://portal.azure.com</a></p>
+<p>Connect to the <a href="https://portal.azure.com">Azure Portal</a></p>
 
 
     <!-- End parsedText -->
@@ -365,10 +368,56 @@ az account show
     
 
     
+        <section id="prereq" class="h2">
+            
+                    <h2>Naming conventions</h2>
+                
+
+            <h3 id="naming-convention">Naming convention</h3>
+
+<p>Before starting to deploy any Azure services, it’s important to follow a naming convention. Based on the official <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming">documentation</a> we need to define a few things:</p>
+
+<ul>
+  <li>The application name</li>
+  <li>The environment</li>
+  <li>The region</li>
+  <li>The instance number</li>
+</ul>
+
+<p>We will also add an owner property, so for the purpose of this lab the values will be:</p>
+
+<ul>
+  <li>The application name: <code class="language-plaintext highlighter-rouge">hol</code> (for Hands On Lab)</li>
+  <li>The environment: <code class="language-plaintext highlighter-rouge">dev</code></li>
+  <li>The region: <code class="language-plaintext highlighter-rouge">we</code></li>
+  <li>The instance: <code class="language-plaintext highlighter-rouge">01</code></li>
+  <li>The owner: <code class="language-plaintext highlighter-rouge">ms</code></li>
+</ul>
+
+<p>So we will use this convention:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--If the resource prefix has a dash: --&gt;</span>
+<span class="nt">&lt;service-prefix&gt;</span>-<span class="nt">&lt;environment&gt;</span>-<span class="nt">&lt;region&gt;</span>-<span class="nt">&lt;application-name&gt;</span>-<span class="nt">&lt;owner&gt;</span>-<span class="nt">&lt;instance&gt;</span>
+<span class="c">&lt;!--If the resource does not autorize any special caracters: --&gt;</span>
+<span class="nt">&lt;service-prefix&gt;&lt;environment&gt;&lt;region&gt;&lt;application-name&gt;&lt;owner&gt;&lt;instance&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Be sure to use your own value to have unique names or use your own convention.<br />
+<a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations">Official resource abbreviations</a></p>
+</blockquote>
+
+<p>With everything ready let’s start the lab!</p>
+
+
+        </section>
+    
+
+    
         <section id="lab-1" class="h1">
             
                     
-                    <h1 class="nocount">Lab 1 - Une première app</h1>
+                    <h1 class="nocount">Lab 1 - First application</h1>
                     
                 
 
@@ -380,14 +429,14 @@ az account show
     
         <section id="lab1-intro" class="h2">
             
-                    <h2>Contexte</h2>
+                    <h2>Context</h2>
                 
 
-            <p>Avec App Service, on peut héberger des WebApps, Mobile Apps ou API Apps. Cette première activité consistera à héberger des Web Apps.</p>
+            <p>With App Service, you can host WebApps, Mobile Apps or API Apps. This first activity will consist of hosting Web Apps.</p>
 
-<p><strong>Scénario</strong> :</p>
+<p><strong>Scenerio:</strong></p>
 
-<p>Votre organisation est en train de migrer 2 applications web locales vers Azure App Service. L’une est écrite PHP et l’autre en .NET 6. Pour optimiser ses couts, elle aimerait bien que ces 2 applications utilisent les mêmes ressources de calcul. En tant qu’admin/dev Azure, vous devez héberger ces applications web sur un Os Linux.</p>
+<p>Your organization is migrating 2 on-premises web apps to Azure App Service. One is written in PHP and the other in .NET 6. To optimize its costs, your organization would like these 2 applications to use the same computing resources. As an Azure admin/dev, you must host these web applications on a Linux OS.</p>
 
         </section>
     
@@ -395,10 +444,10 @@ az account show
     
         <section id="first-app" class="h2">
             
-                    <h2>Une première application</h2>
+                    <h2>First application</h2>
                 
 
-            <h3 id="diagramme-de-larchitecture">Diagramme de l’architecture</h3>
+            <h3 id="architecture-diagram">Architecture Diagram</h3>
 
 <!-- Begin collapsible container div -->
 <div class="collapsible-content-container">
@@ -408,7 +457,7 @@ az account show
   <div class="collapsible-content">
     <!-- Begin parsedText -->
     
-<p><img src="/media/lab1/lab_1_archi.png" alt="Première app" /></p>
+<p><img src="/media/lab1/lab_1_archi.png" alt="First application" /></p>
 
     <!-- End parsedText -->
   </div>
@@ -416,31 +465,29 @@ az account show
 </div>
 <!-- End collapsible container div -->
 
-<p>Examinons quelques paramètres dont vous avez besoin pour créer une application App Service :</p>
+<p>Let’s look at a few parameters you need to create an App Service app:</p>
 
 <ul>
-  <li><strong>le nom</strong> : le nom de l’application doit être unique globalement</li>
-  <li><strong>le format de publication</strong> : App Service publie votre application sous forme de code ou conteneur Docker</li>
-  <li><strong>la pile d’exécution</strong> : langage, version du SDK</li>
-  <li><strong>le système d’exploitation</strong> : Linux ou Windows</li>
-  <li><strong>le plan App Service</strong> : l’application doit être associée à un plan App Service pour établir les ressources et les capacités disponibles.</li>
+  <li><strong>the name</strong>: the name of the application must be globally unique</li>
+  <li><strong>the publication format</strong>: App Service publishes your application direclty from your code or using a Docker container</li>
+  <li><strong>the execution stack</strong>: language, SDK version</li>
+  <li><strong>the operating system</strong>: Linux or Windows</li>
+  <li><strong>the App Service plan</strong>: the application must be associated with an App Service plan to establish the available resources and capacities.</li>
 </ul>
 
 <blockquote>
-  <p>D’autres applications peuvent également être associées au même plan App Service et donc utiliser les mêmes ressources.</p>
+  <p>Other applications can also be associated with the same App Service plan and therefore use the same resources.</p>
 </blockquote>
 
-<h4 id="définissons-quelques-variables-denvironnement">Définissons quelques variables d’environnement</h4>
+<h4 id="create-a-resource-group">Create a resource group</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$RESOURCE_GROUP</span> <span class="o">=</span> <span class="s2">"my-rg"</span>               <span class="c"># nom du groupe de ressources</span>
-<span class="nv">$LOCATION</span> <span class="o">=</span> <span class="s2">"francecentral"</span>             <span class="c"># la region Azure où seront déployées les ressources</span>
-<span class="nv">$APP_NAME_1</span> <span class="o">=</span> <span class="s2">"phpapp156"</span>               <span class="c"># nom de la web app php</span>
-<span class="nv">$APP_NAME_2</span> <span class="o">=</span> <span class="s2">"dotnetapp156"</span>            <span class="c"># nom de la web app ASP.NET Core Web  </span>
-<span class="nv">$APP_SERVICE_PLAN</span> <span class="o">=</span> <span class="s2">"my-asp-app"</span>        <span class="c"># nom du plan App Service Linux</span>
-<span class="nv">$GIT_REPO</span> <span class="o">=</span> <span class="s2">"https://github.com/Azure-Samples/php-docs-hello-world"</span>
-</code></pre></div></div>
+<p>Let’s start by creating the resource group for this Hand’s On Lab.</p>
 
-<h4 id="avec-ces-variables-créez-un-groupe-de-ressources-relatif-à-votre-application">Avec ces variables, créez un groupe de ressources relatif à votre application</h4>
+<blockquote>
+  <p>For the purpose of this lab we will create all the resources in the same region, for instance West US (westus) or North Europe (northeurope).</p>
+</blockquote>
+
+<p>Remember, the naming convention for resource groups will be: <code class="language-plaintext highlighter-rouge">rg-&lt;environment&gt;-&lt;region&gt;-&lt;application-name&gt;-&lt;owner&gt;-&lt;instance&gt;</code></p>
 
 <!-- Begin collapsible container div -->
 <div class="collapsible-content-container">
@@ -450,7 +497,9 @@ az account show
   <div class="collapsible-content">
     <!-- Begin parsedText -->
     
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group create <span class="nt">--name</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--location</span> <span class="s2">"</span><span class="nv">$LOCATION</span><span class="s2">"</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RESOURCE_GROUP</span><span class="o">=</span><span class="s2">"&lt;your-resource-group-name&gt;"</span>
+<span class="nv">LOCATION</span><span class="o">=</span><span class="s2">"&lt;your-region&gt;"</span>
+az group create <span class="nt">--name</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--location</span> <span class="s2">"</span><span class="nv">$LOCATION</span><span class="s2">"</span>
 </code></pre></div></div>
 
 
@@ -460,9 +509,15 @@ az account show
 </div>
 <!-- End collapsible container div -->
 
-<h4 id="créez-un-plan-appservice-linux-avec-un-tier-standard">Créez un <a href="https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans">plan AppService Linux</a> avec un tier Standard</h4>
+<h4 id="create-an-app-service-plan">Create an App Service Plan</h4>
 
-<p>Solution :</p>
+<p>To be able to deploy App Service you need to have a Service Plan associated to it which define the infrastructure properties you need.</p>
+
+<p>Let’s define a <a href="https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans">Linux App Service Plan</a> with a Standard sku.</p>
+
+<p>Remember, the naming convention for App Service Plan will be: <code class="language-plaintext highlighter-rouge">aps-&lt;environment&gt;-&lt;region&gt;-&lt;application-name&gt;-&lt;owner&gt;-&lt;instance&gt;</code></p>
+
+<p>Solution:</p>
 
 <!-- Begin collapsible container div -->
 <div class="collapsible-content-container">
@@ -472,7 +527,8 @@ az account show
   <div class="collapsible-content">
     <!-- Begin parsedText -->
     
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Créez un plan App Service Standard avec 4 instances de machine Linux</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">APP_SERVICE_PLAN</span><span class="o">=</span><span class="s2">"&lt;your-app-service-plan-name&gt;"</span>
+<span class="c"># Create an App Service Standard plan with 4 Linux machine instances</span>
 az appservice plan create <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-n</span> <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">--is-linux</span> <span class="nt">--number-of-workers</span> 4 <span class="nt">--sku</span> S1
 </code></pre></div></div>
 
@@ -483,41 +539,29 @@ az appservice plan create <span class="nt">-g</span> <span class="nv">$RESOURCE_
 </div>
 <!-- End collapsible container div -->
 
-<hr />
 <blockquote>
-  <p>le tier d’un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan.</p>
+  <p>The tier of an App Service plan determines which App Service features you get and how much you pay for the plan.</p>
 </blockquote>
 
-<!-- Begin collapsible container div -->
-<div class="collapsible-content-container">
-  <!-- Begin collapsible container button -->
-  <button class="toggle-collapsible">Toggle</button>
-  <!-- Begin collapsible container content div -->
-  <div class="collapsible-content">
-    <!-- Begin parsedText -->
-    
-<p><img src="/media/lab1/tier_app_service_plan.png" alt="ASP tier " /></p>
+<p><img src="/media/lab1/tier_app_service_plan.png" alt="APS tier" /></p>
 
+<h4 id="launch-the-php-application-locally-optional">Launch the php application locally (optional)</h4>
 
-    <!-- End parsedText -->
-  </div>
-  <!-- End collapsible container content div -->
-</div>
-<!-- End collapsible container div -->
-
-<h4 id="lancer-lapplication-php-en-local-optionel">Lancer l’application php en local (optionel)</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># clonez le dépôt</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone the repository</span>
 git clone https://github.com/Azure-Samples/php-docs-hello-world
 <span class="nb">cd </span>php-docs-hello-world
-<span class="c"># Démarrez l'application localement</span>
+<span class="c"># Start the app locally</span>
 php <span class="nt">-S</span> localhost:8080
 curl http://localhost:8080
 </code></pre></div></div>
 
-<h4 id="créez-une-web-app-sur-ce-plan-app-service-linux-en-spécifiant-le-runtime-php">Créez une Web App sur ce plan App Service Linux en spécifiant le runtime PHP</h4>
+<h4 id="create-an-app-service">Create an App Service</h4>
 
-<p>Solution :</p>
+<p>On this new this App Service Linux plan create an App Service with the PHP runtime.</p>
+
+<p>Remember, the naming convention for App Service will be: <code class="language-plaintext highlighter-rouge">app-&lt;environment&gt;-&lt;region&gt;-&lt;application-name&gt;-&lt;app-suffix&gt;&lt;owner&gt;-&lt;instance&gt;</code></p>
+
+<p>Solution:</p>
 
 <!-- Begin collapsible container div -->
 <div class="collapsible-content-container">
@@ -531,14 +575,15 @@ curl http://localhost:8080
   <li>via CLI</li>
 </ul>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Obtenez la liste des runtimes supportés pour chaque OS</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">APP_NAME_1</span><span class="o">=</span><span class="s2">"&lt;your-app-service-name&gt;"</span>
+<span class="c"># Get the list of supported runtimes for each OS</span>
 az webapp list-runtimes
-<span class="c"># Créez la web app</span>
+<span class="c"># Create the app service</span>
 az webapp create <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-n</span> <span class="nv">$APP_NAME_1</span> <span class="nt">-p</span>  <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">-r</span> <span class="s2">"PHP:8.0"</span> 
 </code></pre></div></div>
 
 <ul>
-  <li>via le Portail</li>
+  <li>via the Portal</li>
 </ul>
 
 <p><img src="/media/lab1/web-app-2.png" alt="Web app 2 creation" /></p>
