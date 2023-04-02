@@ -1,102 +1,97 @@
 ---
 sectionid: first-app
 sectionclass: h2
-title: First application
+title: Une première application
 parent-id: lab-1
 ---
 
 
-### Architecture Diagram
+### Diagramme de l'architecture
 
 {% collapsible %}
-![First application](/media/lab1/lab_1_archi.png)
+![Première app](/media/lab1/lab_1_archi.png)
 {% endcollapsible %}
 
-Let's look at a few parameters you need to create an App Service app:
+Examinons quelques paramètres dont vous avez besoin pour créer une application App Service :
 
-- **the name**: the name of the application must be globally unique
-- **the publication format**: App Service publishes your application direclty from your code or using a Docker container
-- **the execution stack**: language, SDK version
-- **the operating system**: Linux or Windows
-- **the App Service plan**: the application must be associated with an App Service plan to establish the available resources and capacities.
+- **le nom** : le nom de l’application doit être unique globalement
+- **le format de publication** : App Service publie votre application sous forme de code ou conteneur Docker
+- **la pile d'exécution** : langage, version du SDK
+- **le système d’exploitation** : Linux ou Windows
+- **le plan App Service** : l'application doit être associée à un plan App Service pour établir les ressources et les capacités disponibles.
 
-> Other applications can also be associated with the same App Service plan and therefore use the same resources.
+> D’autres applications peuvent également être associées au même plan App Service et donc utiliser les mêmes ressources.
 
-#### Create a resource group
+#### Définissons quelques variables d'environnement  
 
-Let's start by creating the resource group for this Hand's On Lab.
+``` bash
+$RESOURCE_GROUP = "my-rg"               # nom du groupe de ressources
+$LOCATION = "francecentral"             # la region Azure où seront déployées les ressources
+$APP_NAME_1 = "phpapp156"               # nom de la web app php
+$APP_NAME_2 = "dotnetapp156"            # nom de la web app ASP.NET Core Web  
+$APP_SERVICE_PLAN = "my-asp-app"        # nom du plan App Service Linux
+$GIT_REPO = "https://github.com/Azure-Samples/php-docs-hello-world"
+```
 
-> For the purpose of this lab we will create all the resources in the same region, for instance West US (westus) or North Europe (northeurope).
-
-Remember, the naming convention for resource groups will be: `rg-<environment>-<region>-<application-name>-<owner>-<instance>`
+#### Avec ces variables, créez un groupe de ressources relatif à votre application
 
 {% collapsible %}
 
 ```bash
-RESOURCE_GROUP="<your-resource-group-name>"
-LOCATION="<your-region>"
 az group create --name $RESOURCE_GROUP --location "$LOCATION"
 ```
 
 {% endcollapsible %}
 
-#### Create an App Service Plan 
+#### Créez un [plan AppService Linux](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) avec un tier Standard
 
-To be able to deploy App Service you need to have a Service Plan associated to it which define the infrastructure properties you need.
-
-Let's define a [Linux App Service Plan](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans) with a Standard sku.
-
-Remember, the naming convention for App Service Plan will be: `aps-<environment>-<region>-<application-name>-<owner>-<instance>`
-
-Solution:
+Solution :
 
 {% collapsible %}
 
 ```bash
-APP_SERVICE_PLAN="<your-app-service-plan-name>"
-# Create an App Service Standard plan with 4 Linux machine instances
+# Créez un plan App Service Standard avec 4 instances de machine Linux
 az appservice plan create -g $RESOURCE_GROUP -n $APP_SERVICE_PLAN --is-linux --number-of-workers 4 --sku S1
 ```
 
 {% endcollapsible %}
 
-> The tier of an App Service plan determines which App Service features you get and how much you pay for the plan.
+---
+> le tier d'un plan App Service détermine les fonctionnalités App Service que vous obtenez et combien vous payez pour le plan.
 
-![APS tier](/media/lab1/tier_app_service_plan.png)
+{% collapsible %}
 
+![ASP tier ](/media/lab1/tier_app_service_plan.png)
 
-#### Launch the php application locally (optional)
+{% endcollapsible %}
+
+#### Lancer l'application php en local (optionel)
 
 ```bash
-# Clone the repository
+# clonez le dépôt
 git clone https://github.com/Azure-Samples/php-docs-hello-world
 cd php-docs-hello-world
-# Start the app locally
+# Démarrez l'application localement
 php -S localhost:8080
 curl http://localhost:8080
 ```
 
-#### Create an App Service
+#### Créez une Web App sur ce plan App Service Linux en spécifiant le runtime PHP
 
-On this new this App Service Linux plan create an App Service with the PHP runtime.
-
-Remember, the naming convention for App Service will be: `app-<environment>-<region>-<application-name>-<app-suffix><owner>-<instance>`
-
-Solution:
+Solution :
 
 {% collapsible %}
 
 - via CLI
 
 ```bash
-APP_NAME_1="<your-app-service-name>"
-# Get the list of supported runtimes for each OS
+# Obtenez la liste des runtimes supportés pour chaque OS
 az webapp list-runtimes
-# Create the app service
+# Créez la web app
 az webapp create -g $RESOURCE_GROUP -n $APP_NAME_1 -p  $APP_SERVICE_PLAN -r "PHP:8.0" 
 ```
 
-- via the Portal
+- via le Portail
   
 ![Web app 2 creation](/media/lab1/web-app-2.png)
 
