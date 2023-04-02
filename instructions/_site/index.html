@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+<title>App Service Workshop</title>
+<meta name="viewport" content="width=device-width">
+<meta name="author" content="Microsoft">
+<link rel="stylesheet" href="css/main.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:500,600' rel='stylesheet' type='text/css'>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/github-markdown.css">
+
+<script src="js/jquery-2.2.4.min.js"></script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript">
+  function loadJS(url, implementationCode, location){
+    var scriptTag = document.createElement('script');
+    scriptTag.src = url;
+
+    scriptTag.onload = implementationCode;
+    scriptTag.onreadystatechange = implementationCode;
+
+    location.appendChild(scriptTag);
+  }
+
+  function d() {
+    var config = {
+      useDefaultContentName: true,
+      useBeacon: true,
+      useShortNameForContentBlob: true,
+      debounceMs: {
+          scroll: 300,
+          resize: 3000
+      },
+      autoCapture: {
+          pageView: true,
+          scroll: true,
+          lineage: true
+      },
+      coreData: {
+          appId: "AROWorkshop"
+      }
+    };
+    awa.init(config);
+  }
+
+  </script>
+</head>
+
+<body>
+    <style> html{display:none;} </style>
+    <script>
+       if(self == top) {
+           document.documentElement.style.display = 'block'; 
+       } else {
+           top.location = self.location; 
+       }
+    </script>
+
+    <div class="container">
+        <div class="overview">
+            <span class="toggle">close</span>
+            <header class="header">
+  <img alt="Microsoft Azure" style="width: 140px; vertical-align: middle" src="img/msazure_logo.png"/>
+</header>
+            <ul id="nav">
+    
+    
+    <li  class="parent current">
+        <a href="#intro">Workshop App Service</a>
+        
+            <ul>
+                
+                
+                    <li >
+                        <a href="#discover">Foreword</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#prereq">Prerequisites</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#prereq">Naming conventions</a>
+                        
+                    </li>
+                
+            </ul>
+        
+    </li>
+    
+    <li  class="parent">
+        <a href="#lab-1">Lab 1 - First application</a>
+        
+            <ul>
+                
+                
+                    <li >
+                        <a href="#lab1-intro">Context</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#first-app">First application</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab1-conclusion">Conclusion</a>
+                        
+                    </li>
+                
+            </ul>
+        
+    </li>
+    
+    <li  class="parent">
+        <a href="#lab-2">Lab 2 - Cycle de vie</a>
+        
+            <ul>
+                
+                
+                    <li >
+                        <a href="#lab2-intro">Contexte</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab2-resources-creation">Creation ressources</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab2-app-settings">Paramètres d'application</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab2-slot">Emplacement de déploiement</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab2-deployment-center">Paramètres du déploiement</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab2-swap">Swap</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab2-scaling">Autoscaling</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab2-custom domain">Résilience</a>
+                        
+                    </li>
+                
+            </ul>
+        
+    </li>
+    
+    <li  class="parent">
+        <a href="#lab-3">Lab 3 - Monitoring</a>
+        
+            <ul>
+                
+                
+                    <li >
+                        <a href="#lab3-intro">Contexte</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab3-logs-monitor">Observabilité</a>
+                        
+                    </li>
+                
+                    <li >
+                        <a href="#lab3-app-insights">Application insights</a>
+                        
+                    </li>
+                
+            </ul>
+        
+    </li>
+    
+    <li  class="parent">
+        <a href="#lab4">Lab 4 - Advanced Concepts (tbd)</a>
+        
+            <ul>
+                
+                
+            </ul>
+        
+    </li>
+    
+    <li  class="parent">
+        <a href="#cleaning">Nettoyage</a>
+        
+            <ul>
+                
+                
+                    <li >
+                        <a href="#cleaning-resources">Supprimer les ressources</a>
+                        
+                    </li>
+                
+            </ul>
+        
+    </li>
+    
+    <li>
+      <a class="parent" href="https://privacy.microsoft.com">Privacy &amp; cookies</a>
+    </li>
+</ul>
+<!--<div id="github-actions">
+  <a class="github-button" href="https://github.com/lgmorand/workshop-aca" data-show-count="true" data-icon="octicon-star" aria-label="Star lgmorand/workshop-aca on GitHub">Star</a>
+  <a class="github-button" href="https://github.com/lgmorand/workshop-aca/fork" data-show-count="true" data-icon="octicon-repo-forked" aria-label="Fork lgmorand/workshop-aca on GitHub">Fork</a>
+  <a class="github-button" href="https://github.com/lgmorand/workshop-aca/issues" data-show-count="true" data-icon="octicon-issue-opened"aria-label="Issue lgmorand/workshop-aca on GitHub">Issue</a>
+</div>-->
+  </p>
+  
+
+<p id="copyright-notice">
+    Azure® is a registered trademark of Microsoft Corporation.
+</p>
+        </div>
+
+        <div id="consent-container"></div>
+        
+        <div class="content">
+            <span class="toggle">menu</span>
+            <article class="markdown-body">
+                
+
+    
+        <section id="intro" class="h1">
+            
+                    
+                    <h1 class="nocount">Workshop App Service</h1>
+                    
+                
+
+            <p>This document is a support for an <strong>introduction to AppService and its concepts</strong>. Through various activities, the goal will be to discover the functionalities of this service.</p>
+
+<p>If you find a problem or have a comment, do not hesitate to contact the contributors.</p>
+
+<blockquote>
+  <p>This workshop is <strong>NOT</strong> an official product group resource, so it may not be up to date with the latest features, but we are working to make it happen. Feel free to read the official documentation <a href="https://learn.microsoft.com/en-us/azure/app-service/">to learn more about App Service</a>.</p>
+</blockquote>
+
+        </section>
+    
+
+    
+        <section id="discover" class="h2">
+            
+                    <h2>Foreword</h2>
+                
+
+            <p><a href="https://learn.microsoft.com/en-us/azure/app-service/">Azure App Service</a> is a service for hosting web applications, REST APIs, and mobile backends. It offers automatic scaling, automated management, and security for your various applications running in Windows or Linux environments.</p>
+
+<p><strong>Why AppService?</strong></p>
+
+<p>It is a fully managed <strong>PaaS</strong> service for developers offering this non-exhaustive list of features:</p>
+
+<ul>
+  <li><strong>Multiple languages and frameworks</strong>: Offers support for .NET, Java, Ruby, Node.js, PHP, or Python.</li>
+  <li><strong>Global scaling with high availability</strong>: host your applications anywhere and benefit from the high availability of its SLA</li>
+  <li><strong>Managed production infrastructure</strong>: updates the OS, the frameworks and allows you to focus on the application code.</li>
+  <li><strong>Containerization</strong>: dockerize your application and host a Windows or Linux container. Use Docker Compose for a multi-container application.</li>
+  <li><strong>DevOps</strong>: configure continuous integration and deployment with Azure DevOps, GitHub, BitBucket, etc (see source).</li>
+  <li><strong>Security and Compliance</strong>: Authenticate users with Azure AD, Google, Facebook, Twitter or even a Microsoft account.</li>
+  <li><strong>Connection to Saas platforms</strong>: connect to your business systems such as SAP, Salesforce, etc.</li>
+  <li><strong>App Templates</strong>: Take advantage of a comprehensive list of app templates on Azure Marketplace, such as WordPress.</li>
+</ul>
+
+<p>Azure offers other services that can be used for hosting web sites and applications. For most scenarios, App Service is the best choice. If you need more control over the virtual machines running your applications, use <a href="https://learn.microsoft.com/en-us/azure/virtual-machines/">Azure Virtual Machine</a> instead. On the other hand, orient yourself towards <a href="https://learn.microsoft.com/en-us/azure/spring-apps/">Azure Spring Apps</a>, <a href="https://learn.microsoft.com/en-us/azure/service-fabric/">Service Fabric</a>, or <a href="https://learn.microsoft.com/en-us/azure/container-apps/">Azure Container Apps</a> for a microservices architecture.</p>
+
+<p>With App Service, you pay for the Azure compute resources you use.
+these resources are determined by the <strong>App Service plan</strong> your apps are running on.</p>
+
+        </section>
+    
+
+    
+        <section id="prereq" class="h2">
+            
+                    <h2>Prerequisites</h2>
+                
+
+            <h3 id="prerequisites">Prerequisites</h3>
+
+<p>This workshop will require the following:</p>
+
+<ul>
+  <li>Access to the <a href="https://portal.azure.com">Azure Portal</a> subscription</li>
+  <li><a href="https://github.com/Azure/azure-cli">Azure CLI</a> (<strong>&gt;= 2.30</strong>)</li>
+  <li><a href="https://code.visualstudio.com/">VS Code</a> or equivalent</li>
+  <li>A <a href="https://github.com/join">Github</a> account</li>
+</ul>
+
+<h3 id="install-azure-cli">Install Azure CLI</h3>
+
+<p>If the CLI is not installed, just follow <a href="https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli">this link</a> to do it and follow the tab corresponding to your operating system.</p>
+
+<p>If your CLI is already installed, upgrade it to be sure to have the lastest version</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az version
+<span class="c"># If version az-core &lt;= 2.30</span>
+az upgrade
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="log-in-to-your-subscription">Log in to your subscription</h4>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az login
+<span class="c"># Choose the subscription</span>
+az account <span class="nb">set</span> –s &lt;subscription-id&gt; 
+<span class="c"># Verify subscription</span>
+az account show
+</code></pre></div></div>
+
+<p>Connect to the <a href="https://portal.azure.com">Azure Portal</a></p>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+
+        </section>
+    
+
+    
+        <section id="prereq" class="h2">
+            
+                    <h2>Naming conventions</h2>
+                
+
+            <h3 id="naming-convention">Naming convention</h3>
+
+<p>Before starting to deploy any Azure services, it’s important to follow a naming convention. Based on the official <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming">documentation</a> we need to define a few things:</p>
+
+<ul>
+  <li>The application name</li>
+  <li>The environment</li>
+  <li>The region</li>
+  <li>The instance number</li>
+</ul>
+
+<p>We will also add an owner property, so for the purpose of this lab the values will be:</p>
+
+<ul>
+  <li>The application name: <code class="language-plaintext highlighter-rouge">hol</code> (for Hands On Lab)</li>
+  <li>The environment: <code class="language-plaintext highlighter-rouge">dev</code></li>
+  <li>The region: <code class="language-plaintext highlighter-rouge">we</code></li>
+  <li>The instance: <code class="language-plaintext highlighter-rouge">01</code></li>
+  <li>The owner: <code class="language-plaintext highlighter-rouge">ms</code></li>
+</ul>
+
+<p>So we will use this convention:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--If the resource prefix has a dash: --&gt;</span>
+<span class="nt">&lt;service-prefix&gt;</span>-<span class="nt">&lt;environment&gt;</span>-<span class="nt">&lt;region&gt;</span>-<span class="nt">&lt;application-name&gt;</span>-<span class="nt">&lt;owner&gt;</span>-<span class="nt">&lt;instance&gt;</span>
+<span class="c">&lt;!--If the resource does not autorize any special caracters: --&gt;</span>
+<span class="nt">&lt;service-prefix&gt;&lt;environment&gt;&lt;region&gt;&lt;application-name&gt;&lt;owner&gt;&lt;instance&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Be sure to use your own value to have unique names or use your own convention.<br />
+<a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations">Official resource abbreviations</a></p>
+</blockquote>
+
+<p>With everything ready let’s start the lab!</p>
+
+
+        </section>
+    
+
+    
+        <section id="lab-1" class="h1">
+            
+                    
+                    <h1 class="nocount">Lab 1 - First application</h1>
+                    
+                
+
+            
+
+        </section>
+    
+
+    
+        <section id="lab1-intro" class="h2">
+            
+                    <h2>Context</h2>
+                
+
+            <p>With App Service, you can host WebApps, Mobile Apps or API Apps. This first activity will consist of hosting Web Apps.</p>
+
+<p><strong>Scenerio:</strong></p>
+
+<p>Your organization is migrating 2 on-premises web apps to Azure App Service. One is written in PHP and the other in .NET 6. To optimize its costs, your organization would like these 2 applications to use the same computing resources. As an Azure admin/dev, you must host these web applications on a Linux OS.</p>
+
+        </section>
+    
+
+    
+        <section id="first-app" class="h2">
+            
+                    <h2>First application</h2>
+                
+
+            <h3 id="architecture-diagram">Architecture Diagram</h3>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/lab_1_archi.png" alt="First application" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<p>Let’s look at a few parameters you need to create an App Service app:</p>
+
+<ul>
+  <li><strong>the name</strong>: the name of the application must be globally unique</li>
+  <li><strong>the publication format</strong>: App Service publishes your application direclty from your code or using a Docker container</li>
+  <li><strong>the execution stack</strong>: language, SDK version</li>
+  <li><strong>the operating system</strong>: Linux or Windows</li>
+  <li><strong>the App Service plan</strong>: the application must be associated with an App Service plan to establish the available resources and capacities.</li>
+</ul>
+
+<blockquote>
+  <p>Other applications can also be associated with the same App Service plan and therefore use the same resources.</p>
+</blockquote>
+
+<h4 id="create-a-resource-group">Create a resource group</h4>
+
+<p>Let’s start by creating the resource group for this Hand’s On Lab.</p>
+
+<blockquote>
+  <p>For the purpose of this lab we will create all the resources in the same region, for instance West US (westus) or North Europe (northeurope).</p>
+</blockquote>
+
+<p>Remember, the naming convention for resource groups will be: <code class="language-plaintext highlighter-rouge">rg-&lt;environment&gt;-&lt;region&gt;-&lt;application-name&gt;-&lt;owner&gt;-&lt;instance&gt;</code></p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RESOURCE_GROUP</span><span class="o">=</span><span class="s2">"&lt;your-resource-group-name&gt;"</span>
+<span class="nv">LOCATION</span><span class="o">=</span><span class="s2">"&lt;your-region&gt;"</span>
+az group create <span class="nt">--name</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--location</span> <span class="s2">"</span><span class="nv">$LOCATION</span><span class="s2">"</span>
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="create-an-app-service-plan">Create an App Service Plan</h4>
+
+<p>To be able to deploy App Service you need to have a Service Plan associated to it which define the infrastructure properties you need.</p>
+
+<p>Let’s define a <a href="https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans">Linux App Service Plan</a> with a Standard sku.</p>
+
+<p>Remember, the naming convention for App Service Plan will be: <code class="language-plaintext highlighter-rouge">aps-&lt;environment&gt;-&lt;region&gt;-&lt;application-name&gt;-&lt;owner&gt;-&lt;instance&gt;</code></p>
+
+<p>Solution:</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">APP_SERVICE_PLAN</span><span class="o">=</span><span class="s2">"&lt;your-app-service-plan-name&gt;"</span>
+<span class="c"># Create an App Service Standard plan with 4 Linux machine instances</span>
+az appservice plan create <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-n</span> <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">--is-linux</span> <span class="nt">--number-of-workers</span> 4 <span class="nt">--sku</span> S1
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<blockquote>
+  <p>The tier of an App Service plan determines which App Service features you get and how much you pay for the plan.</p>
+</blockquote>
+
+<p><img src="/media/lab1/tier_app_service_plan.png" alt="APS tier" /></p>
+
+<h4 id="launch-the-php-application-locally-optional">Launch the php application locally (optional)</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone the repository</span>
+git clone https://github.com/Azure-Samples/php-docs-hello-world
+<span class="nb">cd </span>php-docs-hello-world
+<span class="c"># Start the app locally</span>
+php <span class="nt">-S</span> localhost:8080
+curl http://localhost:8080
+</code></pre></div></div>
+
+<h4 id="create-an-app-service">Create an App Service</h4>
+
+<p>On this new this App Service Linux plan create an App Service with the PHP runtime.</p>
+
+<p>Remember, the naming convention for App Service will be: <code class="language-plaintext highlighter-rouge">app-&lt;environment&gt;-&lt;region&gt;-&lt;application-name&gt;-&lt;app-suffix&gt;&lt;owner&gt;-&lt;instance&gt;</code></p>
+
+<p>Solution:</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>via CLI</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">APP_NAME_1</span><span class="o">=</span><span class="s2">"&lt;your-app-service-name&gt;"</span>
+<span class="c"># Get the list of supported runtimes for each OS</span>
+az webapp list-runtimes
+<span class="c"># Create the app service</span>
+az webapp create <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-n</span> <span class="nv">$APP_NAME_1</span> <span class="nt">-p</span>  <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">-r</span> <span class="s2">"PHP:8.0"</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>via the Portal</li>
+</ul>
+
+<p><img src="/media/lab1/web-app-2.png" alt="Web app 2 creation" /></p>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<blockquote>
+  <p>un nom de domaine unique sous la forme <strong>AppName.azurewebsites.net</strong> sera attribuée à la web app</p>
+</blockquote>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/php_app_quick.png" alt="App UI default" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="exécutez-la-commande-suivante-pour-déployer-manuellement-le-code-de-lapplication-php-depuis-le-repo-github">Exécutez la commande suivante pour déployer manuellement le code de l’application php depuis le repo Github</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp deployment <span class="nb">source </span>config <span class="nt">--name</span> <span class="nv">$APP_NAME_1</span> <span class="nt">--resource-group</span> <span class="nv">$RESOURCE_GROUP</span> <span class="se">\</span>
+<span class="nt">--repo-url</span> <span class="nv">$GIT_REPO</span> <span class="nt">--branch</span> master <span class="nt">--manual-integration</span>
+</code></pre></div></div>
+
+<p>Une fois le déploiment effectué, Sélectionnez <strong>Accéder à la ressource</strong>. Pour avoir un apercu de l’application web, cliquez sur l’URL en haut à droite du portail ou celui renvoyé par la commande suivante :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp show <span class="nt">-n</span> <span class="nv">$APP_NAME_1</span> <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--query</span> <span class="s2">"defaultHostName"</span>
+</code></pre></div></div>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/overview_php_app.png" alt="App overview" />
+<img src="/media/lab1/php_app_deploy.png" alt="App UI default" /></p>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="créez-lapplication-web-aspnet-core">Créez l’application web ASP.NET Core</h4>
+
+<ul>
+  <li>Ouvrez Visual Studio 2022, puis sélectionnez Créer un projet</li>
+</ul>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/create_new_project.png" alt="new project" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<ul>
+  <li>Dans Créer un projet, recherchez et sélectionnez Application web ASP.NET Core, puis sélectionnez Suivant.
+<!-- Begin collapsible container div --></li>
+</ul>
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/asp_web_app.png" alt="asp web app" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<ul>
+  <li>
+    <p>Dans Configurer votre nouveau projet, nommez l’application mydotnetapp, puis sélectionnez Suivant</p>
+  </li>
+  <li>
+    <p>Sélectionnez .NET Core 6.0 (prise en charge à long terme).
+<!-- Begin collapsible container div --></p>
+  </li>
+</ul>
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/stack_asp.png" alt="choose stack" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<ul>
+  <li>Assurez-vous que Type d’authentification est défini sur Aucun et Sélectionnez Create (Créer)</li>
+</ul>
+
+<h4 id="publiez-lapplication-sur-le-meme-plan-app-service-linux">Publiez l’application sur le meme plan App Service Linux</h4>
+
+<ul>
+  <li>cliquez avec le bouton droit sur le projet mydotnetapp, puis sélectionnez Publier.</li>
+</ul>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/publish_asp.png" alt="publish" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<ul>
+  <li>Dans Publier, sélectionnez Azure, puis Suivant
+ <!-- Begin collapsible container div --></li>
+</ul>
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/azure_asp.png" alt="azure" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<ul>
+  <li>
+    <p>Choisissez la cible spécifique, Azure App Service (Linux)</p>
+  </li>
+  <li>
+    <p>Sélectionnez <strong>Ajouter un compte ou Connexion</strong> pour vous connecter à votre abonnement Azure</p>
+  </li>
+  <li>
+    <p>À droite d’Instances App Service, sélectionnez + et choisir le nom, l’ASP et le RG puis sélectionnez Créer
+<!-- Begin collapsible container div --></p>
+  </li>
+</ul>
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab1/asp_app_deploy.png" alt="asp-deploy" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<ul>
+  <li>Dans la page Publier, sélectionnez Publier. Si vous voyez un message d’avertissement, sélectionnez Continuer.</li>
+</ul>
+
+<blockquote>
+  <p>Visual Studio build, génère un profil de publication et publie l’application web ASP.NET Core 6.0 sur Azure, puis la démarre dans le navigateur par défaut</p>
+</blockquote>
+
+<h4 id="vérifiez-la-présence-des-deux-web-apps-dans-votre-plan-app-service-linux">Vérifiez la présence des deux Web Apps dans votre plan App Service Linux</h4>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>via CLI</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp list <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-p</span> <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">--output</span> table
+</code></pre></div></div>
+
+<ul>
+  <li>via Portail
+<img src="/media/lab1/asp_list_app.png" alt="asp-deploy" /></li>
+</ul>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="supprimez-le-groupe-de-ressources">Supprimez le groupe de ressources</h4>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az group delete <span class="nt">-n</span> <span class="nv">$RESOURCE_GROUP</span>
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<hr />
+
+<blockquote>
+  <p>Une bonne pratique consiste notamment à automatiser le provisionement de son infrastructure à laide doutils Iac comme <a href="https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-bicep">Bicep</a> ou <a href="https://learn.microsoft.com/fr-fr/azure/app-service/provision-resource-terraform">Terraform</a>.</p>
+</blockquote>
+
+        </section>
+    
+
+    
+        <section id="lab1-conclusion" class="h2">
+            
+                    <h2>Conclusion</h2>
+                
+
+            <p>Ce premier exercice a permis de se familiariser avec la création de web App dans App Service, et de plans App Service. App Service prend en charge différentes infrastructures de développement, telles qu’ASP.NET, Node.js, PHP et Python, etc. Les infrastructures et les composants d’exécution fournis par la plateforme Azure sont régulièrement <strong>mis à jour</strong> pour répondre aux exigences de sécurité et de conformité, vous bénéficiez donc d’une vraie plateforme Paas.</p>
+
+        </section>
+    
+
+    
+        <section id="lab-2" class="h1">
+            
+                    
+                    <h1 class="nocount">Lab 2 - Cycle de vie</h1>
+                    
+                
+
+            
+
+        </section>
+    
+
+    
+        <section id="lab2-intro" class="h2">
+            
+                    <h2>Contexte</h2>
+                
+
+            <p>Dans ce deuxième Lab, nous allons voir d’autres fonctionnalités ajoutées par AppService, à travers une nouvelle application qui évoluera au fur et à mesure des exercices.</p>
+
+<p>Il faut cependant noter que le but de cet exercice n’est pas de s’intéresser au code de l’application mais plutôt de voir comment AppService nous fournit un certain nombre de briques intéressantes pour héberger notre code. A la fin de ce lab, vous disposerez d’une simple application Express Js s’exécutant sur Azure App Service sur Linux et connectée à une base de Azure Cosmos DB for MongoDB. (Voir diagramme ci-dessous)</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/ex_arch_lab2.png" alt="App Lab 2 overview" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<p>Nous allons dans ce lab 2 :</p>
+
+<ul>
+  <li>configurer les paramètres d’application</li>
+  <li>créer les environnements de déploiement</li>
+  <li>configurer les paramètres de déploiement</li>
+  <li>configurer la mise à l’échelle</li>
+  <li>rendre l’application hautement disponible</li>
+</ul>
+
+<p>Dans la suite nous allons explorer plus en détails ces fonctionnalités supplémentaires.</p>
+
+        </section>
+    
+
+    
+        <section id="lab2-resources-creation" class="h2">
+            
+                    <h2>Creation ressources</h2>
+                
+
+            <ul>
+  <li>Téléchargez et forkez les sources du projet <a href="https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app">ici</a></li>
+</ul>
+
+<h4 id="définissons-quelques-variables-denvironnement">Définissons quelques variables d’environnement</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$RESOURCE_GROUP</span> <span class="o">=</span> <span class="s2">"my-rg"</span>              <span class="c"># nom du groupe de ressources</span>
+<span class="nv">$LOCATION</span> <span class="o">=</span> <span class="s2">"northeurope"</span>              <span class="c"># la region Azure où seront déployées les ressources</span>
+<span class="nv">$APP_NAME</span> <span class="o">=</span> <span class="s2">"nodeapp256"</span>               <span class="c"># nom de la web app Express Js</span>
+<span class="nv">$APP_SERVICE_PLAN</span> <span class="o">=</span> <span class="s2">"my-asp-app"</span>       <span class="c"># nom du plan App Service Linux</span>
+<span class="nv">$COSMOSDB_ACCOUNT</span> <span class="o">=</span> <span class="s2">"cosmosaccount23"</span>  <span class="c"># nom du compte CosmosDB</span>
+<span class="nv">$APP_DATABASE</span> <span class="o">=</span> <span class="s2">"nodeappdatabase23"</span>    <span class="c"># nom de la base de données mongo</span>
+<span class="nv">$GIT_REPO</span> <span class="o">=</span> <span class="s2">"https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app"</span>
+</code></pre></div></div>
+
+<h4 id="créez-un-plan-appservice-linux-avec-un-tier-standard-minimum-requis-pour-les-slots">Créez un plan AppService Linux avec un tier Standard (minimum requis pour les Slots)</h4>
+
+<p>Solution :</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Créez un plan App Service Standard avec 2 instances de machine Linux</span>
+az appservice plan create <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-n</span> <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">--is-linux</span> <span class="nt">--number-of-workers</span> 2 <span class="nt">--sku</span> S1
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="créez-une-web-app-sur-ce-plan-app-service-en-spécifiant-le-runtime-node-16">Créez une Web App sur ce plan App Service en spécifiant le runtime NODE 16</h4>
+
+<p>Solution :</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Obtenez la liste des runtimes supportés pour chaque OS</span>
+az webapp list-runtimes
+<span class="c"># Créez la web app</span>
+az webapp create <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-n</span> <span class="nv">$APP_NAME</span> <span class="nt">-p</span> <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">-r</span> <span class="s2">"NODE:16-lts"</span> 
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h5 id="créez-une-base-de-données-azure-cosmos-db-for-mongodb">Créez une base de données Azure Cosmos DB for MongoDB</h5>
+
+<blockquote>
+  <p>C’est une base de données native Cloud qui propose une API 100 % compatible avec MongoDB.</p>
+</blockquote>
+
+<p>Solution :</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Créez un nouveau compte Cosmos DB avec l'API MongoDB</span>
+az cosmosdb create <span class="nt">--name</span> <span class="nv">$COSMOSDB_ACCOUNT</span> <span class="nt">--kind</span> MongoDB <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Créez une nouvelle base de données MongoDB</span>
+az cosmosdb mongodb database create <span class="nt">--account-name</span> <span class="nv">$COSMOSDB_ACCOUNT</span> <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--name</span> <span class="nv">$APP_DATABASE</span>
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+
+        </section>
+    
+
+    
+        <section id="lab2-app-settings" class="h2">
+            
+                    <h2>Paramètres d'application</h2>
+                
+
+            <ul>
+  <li>Une fois les ressources provisonnées, nous allons connecter l’application à la base de données.</li>
+</ul>
+
+<h3 id="paramètres-dapplication">Paramètres d’application</h3>
+
+<p>Dans App Service, les paramètres d’application sont des variables transmises comme des variables d’environnement au code de l’application. Vous pouvez accéder aux paramètres d’application à partir de la page de gestion de votre application, en sélectionnant <strong>Configuration &gt; Paramètres d’application</strong></p>
+
+<blockquote>
+  <p>Les développeurs ASP.NET définissent les paramètres de l’application dans App Service comme ils le font avec appSettings dans Web.config ou appsettings.json, mais les valeurs dans App Service remplacent celles du fichier Web.config ou appsettings.json. Vous pouvez conserver les paramètres de développement (par exemple le mot de passe MySQL local) dans Web.config ou appsettings.json, mais garder les secrets de production (par exemple le mot de passe de la base de données MySQL Azure) en sécurité dans App Service. Le même code utilise vos paramètres de développement lorsque vous déboguez localement, et utilise vos secrets de production lorsque vous les déployez sur Azure. Une fois stockés, les paramètres d’application sont toujours chiffrés (chiffrement au repos).</p>
+</blockquote>
+
+<h4 id="démarrer-lapplication-localement">Démarrer l’application localement</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clonez le dépôt</span>
+git clone https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app.git
+<span class="nb">cd </span>msdocs-nodejs-mongodb-azure-sample-app
+<span class="c"># Installez les dépendances des packages</span>
+npm <span class="nb">install</span>
+<span class="c"># Copiez le fichier .env.sample dans .env et renseignez la valeur DATABASE_URL avec votre URL MongoDB (par exemple, mongodb://localhost:27017/)</span>
+<span class="c"># Démarrez l’application </span>
+npm start
+<span class="c"># Accédez à http://localhost:3000</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Ouvrez le fichier <strong>connection.js</strong> dans le dossier <strong>config</strong> et notez les 2 variables dont vous aurez besoin pour connecter l’application à la BD. Que remarquez vous dans le fichier <strong>app.js, ligne 17</strong> ?</p>
+</blockquote>
+
+<h4 id="connectez-la-web-app-à-la-bd">Connectez la web app à la BD</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Récupérez la 'chaîne de connexion' de votre base de données Mongo</span>
+az cosmosdb list-connection-strings <span class="nt">-n</span> <span class="nv">$COSMOSDB_ACCOUNT</span> <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Cette commande renverra un objet JSON contenant la chaîne de connexion de votre compte Cosmos DB. Copiez la valeur de la propriété <strong>primaryConnectionString</strong></p>
+</blockquote>
+
+<h4 id="attribuez-la-chaîne-de-connexion-en-tant-que-paramètre-dapplication-à-lapplication-web">Attribuez la chaîne de connexion en tant que paramètre d’application à l’application Web</h4>
+
+<p>Solution :</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>via CLI</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config appsettings <span class="nb">set</span> <span class="nt">--name</span> <span class="nv">$APP_NAME</span> <span class="se">\</span>
+<span class="nt">--resource-group</span> <span class="nv">$RESOURCE_GROUP</span> <span class="se">\</span>
+<span class="nt">--settings</span> DATABASE_URL <span class="o">=</span> <span class="nv">$primaryConnectionString</span> <span class="nv">DATABASE_NAME</span><span class="o">=</span><span class="nv">$APP_DATABASE</span>
+</code></pre></div></div>
+
+<ul>
+  <li>via le Portail</li>
+</ul>
+
+<p><img src="/media/lab2/app_settings.png" alt="Web App connection string" /></p>
+<blockquote>
+  <p>Pensez à enregistrer ses modifications</p>
+</blockquote>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="paramères-généraux">paramères généraux</h4>
+
+<p>Outre les paramètres d’application, App Service fournit d’autres paramètres tels que :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp config <span class="nb">set</span> <span class="nt">--resource-group</span> &lt;group-name&gt; <span class="nt">--name</span> &lt;app-name&gt; <span class="nt">--use-32bit-worker-process</span> <span class="o">[</span><span class="nb">true</span>|false] <span class="nt">--web-sockets-enabled</span> <span class="o">[</span><span class="nb">true</span>|false] <span class="nt">--always-on</span> <span class="o">[</span><span class="nb">true</span>|false]--http20-enabled <span class="nt">--auto-heal-enabled</span> <span class="o">[</span><span class="nb">true</span>|false] <span class="nt">--remote-debugging-enabled</span> <span class="o">[</span><span class="nb">true</span>|false] <span class="nt">--number-of-workers</span>
+<span class="c"># ARR affinity, SDK version, Command start, etc ...</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>always-on</strong> : Garde l’application chargée même s’il n’y a aucun trafic.Par défaut, l’application est déchargée après 20 minutes sans requêtes entrantes. Cela peut provoquer une latence élevée pour les nouvelles requêtes en raison de son temps de préparation. Lorsque l’option Always on est activée, l’équilibreur de charge frontal envoie une requête GET à la racine de l’application toutes les cinq minutes. La commande ping continue empêche le déchargement de l’application. Cette option peut etre utile pour les WebJobs continus.</p>
+</blockquote>
+
+<hr />
+
+<blockquote>
+  <p><strong>remote debug</strong> : Activez le débogage à distance pour les applications ASP.NET, ASP.NET Core ou Node.js. Cette option se désactive automatiquement au bout de 48 heures.</p>
+</blockquote>
+
+        </section>
+    
+
+    
+        <section id="lab2-slot" class="h2">
+            
+                    <h2>Emplacement de déploiement</h2>
+                
+
+            <ul>
+  <li>Une fois les ressources provisonnées et la connexion à la base de données faite, on va se lancer dans le déploiement de l’application mais avant celà, créons un environnement de pré-production.</li>
+</ul>
+
+<blockquote>
+  <p>Les organisations doivent souvent exécuter des applications web dans des environnements isolés pour les tester avant le déploiement. Dans une même application web Azure App Service, vous pouvez créer plusieurs emplacements de déploiement. Chaque emplacement est une instance distincte de cette application web avec un nom d’hôte différent. Vous pouvez déployer une version différente de votre application web dans chaque emplacement.</p>
+</blockquote>
+
+<p><strong>Creez un emplacement de pré-production avec le nom “staging”</strong>.</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>via CLI</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Créez un slot de déploiement avec le nom "staging"</span>
+az webapp deployment slot create <span class="nt">-n</span> <span class="nv">$APP_NAME</span> <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--slot</span> staging
+</code></pre></div></div>
+
+<ul>
+  <li>via le Portail
+<img src="/media/lab2/deployment_slot.png" alt="Deployment slot" /></li>
+</ul>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<p>vérifiez la création de l’emplacement via le portail et notez l’URL :</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/slot_verify.png" alt="Deployment slot" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+
+        </section>
+    
+
+    
+        <section id="lab2-deployment-center" class="h2">
+            
+                    <h2>Paramètres du déploiement</h2>
+                
+
+            <ul>
+  <li>Une fois l’emplacement de pré-production crée et les ressources provisonnées, nous alons <strong>déployer</strong> le code dessus.</li>
+</ul>
+
+<h3 id="paramètres-de-déploiement">paramètres de déploiement</h3>
+
+<p>Azure App Service permet un déploiement continu et manuel à partir des dépôts GitHub, Bitbucket et Azure Repos en extrayant les dernières mises à jour. Dans cette étape, vous allez configurer le déploiement GitHub avec <strong>GitHub Actions</strong>. Cette méthode fait partie des nombreuses façons de déployer sur App Service, mais elle permet également de bénéficier d’une intégration continue dans votre processus de déploiement. Par défaut, chaque git push dans votre dépôt GitHub lance l’action de build et de déploiement.</p>
+
+<p>Connectez-vous à votre compte GitHub et Forkez <a href="https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app">le repo</a></p>
+
+<p><strong>Pour configurer le déploiement continu</strong> :</p>
+
+<ul>
+  <li>aller dans <strong>Deployment center</strong></li>
+  <li>choisir <strong>Github</strong> comme source</li>
+  <li>remplir les paramètres (organisation, repo, branch)</li>
+</ul>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p>vérifiez que vous etes bien en environnement de staging
+<img src="/media/lab2/deployment_center.png" alt="Deployment center" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<blockquote>
+  <p>Azure commit un fichier de flux de travail dans le référentiel GitHub sélectionné pour gérer les tâches de Build et de déploiement. Pour afficher le fichier avant d’enregistrer vos modifications, sélectionnez <strong>Preview file</strong></p>
+</blockquote>
+
+<p>Le fournisseur de build GitHub Actions effectue ces actions pour configurer la CI/CD :</p>
+
+<ul>
+  <li>dépose un fichier de workflow GitHub Actions dans votre référentiel GitHub pour gérer les tâches de build et de déploiement sur App Service</li>
+  <li>Ajoute le profil de publication de votre application en tant que secret GitHub. Le fichier de workflow utilise ce secret pour s’authentifier auprès d’App Service.</li>
+  <li>Capture les informations des journaux d’exécution du flux de travail et les affiche dans l’onglet Journaux du centre de déploiement de votre application.</li>
+</ul>
+
+<p>Apercu du fichier :
+<!-- Begin collapsible container div --></p>
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/workflow_file.png" alt="Workflow file" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<p>Vous pouvez <strong>personnaliser</strong> le fournisseur de build GitHub Actions de cette manière:</p>
+
+<ul>
+  <li>Personnalisez le fichier de workflow après sa génération dans votre référentiel GitHub. Assurez-vous simplement que le flux de travail se déploie sur App Service avec l’action azure/webapps-deploy.</li>
+  <li>Au lieu d’utiliser un <strong>profil de publication</strong>, vous pouvez déployer à l’aide d’un <strong>service principal</strong> dans Azure Active Directory.</li>
+</ul>
+
+        </section>
+    
+
+    
+        <section id="lab2-swap" class="h2">
+            
+                    <h2>Swap</h2>
+                
+
+            <ul>
+  <li>Nous allons à présent déployer l’application sur l’environnement de production en échangeant avec le slot intermediaire.</li>
+</ul>
+
+<h4 id="effectuez-un-swap-des-deux-environnement">Effectuez un swap des deux environnement</h4>
+
+<p>Solution :</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/swap_slot.png" alt="swap slot" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<blockquote>
+  <p>Il faut noter qu’il y a des paramètres qui sont échangés entre les emplacements de déploiement (les chaines de connexion, etc) et des paramètres qui restent dans l’emplacement source (paramètres de mise à l’echelle, etc) Cliquez <a href="https://learn.microsoft.com/fr-fr/training/modules/configure-azure-app-services/6-add-deployment-slots">ici</a> pour plus d’informations.</p>
+</blockquote>
+
+<hr />
+
+<blockquote>
+  <p>Certaines applications peuvent nécessiter quelques actions préparatoires personnalisées avant l’échange. L’élément de configuration <strong>applicationInitialization</strong> vous permet de spécifier les actions d’initialisation personnalisées à exécuter. L’opération d’échange attend la fin de l’initialisation personnalisée pour procéder à l’échange avec l’emplacement cible.</p>
+</blockquote>
+
+<h4 id="configurez-léchange-automatique">Configurez l’échange automatique</h4>
+
+<p>App Service peut aussi basculer automatiquement l’application vers la production après son initialisation dans l’emplacement source si vous activez le paramètre <strong>auto-swap</strong></p>
+
+<h4 id="supervisez-lopération-déchange">Supervisez l’opération d’échange</h4>
+
+<p>Si l’opération d’échange prend beaucoup de temps ou génère une erreur, vous pouvez obtenir des informations à ce sujet dans le journal d’activité ou des erreurs propres à l’application (voir Lab3).</p>
+
+<h4 id="acheminez-le-trafic-de-production-automatiquement">Acheminez le trafic de production automatiquement</h4>
+
+<blockquote>
+  <p>Par défaut, toutes les requêtes clientes vers les URL de production de l’application (http://<app_name>.azurewebsites.net) sont acheminées vers l’emplacement de production. Vous pouvez acheminer une partie du trafic vers un autre emplacement. Cette fonctionnalité est utile si vous avez besoin d’un retour d’expérience utilisateur pour une nouvelle mise à jour, mais que vous n’êtes pas prêt à la publier en production</app_name></p>
+</blockquote>
+
+<p>Solution :</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>via CLI</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az webapp traffic-routing <span class="nb">set</span> <span class="nt">--distribution</span> <span class="nv">staging</span><span class="o">=</span>20 <span class="nt">-n</span> <span class="nv">$APP_NAME</span> <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span>
+</code></pre></div></div>
+
+<ul>
+  <li>via le Portail</li>
+</ul>
+
+<p><img src="/media/lab2/trafic-routing.png" alt="trafic routing" /></p>
+
+<blockquote>
+  <p>Une fois le paramètre enregistré, le pourcentage de clients spécifié est routé de manière aléatoire vers l’emplacement hors production</p>
+</blockquote>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<blockquote>
+  <p>App Service peut aussi acheminer les requêtes vers un emplacement particulier. Cela s’avère utile si vous souhaitez que vos utilisateurs puissent choisir d’accepter ou de refuser votre application bêta. Pour router le trafic de production manuellement, vous utilisez le paramètre de requête x-ms-routing-name</p>
+</blockquote>
+
+        </section>
+    
+
+    
+        <section id="lab2-scaling" class="h2">
+            
+                    <h2>Autoscaling</h2>
+                
+
+            <p>Une fois le déploiement effectué, nous allons mettre à l’échelle l’application</p>
+
+<p>Il existe deux workflows de mise à l’échelle dans App Service : scale-up et scale-out</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/asp_scaling.png" alt="Web App connection string" /></p>
+
+<blockquote>
+  <p>en faisant un <strong>scale up</strong>, vous bénéficiez d’un surcroît de capacité de vCPU et de mémoire. Pour monter en puissance il faut modifier le niveau tarifaire du plan App Service auquel appartient votre application.</p>
+</blockquote>
+
+<p>[—————]</p>
+<blockquote>
+  <p>en faisant un <strong>scale out</strong>, vous augmentez le nombre d’instances de machine virtuelle qui exécutent votre application. Vous y trouverez comment utiliser  la mise à l’echelle manuelle ou automatique basé sur des règles prédéfinies et en fonction des planifications.</p>
+</blockquote>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="mettez-à-jour-le-nombre-de-workers-à-3-scale-out">Mettez à jour le nombre de workers à 3 (scale out)</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az appservice plan update <span class="nt">--number-of-workers</span> 3 <span class="nt">--name</span> <span class="nv">$APP_SERVICE_PLAN</span> <span class="nt">--resource-group</span> <span class="nv">$RESOURCE_GROUP</span>
+</code></pre></div></div>
+
+<h4 id="pour-un-asp-de-tier-basic-f1-etc--s1-lautoscale-est-indisponible">Pour un ASP de tier Basic, F1, etc &lt; S1 l’autoscale est indisponible</h4>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/scale_up_not_available.png" alt="no scale up" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="mettez-à-jour-le-tier-de-lasp-pour-rendre-disponible-la-fonctionnalité-de-mise-à-léchelle-automatique-basé-sur-des-règles-scale-up">Mettez à jour le tier de l’ASP pour rendre disponible la fonctionnalité de mise à l’échelle automatique basé sur des règles (scale up)</h4>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/scale_up_asp.png" alt="scale up" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="configurez-un-rule-based-autoscale">Configurez un ‘Rule Based autoscale’</h4>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/custom_scale_out.png" alt="Add a scale Rule" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<blockquote>
+  <p>La règle utilise le pourcentage de CPU pour augmenter le nombre d’instances. Si en moyenne, sur une durée de 5 min, cette métrique &gt; 10%, on incrémente de 1 ce nombre en limitant à 5.</p>
+</blockquote>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/scale_rule.png" alt="Add a scale Rule" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<ul>
+  <li>Utilisez Azure PowerShell pour démarrer une boucle infinie qui envoie les requêtes HTTP à votre application Web.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$webapp</span> <span class="o">=</span> Get-AzWebApp <span class="nt">-ResourceGroupName</span> <span class="nv">$RESOURCE_GROUP</span>
+<span class="k">while</span> <span class="o">(</span><span class="nv">$true</span><span class="o">)</span> <span class="o">{</span> Invoke-WebRequest <span class="nt">-Uri</span> <span class="nv">$webapp</span>.DefaultHostName <span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Vérifiez bien que le nombre d’instances évolue automatiquement</li>
+</ul>
+
+<p>Regardez la valeur du paramètre <strong>Instance count</strong> du plan App Service dans la vue globale</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># s'il était à 3, il passera à 4, et ensuite 5</span>
+az appservice plan show <span class="nt">-n</span> <span class="nv">$APP_SERVICE_PLAN</span>  <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span>  <span class="nt">--query</span> <span class="s1">'sku.capacity'</span>
+</code></pre></div></div>
+
+        </section>
+    
+
+    
+        <section id="lab2-custom domain" class="h2">
+            
+                    <h2>Résilience</h2>
+                
+
+            <blockquote>
+  <p>Quand vous déployez votre application dans le cloud, vous choisissez une région où est basée votre infrastructure d’application. Si votre application est déployée dans une seule région et que cette région devient indisponible, votre application sera elle aussi indisponible. La haute disponibilité et la tolérance de panne sont les composants clés d’une solution bien conçue. Mieux vaut se préparer et pour cela, une bonne solution est de déployer votre application et ses services dans plusieurs régions. Vous pouvez utiliser Azure Front Door pour router le trafic vers la région active. (voir diagramme)</p>
+</blockquote>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab2/az_front_door.png" alt="Az front door" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<p>Si vous souhaitez rendre votre application hautement disponible, consultez cette <a href="https://learn.microsoft.com/fr-fr/azure/app-service/tutorial-multi-region-app">documentation</a></p>
+
+        </section>
+    
+
+    
+        <section id="lab-3" class="h1">
+            
+                    
+                    <h1 class="nocount">Lab 3 - Monitoring</h1>
+                    
+                
+
+            
+
+        </section>
+    
+
+    
+        <section id="lab3-intro" class="h2">
+            
+                    <h2>Contexte</h2>
+                
+
+            <p>Une fois l’application opérationnel, nous allons configurer son observabilité.</p>
+
+        </section>
+    
+
+    
+        <section id="lab3-logs-monitor" class="h2">
+            
+                    <h2>Observabilité</h2>
+                
+
+            <h4 id="gestion-des-erreurs">Gestion des erreurs</h4>
+
+<blockquote>
+  <p>Quand vous exécutez une application web, vous souhaitez anticiper tout problème, des erreurs 500 à l’arrêt de votre site. Avec les <strong>diagnostics App Service</strong>, vous pouvez résoudre les problèmes de votre application de manière intelligente et interactive sans effectuer de configuration particulière. Ils vous indiquent la nature des problèmes de votre application afin que vous disposiez des informations appropriées pour les résoudre plus facilement et plus rapidement.
+Cette fonctionnalité est particulièrement utile quand vous rencontrez des problèmes avec votre application au cours des dernières <strong>24 heures</strong>, mais vous pouvez aussi analyser tous les graphiques de diagnostic à tout moment.</p>
+</blockquote>
+
+<h4 id="ask-genie">Ask Genie</h4>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>La zone de recherche Genie permet de rapidement trouver un diagnostic. Par exemple si mon application est lent, je search <strong>“Web App Slow”</strong>. Le même diagnostic est disponible dans les catégories Availability &amp; Performance.</li>
+</ul>
+
+<p><img src="/media/lab3/ask_genie.png" alt="Ask Genie" />
+<img src="/media/lab3/genie_diagnostic.png" alt="Ask Genie diagnostic" /></p>
+
+<ul>
+  <li>On dispose aussi d’un Bot sous l’option <strong>Ask Genie</strong> pour soumettre nos problèmes, et ce dernier nous fournit des recommandations
+<img src="/media/lab3/ask_genie_1.png" alt="Ask Genie 1" /></li>
+</ul>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="alertes">Alertes</h4>
+
+<p>La page d’accueil des diagnostics App Service effectue une série de vérifications de la configuration et formule des recommandations basées sur la configuration unique de votre application.</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab3/app_alert.png" alt="Alert" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h4 id="activez-la-journalisation-et-streamez-les-logs-de-lapplication">Activez la journalisation et streamez les logs de l’application</h4>
+
+<p>Azure App Service capture tous les messages consignés dans la console pour vous aider à diagnostiquer les problèmes liés à votre application, aider au debogage. On a plusieurs types de journaux (applications, serveurs, erreurs détaillées, déploiement)</p>
+
+<p>L’exemple d’application du <strong>Lab2</strong> sort les messages du journal de la console dans chacun de ses points de terminaison pour illustrer cette capacité. Par exemple dans le fichier <strong>index.js</strong>, le point de terminaison get génère un message sur <strong>le nombre de tâches récupérées dans la base de données</strong> et un message d’erreur s’affiche en cas de problème.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>router.get<span class="o">(</span><span class="s1">'/'</span>, <span class="k">function</span><span class="o">(</span>req, res, next<span class="o">)</span> <span class="o">{</span>
+  Task.find<span class="o">()</span>
+    .then<span class="o">((</span>tasks<span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>      
+      const currentTasks <span class="o">=</span> tasks.filter<span class="o">(</span>task <span class="o">=&gt;</span> <span class="o">!</span>task.completed<span class="o">)</span><span class="p">;</span>
+      const completedTasks <span class="o">=</span> tasks.filter<span class="o">(</span>task <span class="o">=&gt;</span> task.completed <span class="o">===</span> <span class="nb">true</span><span class="o">)</span><span class="p">;</span>
+
+      console.log<span class="o">(</span><span class="sb">`</span>Total tasks: <span class="k">${</span><span class="nv">tasks</span><span class="p">.length</span><span class="k">}</span>   Current tasks: <span class="k">${</span><span class="nv">currentTasks</span><span class="p">.length</span><span class="k">}</span>    Completed tasks:  <span class="k">${</span><span class="nv">completedTasks</span><span class="p">.length</span><span class="k">}</span><span class="sb">`</span><span class="o">)</span>
+      res.render<span class="o">(</span><span class="s1">'index'</span>, <span class="o">{</span> currentTasks: currentTasks, completedTasks: completedTasks <span class="o">})</span><span class="p">;</span>
+    <span class="o">})</span>
+    .catch<span class="o">((</span>err<span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span>
+      console.log<span class="o">(</span>err<span class="o">)</span><span class="p">;</span>
+      res.send<span class="o">(</span><span class="s1">'Sorry! Something went wrong.'</span><span class="o">)</span><span class="p">;</span>
+    <span class="o">})</span><span class="p">;</span>
+<span class="o">})</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Ajoutez <strong>une tache</strong> à la ToDoApp et dirigez vous vers l’option <strong>Log Stream</strong>, Que remarquez vous ?</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab3/log_stream.png" alt="Logs_stream" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Activez toutes les options de journalisation de l'application </span>
+az webapp log config <span class="nt">--name</span> <span class="nv">$APP_NAME</span> <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--application-logging</span> azureblobstorage <span class="nt">--detailed-error-messages</span> <span class="nb">true</span> <span class="nt">--failed-request-tracing</span> <span class="nb">true</span> <span class="nt">--web-server-logging</span> filesystem
+<span class="c"># Diffusez les journaux en temps réel et filtrer des types de journaux spécifiques tels que HTTP</span>
+az webapp log <span class="nb">tail</span> <span class="nt">--name</span> <span class="nv">$APP_NAME</span> <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--provider</span> http
+<span class="c"># Téléchargez les fichiers journaux pour une revue [la commande peut ne pas fonctionner avec les applications Web fonctionnant sous Linux]</span>
+az webapp log download <span class="nt">--name</span> <span class="nv">$APP_NAME</span> <span class="nt">--resource-group</span> <span class="nv">$RESOURCE_GROUP</span>
+</code></pre></div></div>
+
+<h4 id="azure-monitor">Azure Monitor</h4>
+
+<p>Lorsque vous avez des applications critiques et des processus métier basés sur des ressources Azure, vous voulez superviser ces ressources pour connaître leur disponibilité, leurs performances et leur fonctionnement. <strong>Azure Monitor</strong> optimise la disponibilité et les performances de vos applications et services en fournissant une solution complète pour collecter, analyser et utiliser la télémétrie de vos environnements cloud et locaux.</p>
+
+<p>Nous allons :</p>
+
+<ul>
+  <li>Configurer la ToDo App avec Azure Monitor et envoyer des journaux de console à Log Analytics.</li>
+  <li>Utiliser des requêtes de journal pour identifier et résoudre les erreurs de l’application web</li>
+</ul>
+
+<h5 id="creez-un-espace-de-travail-log-analytics">Creez un espace de travail Log Analytics</h5>
+
+<blockquote>
+  <p>Azure Monitor stocke les données de journal dans un espace de travail Log Analytics. Un espace de travail est un conteneur qui renferme des données ainsi que des informations de configuration.</p>
+</blockquote>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># nom de l'espace de travail Log Analytics</span>
+<span class="nv">$APP_WORKSPACE</span> <span class="o">=</span> <span class="s2">"my-log-workspace"</span>  
+<span class="c"># Créez le workspace</span>
+az monitor log-analytics workspace create <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">--workspace-name</span> <span class="nv">$APP_WORKSPACE</span>
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h5 id="envoyez-les-journaux-dactivité-des-serveurs-web-au-loganalytics-workspace">Envoyez les journaux d’activité des serveurs Web au LogAnalytics Workspace</h5>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>via le Portail</li>
+</ul>
+
+<p><img src="/media/lab3/nodeapp_logs.png" alt="Logs" /></p>
+
+<ul>
+  <li>via CLI</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Récupérez l'ID de l'application Web</span>
+<span class="nv">$resourceID</span> <span class="o">=</span> <span class="o">(</span>az webapp show <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span> <span class="nt">-n</span> <span class="nv">$APP_NAME</span> <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="o">)</span>
+<span class="c"># Récupérez l'ID du workspace Log Analytics</span>
+<span class="nv">$workspaceID</span> <span class="o">=</span> <span class="o">(</span>az monitor log-analytics workspace show <span class="nt">-g</span> <span class="nv">$RESOURCE_GROUP</span>  <span class="nt">--workspace-name</span> <span class="nv">$APP_WORKSPACE</span> <span class="nt">--query</span> <span class="nb">id</span> <span class="nt">--output</span> tsv<span class="o">)</span>
+<span class="c"># Créez un diagnostic settings</span>
+az monitor diagnostic-settings create <span class="nt">--resource</span> <span class="nv">$resourceID</span> <span class="se">\</span>
+ <span class="nt">--workspace</span> <span class="nv">$workspaceID</span> <span class="se">\</span>
+ <span class="nt">-n</span> my-app-logs <span class="se">\</span>
+ <span class="nt">--logs</span> <span class="s1">'[{"category": "AppServiceConsoleLogs", "enabled": true},
+  {"category": "AppServiceHTTPLogs", "enabled": true}]'</span>
+</code></pre></div></div>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<h5 id="utiliser-des-requêtes-de-journal-pour-identifier-et-résoudre-les-erreurs-dune-application">Utiliser des requêtes de journal pour identifier et résoudre les erreurs d’une application</h5>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>Allez dans votre Workspace Log Anaytics</li>
+  <li>dans la section <strong>Logs</strong>, selectionner votre webapp comme <strong>scope</strong> et filtrer ‘appservice’</li>
+  <li>Requeter les logs de <strong>“suppression de taches”</strong> fournis par la console</li>
+</ul>
+
+<p><img src="/media/lab3/kusto_1.png" alt="kusto_conso" /></p>
+
+<ul>
+  <li>Diagnostiquer les erreurs HTTP 500 en utilisant la requete Kusto AppServiceHTTPLogs</li>
+</ul>
+
+<p><img src="/media/lab3/kusto_2.png" alt="kusto_http" /></p>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+
+        </section>
+    
+
+    
+        <section id="lab3-app-insights" class="h2">
+            
+                    <h2>Application insights</h2>
+                
+
+            <p><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net">Application Insights</a> vous permet de superviser les performances, les exceptions et l’utilisation de votre application sans modifier le code. Elle vous permet de diagnostiquer les erreurs sans attendre qu’un utilisateur les signale. Vous ajoutez le SDK à votre projet ou vous activez Application Insights à l’aide de l’agent Application Insights. l’agent peut instrumenter non seulement l’application de service web, mais aussi tous les composants d’arrière-plan et le code JavaScript des pages web elles-mêmes.(voir diagramme)</p>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<p><img src="/media/lab3/app-insight-arch.png" alt="app_insights-arch" /></p>
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<p>Pour attacher <strong>l’agent Application Insights</strong> :</p>
+
+<ul>
+  <li>
+    <p>Accédez à votre application web dans le portail.</p>
+  </li>
+  <li>
+    <p>Sélectionnez Application Insights sous Paramètres</p>
+  </li>
+  <li>
+    <p>puis sélectionnez Activer Application Insights.</p>
+  </li>
+  <li>
+    <p>Sélectionnez ensuite une ressource Application Insights existante ou créez-en une.</p>
+  </li>
+  <li>
+    <p>Enfin, sélectionnez Appliquer en bas.</p>
+  </li>
+</ul>
+
+<!-- Begin collapsible container div -->
+<div class="collapsible-content-container">
+  <!-- Begin collapsible container button -->
+  <button class="toggle-collapsible">Toggle</button>
+  <!-- Begin collapsible container content div -->
+  <div class="collapsible-content">
+    <!-- Begin parsedText -->
+    
+<ul>
+  <li>activer l’agent App Insights</li>
+</ul>
+
+<p><img src="/media/lab3/app_insights.png" alt="app_insights" /></p>
+
+<ul>
+  <li>créer une ressource App Insights</li>
+</ul>
+
+<p><img src="/media/lab3/app_insights1.png" alt="app_insights_create" /></p>
+
+<ul>
+  <li>Observez l’ensemble des métriques et options disponibles</li>
+</ul>
+
+<p><img src="/media/lab3/app_insights_metrics.png" alt="app_insights_metrics" /></p>
+
+
+    <!-- End parsedText -->
+  </div>
+  <!-- End collapsible container content div -->
+</div>
+<!-- End collapsible container div -->
+
+<blockquote>
+  <p>Obtenez plus d’informations sur les éléments supervisés par Application Insights <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net">ici</a></p>
+</blockquote>
+
+        </section>
+    
+
+    
+        <section id="lab4" class="h1">
+            
+                    
+                    <h1 class="nocount">Lab 4 - Advanced Concepts (tbd)</h1>
+                    
+                
+
+            
+
+        </section>
+    
+
+    
+        <section id="lab4-intro" class="h2">
+            
+                    <h2>Contexte</h2>
+                
+
+            <p>Par défaut, les applications hébergées dans App Service sont accessibles directement via Internet et peuvent atteindre uniquement des points de terminaison hébergés sur Internet. Toutefois, pour bon nombre d’applications, vous devez contrôler le trafic réseau entrant et sortant. App Service inclut plusieurs fonctionnalités destinées à vous aider à répondre à ces besoins</p>
+
+        </section>
+    
+
+    
+        <section id="lab4-network" class="h2">
+            
+                    <h2>Vnet integration</h2>
+                
+
+            <ul>
+  <li>Application Multiniveau</li>
+</ul>
+
+<p>vous allez configurer une application App Service avec une communication sécurisée, isolée du réseau, aux services principaux. Lorsque vous avez terminé, vous disposerez d’une application App Service qui accède à la fois à Key Vault et à Cognitive Services via un réseau virtuel Azure, et aucun autre trafic n’est autorisé à accéder à ces ressources principales. Tout le trafic sera isolé au sein de votre réseau virtuel à l’aide de l’intégration du réseau virtuel et de points de terminaison privés.</p>
+
+        </section>
+    
+
+    
+        <section id="lab4-cache" class="h2">
+            
+                    <h2>Local cache, Key vault</h2>
+                
+
+            <ul>
+  <li>local cache</li>
+</ul>
+
+        </section>
+    
+
+    
+        <section id="lab4-custom domain" class="h2">
+            
+                    <h2>Custom domain, advanced monitoring with Kudu</h2>
+                
+
+            <ul>
+  <li>Configurez un nom de domaine personalisé pour notre application (certificats)</li>
+</ul>
+
+        </section>
+    
+
+    
+        <section id="cleaning" class="h1">
+            
+                    
+                    <h1>Nettoyage</h1>
+                    
+                
+
+            
+
+        </section>
+    
+
+    
+        <section id="cleaning-resources" class="h2">
+            
+                    <h2>Supprimer les ressources</h2>
+                
+
+            <p>Si ce workshop a été effectué sur votre souscription, n’oubliez pas d’effacer les ressources pour éviter des coûts inutiles</p>
+
+        </section>
+    
+
+
+            </article>
+        </div>
+    </div>
+
+    <script scr="js/jquery.scrollTo.js"></script>
+    <script src="js/jquery.nav.js"></script>
+    <script src="js/scripts.js"></script>
+
+</body>
+
+</html>
